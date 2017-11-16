@@ -1,9 +1,11 @@
 #api文档地址
-http://localhost:8080/swagger-ui.html#/
+http://192.168.0.109:9090/swagger-ui.html#/
 
 
 #druid监控
-http://localhost:8080/druid/index.html
+http://192.168.0.109:9090/druid/index.html
+账户:root
+密码:root
 
 #异常举例
 common/exception   的  DemoException
