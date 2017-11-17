@@ -19,9 +19,10 @@ public interface ArticleService {
      * 分页查询
      * @param page
      * @param size
+     * @param circleId 
      * @return
      */
-    Page<Article> getByPage(Integer page, Integer size);
+    Page<Article> getByPage(Integer page, Integer size, Integer circleId);
 
     /**
      * 发帖子

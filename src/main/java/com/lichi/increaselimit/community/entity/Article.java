@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -19,6 +20,7 @@ import lombok.Data;
 @Entity
 @Table(name =  "t_article")
 @Data
+@ApiModel("帖子")
 public class Article implements Serializable{
 
 	private static final long serialVersionUID = -1997630198932216787L;

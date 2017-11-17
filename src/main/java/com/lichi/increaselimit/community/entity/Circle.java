@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
+
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -19,6 +21,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "t_circle")
+@ApiModel("圈子")
 public class Circle implements Serializable{
 
 	private static final long serialVersionUID = 8344002416206506566L;

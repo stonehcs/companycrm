@@ -1,7 +1,6 @@
 package com.lichi.increaselimit.community.service.impl;
 
 import java.util.Date;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,10 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.lichi.increaselimit.common.enums.ResultEnum;
-import com.lichi.increaselimit.common.exception.CircleException;
+import com.lichi.increaselimit.common.exception.BusinessException;
 import com.lichi.increaselimit.community.dao.ArticleDao;
 import com.lichi.increaselimit.community.dao.CircleDao;
-import com.lichi.increaselimit.community.entity.Article;
 import com.lichi.increaselimit.community.entity.Circle;
 import com.lichi.increaselimit.community.service.CircleService;
 
@@ -23,7 +21,7 @@ import com.lichi.increaselimit.community.service.CircleService;
  * @author by majie on 2017/11/15.
  */
 @Service
-@Transactional(rollbackFor = RuntimeException.class)
+@Transactional(rollbackFor = Exception.class)
 public class CircleImpl implements CircleService {
 
     @Autowired
@@ -40,8 +38,8 @@ public class CircleImpl implements CircleService {
 
     @Override
     public Page<Circle> getByPage(Integer page, Integer size) {
-        Sort.Order order = new Sort.Order(Sort.Direction.DESC,"createTime");
-        Sort sort = new Sort(order);
+//        Sort.Order order = new Sort.Order(Sort.Direction.DESC,"createTime");
+        Sort sort = new Sort(Sort.Direction.DESC,"createTime");
         Pageable pageable = new PageRequest(page,size,sort);
         Page<Circle> all = circleDao.findAll(pageable);
         return all;
@@ -58,12 +56,15 @@ public class CircleImpl implements CircleService {
         circle.setUpdateTime(new Date());
         circleDao.save(circle);
     }
-
+    
+    /**
+     * 删除的时候先查询是否有帖子
+     */
     @Override
     public void delete(Integer id) {
-        List<Article> list = articleDao.findByCircleId(id);
-        if(list != null && list.size() > 0){
-            throw new CircleException(ResultEnum.ARTICLE_NO_EMPTY);
+        Integer resutl = articleDao.countByCircleId(id);
+        if(resutl > 0){
+            throw new BusinessException(ResultEnum.ARTICLE_NO_EMPTY);
         }
         circleDao.delete(id);
     }
