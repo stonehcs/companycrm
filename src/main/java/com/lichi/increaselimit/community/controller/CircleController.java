@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.lichi.increaselimit.common.utils.ResultVoUtil;
 import com.lichi.increaselimit.common.vo.ResultVo;
 import com.lichi.increaselimit.community.entity.Circle;
-import com.lichi.increaselimit.community.service.ArticleService;
 import com.lichi.increaselimit.community.service.CircleService;
 
 import io.swagger.annotations.Api;
@@ -35,9 +34,6 @@ public class CircleController {
 
     @Autowired
     private CircleService circleService;
-
-    @Autowired
-    private ArticleService articleService;
 
     @PostMapping
     @ApiOperation(value = "新建圈子")
@@ -82,8 +78,6 @@ public class CircleController {
     @ApiOperation(value = "根据id查询圈子信息")
     public ResultVo<Circle> getArticle(@PathVariable  Integer id){
         Circle circle = circleService.get(id);
-        Integer count = articleService.getCountByCircleId(id);
-        circle.setCount(count);
         return ResultVoUtil.success(circle);
     }
 
