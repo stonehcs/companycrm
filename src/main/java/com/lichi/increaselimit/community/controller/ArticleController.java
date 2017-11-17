@@ -15,14 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.lichi.increaselimit.common.enums.ResultEnum;
-import com.lichi.increaselimit.common.exception.CircleException;
 import com.lichi.increaselimit.common.utils.ResultVoUtil;
 import com.lichi.increaselimit.common.vo.ResultVo;
 import com.lichi.increaselimit.community.entity.Article;
-import com.lichi.increaselimit.community.entity.Circle;
 import com.lichi.increaselimit.community.service.ArticleService;
-import com.lichi.increaselimit.community.service.CircleService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -39,19 +35,12 @@ public class ArticleController {
     @Autowired
     private ArticleService articleService;
 
-    @Autowired
-    private CircleService circleService;
-
     @PostMapping
     @ApiOperation(value = "发帖")
     public ResultVo<Article> postArticle(@Valid @RequestBody Article article, BindingResult result){
         if(result.hasErrors()){
             String errors = result.getFieldError().getDefaultMessage();
             return ResultVoUtil.error(1,errors);
-        }
-        Circle circle = circleService.get(article.getCircleId());
-        if(circle == null){
-            throw new CircleException(ResultEnum.CIRCLE_NO_EXIST);
         }
         articleService.add(article);
         return ResultVoUtil.success(article);
@@ -79,8 +68,9 @@ public class ArticleController {
     @GetMapping
     @ApiOperation(value = "分页查询列表")
     public ResultVo<Page<Article>> getArticle(@ApiParam(value = "页码",required = false) @RequestParam(defaultValue = "0",required = false) Integer page,
-                                              @ApiParam(value = "条数",required = false) @RequestParam(defaultValue = "20",required = false) Integer size){
-        Page<Article> articles = articleService.getByPage(page,size);
+                                              @ApiParam(value = "条数",required = false) @RequestParam(defaultValue = "20",required = false) Integer size,
+                                              @ApiParam(value = "圈子id",required = true) @RequestParam Integer circleId){
+        Page<Article> articles = articleService.getByPage(page,size,circleId);
         return ResultVoUtil.success(articles);
 
     }
