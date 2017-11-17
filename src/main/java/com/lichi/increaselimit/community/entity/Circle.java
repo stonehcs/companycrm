@@ -21,7 +21,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "t_circle")
-@ApiModel("圈子")
+@ApiModel("圈子 ")
 public class Circle implements Serializable{
 
 	private static final long serialVersionUID = 8344002416206506566L;
