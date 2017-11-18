@@ -48,4 +48,12 @@ public interface ArticleService {
      * @return
      */
     Integer getCountByCircleId(Integer articleId);
+
+    /**
+     * 分页插叙热门帖子
+     * @param page
+     * @param size
+     * @return
+     */
+	Page<Article> getHotByPage(Integer page, Integer size);
 }
