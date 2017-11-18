@@ -74,6 +74,15 @@ public class ArticleController {
         return ResultVoUtil.success(articles);
 
     }
+    
+    @GetMapping("/hot")
+    @ApiOperation(value = "查询热门帖子")
+    public ResultVo<Page<Article>> getHotArticle(@ApiParam(value = "页码",required = false) @RequestParam(defaultValue = "0",required = false) Integer page,
+                                              @ApiParam(value = "条数",required = false) @RequestParam(defaultValue = "20",required = false) Integer size){
+        Page<Article> articles = articleService.getHotByPage(page,size);
+        return ResultVoUtil.success(articles);
+
+    }
 
     @GetMapping("/{id}")
     @ApiOperation(value = "根据id查询帖子")

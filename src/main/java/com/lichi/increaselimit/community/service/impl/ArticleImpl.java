@@ -71,4 +71,11 @@ public class ArticleImpl implements ArticleService{
     public Integer getCountByCircleId(Integer articleId){
         return articleDao.countByCircleId(articleId);
     }
+
+	@Override
+	public Page<Article> getHotByPage(Integer page, Integer size) {
+        Pageable pageable = new PageRequest(page,size);
+        return articleDao.findByOrderByCreateTimeDesc(pageable);
+
+	}
 }
