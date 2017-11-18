@@ -20,9 +20,10 @@ public interface ArticleDao extends JpaRepository<Article,Integer>{
     
     /**
      * 根据圈子id查询所有帖子
+     * 根据时间倒序排列
      * @param pageable
      * @param circleId
      * @return
      */
-	Page<Article> findAllByCircleId(Pageable pageable,Integer circleId);
+	Page<Article> findByCircleIdOrderByCreateTimeDesc(Pageable pageable,Integer circleId);
 }

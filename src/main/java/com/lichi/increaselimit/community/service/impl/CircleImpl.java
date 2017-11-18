@@ -1,12 +1,12 @@
 package com.lichi.increaselimit.community.service.impl;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,11 +38,19 @@ public class CircleImpl implements CircleService {
 
     @Override
     public Page<Circle> getByPage(Integer page, Integer size) {
-//        Sort.Order order = new Sort.Order(Sort.Direction.DESC,"createTime");
-        Sort sort = new Sort(Sort.Direction.DESC,"createTime");
-        Pageable pageable = new PageRequest(page,size,sort);
-        Page<Circle> all = circleDao.findAll(pageable);
-        return all;
+        Pageable pageable = new PageRequest(page,size);
+        Page<Circle> pages = circleDao.findAllByOrderByCreateTimeDesc(pageable);
+        if(pages == null) {
+        	return null;
+        }
+        List<Circle> content = pages.getContent();
+        
+//        content.stream().forEach(e -> e.setCount(articleDao.countByCircleId(e.getId())));
+        for (Circle circle : content) {
+            Integer count = articleDao.countByCircleId(circle.getId());
+            circle.setCount(count);
+		}
+        return pages;
     }
 
     @Override

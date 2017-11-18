@@ -21,6 +21,6 @@ public class GlobalExceptionHandler {
 			BusinessException validateException = (BusinessException)e;
 			return ResultVoUtil.error(validateException.getCode(),validateException.getMessage());
 		}
-		return ResultVoUtil.error(0,"系统异常");
+		return ResultVoUtil.error(1,"系统异常");
 	}
 }
