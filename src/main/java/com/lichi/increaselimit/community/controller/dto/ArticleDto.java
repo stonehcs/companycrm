@@ -33,7 +33,7 @@ public class ArticleDto implements Serializable {
 
 	@ApiModelProperty(value = "创建人")
 	@NotNull(message = "创建人不能为空")
-	private String createUserId;
+	private Integer createUserId;
 
 	@ApiModelProperty(value = "圈子id")
 	@NotNull(message = "圈子id不能为空")

@@ -38,7 +38,7 @@ public class Article implements Serializable{
 
     private Date updateTime;
 
-    private String userId;
+    private Integer createUserId;
 
     private Integer circleId;
 }
