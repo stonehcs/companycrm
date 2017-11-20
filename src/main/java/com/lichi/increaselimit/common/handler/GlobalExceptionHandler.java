@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.lichi.increaselimit.common.exception.BusinessException;
 import com.lichi.increaselimit.common.utils.ResultVoUtil;
 import com.lichi.increaselimit.common.vo.ResultVo;
+import com.lichi.increaselimit.security.validate.code.ValidateCodeException;
 
 /**
  * 异常处理
@@ -20,6 +21,9 @@ public class GlobalExceptionHandler {
 		if(e instanceof BusinessException){
 			BusinessException validateException = (BusinessException)e;
 			return ResultVoUtil.error(validateException.getCode(),validateException.getMessage());
+		}
+		if(e instanceof ValidateCodeException) {
+			return ResultVoUtil.error(401, e.getMessage());
 		}
 		return ResultVoUtil.error(1,"系统异常");
 	}

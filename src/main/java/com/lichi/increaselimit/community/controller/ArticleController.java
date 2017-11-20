@@ -2,6 +2,7 @@ package com.lichi.increaselimit.community.controller;
 
 import javax.validation.Valid;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.validation.BindingResult;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.lichi.increaselimit.common.utils.ResultVoUtil;
 import com.lichi.increaselimit.common.vo.ResultVo;
+import com.lichi.increaselimit.community.controller.dto.ArticleDto;
 import com.lichi.increaselimit.community.entity.Article;
 import com.lichi.increaselimit.community.service.ArticleService;
 
@@ -37,22 +39,22 @@ public class ArticleController {
 
     @PostMapping
     @ApiOperation(value = "发帖")
-    public ResultVo<Article> postArticle(@Valid @RequestBody Article article, BindingResult result){
+    public ResultVo<Article> postArticle(@Valid @RequestBody ArticleDto articledto, BindingResult result){
         if(result.hasErrors()){
             String errors = result.getFieldError().getDefaultMessage();
             return ResultVoUtil.error(1,errors);
         }
+        Article article = new Article();
+        BeanUtils.copyProperties(articledto,article);
         articleService.add(article);
         return ResultVoUtil.success(article);
     }
 
     @PutMapping
     @ApiOperation(value = "更新帖子")
-    public ResultVo<Article> update(@Valid Article article, BindingResult result){
-        if(result.hasErrors()){
-            String errors = result.getFieldError().getDefaultMessage();
-            return ResultVoUtil.error(1,errors);
-        }
+    public ResultVo<Article> update(ArticleDto articledto){
+    	Article article = new Article();
+    	BeanUtils.copyProperties(articledto,article);
         articleService.add(article);
         return ResultVoUtil.success();
 
