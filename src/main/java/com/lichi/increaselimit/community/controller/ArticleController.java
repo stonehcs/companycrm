@@ -2,9 +2,7 @@ package com.lichi.increaselimit.community.controller;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.github.pagehelper.PageInfo;
+import com.lichi.increaselimit.common.utils.CopyUtils;
 import com.lichi.increaselimit.common.utils.ResultVoUtil;
 import com.lichi.increaselimit.common.vo.ResultVo;
 import com.lichi.increaselimit.community.controller.dto.ArticleDto;
@@ -45,7 +45,7 @@ public class ArticleController {
             return ResultVoUtil.error(1,errors);
         }
         Article article = new Article();
-        BeanUtils.copyProperties(articledto,article);
+        CopyUtils.copyProperties(articledto,article);
         articleService.add(article);
         return ResultVoUtil.success(article);
     }
@@ -53,9 +53,9 @@ public class ArticleController {
     @PutMapping
     @ApiOperation(value = "更新帖子")
     public ResultVo<Article> update(ArticleDto articledto){
-    	Article article = new Article();
-    	BeanUtils.copyProperties(articledto,article);
-        articleService.add(article);
+    	Article article = articleService.get(articledto.getId());
+    	CopyUtils.copyProperties(articledto,article);
+        articleService.update(article);
         return ResultVoUtil.success();
 
     }
@@ -69,19 +69,19 @@ public class ArticleController {
 
     @GetMapping
     @ApiOperation(value = "分页查询列表")
-    public ResultVo<Page<Article>> getArticle(@ApiParam(value = "页码",required = false) @RequestParam(defaultValue = "0",required = false) Integer page,
+    public ResultVo<PageInfo<Article>> getArticle(@ApiParam(value = "页码",required = false) @RequestParam(defaultValue = "1",required = false) Integer page,
                                               @ApiParam(value = "条数",required = false) @RequestParam(defaultValue = "20",required = false) Integer size,
                                               @ApiParam(value = "圈子id",required = true) @RequestParam Integer circleId){
-        Page<Article> articles = articleService.getByPage(page,size,circleId);
+    	PageInfo<Article> articles = articleService.getByPage(page,size,circleId);
         return ResultVoUtil.success(articles);
 
     }
     
     @GetMapping("/hot")
     @ApiOperation(value = "查询热门帖子")
-    public ResultVo<Page<Article>> getHotArticle(@ApiParam(value = "页码",required = false) @RequestParam(defaultValue = "0",required = false) Integer page,
+    public ResultVo<PageInfo<Article>> getHotArticle(@ApiParam(value = "页码",required = false) @RequestParam(defaultValue = "1",required = false) Integer page,
                                               @ApiParam(value = "条数",required = false) @RequestParam(defaultValue = "20",required = false) Integer size){
-        Page<Article> articles = articleService.getHotByPage(page,size);
+        PageInfo<Article> articles = articleService.getHotByPage(page,size);
         return ResultVoUtil.success(articles);
 
     }

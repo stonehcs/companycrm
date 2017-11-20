@@ -4,9 +4,7 @@ import java.io.IOException;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.github.pagehelper.PageInfo;
+import com.lichi.increaselimit.common.utils.CopyUtils;
 import com.lichi.increaselimit.common.utils.ResultVoUtil;
 import com.lichi.increaselimit.common.vo.ResultVo;
 import com.lichi.increaselimit.community.controller.dto.CircleDto;
@@ -51,7 +51,7 @@ public class CircleController {
             return ResultVoUtil.error(1,errors);
         }
         Circle circle = new Circle();
-        BeanUtils.copyProperties(circledto, circle);
+        CopyUtils.copyProperties(circledto, circle);
 		circleService.add(circle);
         return ResultVoUtil.success(circle);
     }
@@ -61,7 +61,7 @@ public class CircleController {
     public ResultVo<Circle> update(CircleDto circledto){
     	log.info("更新圈子信息：{}" , circledto.getName());
     	Circle circle = circleService.get(circledto.getId());
-        BeanUtils.copyProperties(circledto, circle);
+    	CopyUtils.copyProperties(circledto, circle);
         circleService.update(circle);
         return ResultVoUtil.success();
 
@@ -77,9 +77,9 @@ public class CircleController {
 
     @GetMapping
     @ApiOperation(value = "分页查询列表")
-    public ResultVo<Page<Circle>> getArticle(@ApiParam(value = "页码",required = false) @RequestParam(defaultValue = "0",required = false) Integer page,
+    public ResultVo<PageInfo<Circle>> getArticle(@ApiParam(value = "页码",required = false) @RequestParam(defaultValue = "1",required = false) Integer page,
                                               @ApiParam(value = "条数",required = false) @RequestParam(defaultValue = "20",required = false) Integer size){
-    	Page<Circle> articles = circleService.getByPage(page,size);
+    	PageInfo<Circle> articles = circleService.getByPage(page,size);
         return ResultVoUtil.success(articles);
 
     }

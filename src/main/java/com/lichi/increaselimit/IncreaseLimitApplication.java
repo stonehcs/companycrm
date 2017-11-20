@@ -16,8 +16,8 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @ServletComponentScan
 @ImportResource(locations = { "classpath:druid-bean.xml" })
 @EnableAsync
-public class IncreaseLimitApplication{
-	
+public class IncreaseLimitApplication {
+
 	public static void main(String[] args) {
 		SpringApplication.run(IncreaseLimitApplication.class, args);
 	}

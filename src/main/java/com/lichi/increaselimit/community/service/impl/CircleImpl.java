@@ -4,12 +4,11 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.lichi.increaselimit.common.enums.ResultEnum;
 import com.lichi.increaselimit.common.exception.BusinessException;
 import com.lichi.increaselimit.community.dao.ArticleDao;
@@ -32,37 +31,34 @@ public class CircleImpl implements CircleService {
 
     @Override
     public Circle get(Integer id) {
-
-        return circleDao.findOne(id);
+        return circleDao.selectByPrimaryKey(id);
     }
 
     @Override
-    public Page<Circle> getByPage(Integer page, Integer size) {
-        Pageable pageable = new PageRequest(page,size);
-        Page<Circle> pages = circleDao.findAllByOrderByCreateTimeDesc(pageable);
-        if(pages == null) {
+    public PageInfo<Circle> getByPage(Integer page, Integer size) {
+    	PageHelper.startPage(page, size);
+        List<Circle> list = circleDao.selectAll();
+        if(list == null) {
         	return null;
         }
-        List<Circle> content = pages.getContent();
-        
-//        content.stream().forEach(e -> e.setCount(articleDao.countByCircleId(e.getId())));
-        for (Circle circle : content) {
+        for (Circle circle : list) {
             Integer count = articleDao.countByCircleId(circle.getId());
             circle.setCount(count);
 		}
-        return pages;
+        PageInfo<Circle> pageInfo = new PageInfo<Circle>(list);
+        return pageInfo;
     }
 
     @Override
     public void add(Circle circle) {
         circle.setCreateTime(new Date());
-        circleDao.save(circle);
+        circleDao.insert(circle);
     }
 
     @Override
     public void update(Circle circle) {
         circle.setUpdateTime(new Date());
-        circleDao.save(circle);
+        circleDao.updateByPrimaryKeySelective(circle);
     }
     
     /**
@@ -74,6 +70,6 @@ public class CircleImpl implements CircleService {
         if(resutl > 0){
             throw new BusinessException(ResultEnum.ARTICLE_NO_EMPTY);
         }
-        circleDao.delete(id);
+        circleDao.deleteByPrimaryKey(id);
     }
 }
