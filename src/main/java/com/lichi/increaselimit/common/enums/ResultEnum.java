@@ -17,6 +17,8 @@ public enum ResultEnum {
     ARTICLE_NO_EMPTY(2, "帖子数量不为空，不能删除该圈子"),
 
     CIRCLE_NO_EXIST(3, "圈子不存在"),
+    
+    FILE_UPLOAD_ERROR(4, "文件上传异常"),
 
     LOGIN_FAIL(25, "登录失败, 登录信息不正确"),
 
