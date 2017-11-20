@@ -16,7 +16,9 @@
 			</encoder>
 		</appender>
 		
-		<logger name="com.example" level="debug"/>
+		<!-- 打印mybatis日志 ,统配几次没成功，暂时列出所有-->
+		<logger name="com.lichi.increaselimit.user.dao" level="DEBUG"/>
+		<logger name="com.lichi.increaselimit.community.dao" level="DEBUG"/>
 
 		<root level="info">
 			<appender-ref ref="CONSOLE" />

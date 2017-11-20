@@ -15,6 +15,14 @@ spring:
 #      min-idle: 0
 #    timeout: 3000
 
+#mybatis
+mybatis:
+  mapper-locations:
+  - classpath:mapper/*/*.xml
+  configuration:
+    mapUnderscoreToCamelCase: true   #自动驼峰转换
+    useColumnLabel: true
+  
 lichi:
 #验证码配置
   code:
@@ -38,3 +46,4 @@ lichi:
       - all, read, write
     jwt-signing-key: lichi
     storeType: jwt   #token的存放方式
+    

@@ -1,7 +1,7 @@
 package com.lichi.increaselimit.community.service;
 
+import com.github.pagehelper.PageInfo;
 import com.lichi.increaselimit.community.entity.Article;
-import org.springframework.data.domain.Page;
 
 /**
  * @author by majie on 2017/11/15.
@@ -22,7 +22,7 @@ public interface ArticleService {
      * @param circleId 
      * @return
      */
-    Page<Article> getByPage(Integer page, Integer size, Integer circleId);
+    PageInfo<Article> getByPage(Integer page, Integer size, Integer circleId);
 
     /**
      * 发帖子
@@ -55,5 +55,5 @@ public interface ArticleService {
      * @param size
      * @return
      */
-	Page<Article> getHotByPage(Integer page, Integer size);
+	PageInfo<Article> getHotByPage(Integer page, Integer size);
 }

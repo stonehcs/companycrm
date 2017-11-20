@@ -1,7 +1,6 @@
 package com.lichi.increaselimit.community.service;
 
-import org.springframework.data.domain.Page;
-
+import com.github.pagehelper.PageInfo;
 import com.lichi.increaselimit.community.entity.Circle;
 
 /**
@@ -17,12 +16,12 @@ public interface CircleService {
     Circle get(Integer id);
 
     /**
-     * 分页查询,并根据时间排序
+     * 查询所有圈子
      * @param page
      * @param size
      * @return
      */
-    Page<Circle> getByPage(Integer page, Integer size);
+    PageInfo<Circle> getByPage(Integer page, Integer size);
 
     /**
      * 新增圈子

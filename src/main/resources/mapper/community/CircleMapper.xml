@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lichi.increaselimit.community.dao.CircleDao">
+
+	<resultMap id="BaseResultMap"
+		type="com.lichi.increaselimit.community.entity.Circle">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="create_user_id" jdbcType="VARCHAR" property="createUserId" />
+		<result column="name" jdbcType="VARCHAR" property="name" />
+		<result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+		<result column="url" jdbcType="VARCHAR" property="url" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id, create_time, create_user_id, name, update_time, url
+	</sql>
+
+<!-- 	<update id="updateByPrimaryKeySelective" parameterType="com.lichi.increaselimit.community.entity.Circle"> -->
+<!-- 		update t_circle -->
+<!-- 		<set> -->
+<!-- 			<if test="createTime != null"> -->
+<!-- 				create_time = #{createTime,jdbcType=TIMESTAMP}, -->
+<!-- 			</if> -->
+<!-- 			<if test="createUserId != null"> -->
+<!-- 				create_user_id = #{createUserId,jdbcType=VARCHAR}, -->
+<!-- 			</if> -->
+<!-- 			<if test="name != null"> -->
+<!-- 				name = #{name,jdbcType=VARCHAR}, -->
+<!-- 			</if> -->
+<!-- 			<if test="updateTime != null"> -->
+<!-- 				update_time = #{updateTime,jdbcType=TIMESTAMP}, -->
+<!-- 			</if> -->
+<!-- 			<if test="url != null"> -->
+<!-- 				url = #{url,jdbcType=VARCHAR}, -->
+<!-- 			</if> -->
+<!-- 		</set> -->
+<!-- 		where id = #{id,jdbcType=INTEGER} -->
+<!-- 	</update> -->
+</mapper>
