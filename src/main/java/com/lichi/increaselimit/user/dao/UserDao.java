@@ -3,7 +3,7 @@ package com.lichi.increaselimit.user.dao;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
-import com.lichi.increaselimit.common.config.mybatis.BaseDao;
+import com.lichi.increaselimit.common.mapper.BaseMapper;
 import com.lichi.increaselimit.user.entity.User;
 
 /**
@@ -12,8 +12,13 @@ import com.lichi.increaselimit.user.entity.User;
  *
  */
 @Mapper
-public interface UserDao extends BaseDao<User>{
+public interface UserDao extends BaseMapper<User>{
 	
+	/**
+	 * 获取用户信息
+	 * @param username
+	 * @return
+	 */
 	@Select("select * from t_user where username=#{username} or mobile=#{username}"
 			+ "or qq=#{username} or weixin=#{username}")
 	User loadUserInfo(String username);

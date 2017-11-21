@@ -60,8 +60,8 @@ public class CircleController {
     @ApiOperation(value = "更新圈子信息")
     public ResultVo<Circle> update(CircleDto circledto){
     	log.info("更新圈子信息：{}" , circledto.getName());
-    	Circle circle = circleService.get(circledto.getId());
-    	CopyUtils.copyProperties(circledto, circle);
+    	Circle circle = new Circle();
+		CopyUtils.copyProperties(circledto, circle);
         circleService.update(circle);
         return ResultVoUtil.success();
 
@@ -76,12 +76,21 @@ public class CircleController {
     }
 
     @GetMapping
-    @ApiOperation(value = "分页查询列表")
+    @ApiOperation(value = "分页查询所有列表")
     public ResultVo<PageInfo<Circle>> getArticle(@ApiParam(value = "页码",required = false) @RequestParam(defaultValue = "1",required = false) Integer page,
                                               @ApiParam(value = "条数",required = false) @RequestParam(defaultValue = "20",required = false) Integer size){
     	PageInfo<Circle> articles = circleService.getByPage(page,size);
         return ResultVoUtil.success(articles);
 
+    }
+    
+    @GetMapping("/hot")
+    @ApiOperation(value = "分页查询热门列表")
+    public ResultVo<PageInfo<Circle>> getHotArticle(@ApiParam(value = "页码",required = false) @RequestParam(defaultValue = "1",required = false) Integer page,
+    		@ApiParam(value = "条数",required = false) @RequestParam(defaultValue = "20",required = false) Integer size){
+    	PageInfo<Circle> articles = circleService.getHostByPage(page,size);
+    	return ResultVoUtil.success(articles);
+    	
     }
 
     @GetMapping("/{id}")

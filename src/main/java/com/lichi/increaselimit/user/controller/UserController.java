@@ -2,29 +2,26 @@ package com.lichi.increaselimit.user.controller;
 
 import java.io.UnsupportedEncodingException;
 import java.security.SignatureException;
+
 import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.lichi.increaselimit.community.dao.CircleDao;
-import com.lichi.increaselimit.community.entity.Circle;
+
 import com.lichi.increaselimit.security.properties.SecurityProperties;
-import com.lichi.increaselimit.user.dao.UserDao;
 import com.lichi.increaselimit.user.entity.User;
 import com.lichi.increaselimit.user.service.UserService;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 
 /**
  * 测试controller
@@ -40,9 +37,6 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 
-	@Autowired
-	private CircleDao circleDao;
-	
 	@Autowired
 	private SecurityProperties systemProperties;
 
@@ -61,7 +55,7 @@ public class UserController {
 				.parseClaimsJws(token).getBody();
 		
 		//获取附加信息
-		String company = (String) claims.get("company");
+//		String company = (String) claims.get("company");
 
 		return claims;
 	}

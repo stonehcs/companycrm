@@ -19,10 +19,23 @@ spring:
 mybatis:
   mapper-locations:
   - classpath:mapper/*/*.xml
+#  type-aliases-package: com.lichi.increaselimit
   configuration:
     mapUnderscoreToCamelCase: true   #自动驼峰转换
     useColumnLabel: true
-  
+
+mapper:
+    mappers:
+        - com.lichi.increaselimit.common.mapper.BaseMapper
+    not-empty: false
+    identity: MYSQL
+
+pagehelper:
+    helperDialect: mysql
+    reasonable: true
+    supportMethodsArguments: true
+    params: count=countSql
+      
 lichi:
 #验证码配置
   code:
@@ -47,3 +60,15 @@ lichi:
     jwt-signing-key: lichi
     storeType: jwt   #token的存放方式
     
+  #第三方登陆
+  social:
+    qq:
+      provider-id: 
+      app-id: 
+      app-secret:  
+      providerId: callback.do
+    weixin:
+       app-id: wxd99431bbff8305a0
+       app-secret: 60f78681d063590a469f1b297feff3c4
+    filterProcessesUrl: /qqLogin
+

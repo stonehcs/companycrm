@@ -8,7 +8,12 @@ import org.springframework.web.context.request.ServletWebRequest;
  *
  */
 public interface ValidateCodeGenerator {
-
+	
+	/**
+	 * 生产验证码
+	 * @param request
+	 * @return
+	 */
 	ValidateCode generate(ServletWebRequest request);
 	
 }

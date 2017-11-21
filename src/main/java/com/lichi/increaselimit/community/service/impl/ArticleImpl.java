@@ -11,11 +11,14 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.lichi.increaselimit.common.enums.ResultEnum;
 import com.lichi.increaselimit.common.exception.BusinessException;
-import com.lichi.increaselimit.community.dao.ArticleDao;
-import com.lichi.increaselimit.community.dao.CircleDao;
+import com.lichi.increaselimit.community.dao.ArticleMapper;
+import com.lichi.increaselimit.community.dao.CircleMapper;
 import com.lichi.increaselimit.community.entity.Article;
 import com.lichi.increaselimit.community.entity.Circle;
 import com.lichi.increaselimit.community.service.ArticleService;
+
+import tk.mybatis.mapper.entity.Example;
+import tk.mybatis.mapper.entity.Example.Criteria;
 
 /**
  * @author by majie on 2017/11/15.
@@ -25,9 +28,9 @@ import com.lichi.increaselimit.community.service.ArticleService;
 public class ArticleImpl implements ArticleService {
 
 	@Autowired
-	private ArticleDao articleDao;
+	private ArticleMapper articleDao;
 	@Autowired
-	private CircleDao circleDao;
+	private CircleMapper circleDao;
 
 	@Override
 	public Article get(Integer id) {
@@ -38,7 +41,11 @@ public class ArticleImpl implements ArticleService {
 	@Override
 	public PageInfo<Article> getByPage(Integer page, Integer size, Integer circleId) {
 		PageHelper.startPage(page, size);
-		List<Article> list = articleDao.selectByCircleId(circleId);
+		PageHelper.orderBy("create_time desc");
+		Example example = new Example(Article.class);
+		Criteria c = example.createCriteria();
+		c.andEqualTo("circleId",circleId);
+		List<Article> list = articleDao.selectByExample(example);
 		PageInfo<Article> pageInfo = new PageInfo<Article>(list);
 		return pageInfo;
 	}
@@ -53,13 +60,13 @@ public class ArticleImpl implements ArticleService {
 			throw new BusinessException(ResultEnum.CIRCLE_NO_EXIST);
 		}
 		article.setCreateTime(new Date());
-		articleDao.insert(article);
+		articleDao.insertSelective(article);
 	}
 
 	@Override
 	public void update(Article article) {
 		article.setUpdateTime(new Date());
-		articleDao.insert(article);
+		articleDao.updateByPrimaryKeySelective(article);
 	}
 
 	@Override
@@ -67,14 +74,11 @@ public class ArticleImpl implements ArticleService {
 		articleDao.deleteByPrimaryKey(id);
 	}
 
-	@Override
-	public Integer getCountByCircleId(Integer articleId) {
-		return articleDao.countByCircleId(articleId);
-	}
 
 	@Override
 	public PageInfo<Article> getHotByPage(Integer page, Integer size) {
 		PageHelper.startPage(page, size);
+		PageHelper.orderBy("sort desc,create_time desc");
 		List<Article> list = articleDao.selectAll();
 		PageInfo<Article> pageInfo = new PageInfo<Article>(list);
 		return pageInfo;
