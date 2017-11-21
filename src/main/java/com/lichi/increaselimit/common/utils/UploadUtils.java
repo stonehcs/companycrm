@@ -20,8 +20,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class UploadUtils {
     //设置好账号的ACCESS_KEY和SECRET_KEY
-    private String ACCESS_KEY = "Rop8ks5Q051Er5uVir2P_hV4MuS4S-qUp7fHaMfA";
-    private String SECRET_KEY = "6wC-8djnXfb_InRcpXZk5OJz2FZa7P_bRf1KuqAl";
+    private final String ACCESS_KEY = "Rop8ks5Q051Er5uVir2P_hV4MuS4S-qUp7fHaMfA";
+    private final String SECRET_KEY = "6wC-8djnXfb_InRcpXZk5OJz2FZa7P_bRf1KuqAl";
     //要上传的空间
     private String bucketname = "lichi";
     

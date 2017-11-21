@@ -40,5 +40,13 @@ public interface CircleService {
      * @param id
      */
     void delete(Integer id);
+    
+    /**
+     * 查询热门圈子
+     * @param page
+     * @param size
+     * @return
+     */
+	PageInfo<Circle> getHostByPage(Integer page, Integer size);
 
 }

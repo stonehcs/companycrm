@@ -29,6 +29,7 @@ public class RedisUtils {
 	 */
 	public Long del(final String... keys) {
 		return (Long) redisTemplate.execute(new RedisCallback() {
+			@Override
 			public Long doInRedis(RedisConnection connection) throws DataAccessException {
 				long result = 0;
 				for (int i = 0; i < keys.length; i++) {
@@ -46,6 +47,7 @@ public class RedisUtils {
 	 */
 	public void set(final byte[] key, final byte[] value, final long liveTime) {
 		redisTemplate.execute(new RedisCallback() {
+			@Override
 			public Long doInRedis(RedisConnection connection) throws DataAccessException {
 				connection.set(key, value);
 				if (liveTime > 0) {
@@ -87,6 +89,7 @@ public class RedisUtils {
 	 */
 	public String get(final String key) {
 		return (String) redisTemplate.execute(new RedisCallback() {
+			@Override
 			public String doInRedis(RedisConnection connection) throws DataAccessException {
 				try {
 					return new String(connection.get(key.getBytes()), REDIS_CODE);
@@ -113,6 +116,7 @@ public class RedisUtils {
 	 */
 	public boolean exists(final String key) {
 		return (boolean) redisTemplate.execute(new RedisCallback() {
+			@Override
 			public Boolean doInRedis(RedisConnection connection) throws DataAccessException {
 				return connection.exists(key.getBytes());
 			}
@@ -124,6 +128,7 @@ public class RedisUtils {
 	 */
 	public String flushDB() {
 		return (String) redisTemplate.execute(new RedisCallback() {
+			@Override
 			public String doInRedis(RedisConnection connection) throws DataAccessException {
 				connection.flushDb();
 				return "ok";
@@ -136,6 +141,7 @@ public class RedisUtils {
 	 */
 	public long dbSize() {
 		return (long) redisTemplate.execute(new RedisCallback() {
+			@Override
 			public Long doInRedis(RedisConnection connection) throws DataAccessException {
 				return connection.dbSize();
 			}
@@ -147,6 +153,7 @@ public class RedisUtils {
 	 */
 	public String ping() {
 		return (String) redisTemplate.execute(new RedisCallback() {
+			@Override
 			public String doInRedis(RedisConnection connection) throws DataAccessException {
 
 				return connection.ping();

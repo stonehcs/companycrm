@@ -53,8 +53,8 @@ public class ArticleController {
     @PutMapping
     @ApiOperation(value = "更新帖子")
     public ResultVo<Article> update(ArticleDto articledto){
-    	Article article = articleService.get(articledto.getId());
-    	CopyUtils.copyProperties(articledto,article);
+    	Article article = new Article();
+		CopyUtils.copyProperties(articledto,article);
         articleService.update(article);
         return ResultVoUtil.success();
 

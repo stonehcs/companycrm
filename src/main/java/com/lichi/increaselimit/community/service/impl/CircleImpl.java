@@ -11,10 +11,13 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.lichi.increaselimit.common.enums.ResultEnum;
 import com.lichi.increaselimit.common.exception.BusinessException;
-import com.lichi.increaselimit.community.dao.ArticleDao;
-import com.lichi.increaselimit.community.dao.CircleDao;
+import com.lichi.increaselimit.community.dao.ArticleMapper;
+import com.lichi.increaselimit.community.dao.CircleMapper;
+import com.lichi.increaselimit.community.entity.Article;
 import com.lichi.increaselimit.community.entity.Circle;
 import com.lichi.increaselimit.community.service.CircleService;
+
+import tk.mybatis.mapper.entity.Example;
 
 /**
  * @author by majie on 2017/11/15.
@@ -24,10 +27,10 @@ import com.lichi.increaselimit.community.service.CircleService;
 public class CircleImpl implements CircleService {
 
     @Autowired
-    private CircleDao circleDao;
+    private CircleMapper circleDao;
 
     @Autowired
-    private ArticleDao articleDao;
+    private ArticleMapper articleDao;
 
     @Override
     public Circle get(Integer id) {
@@ -37,22 +40,21 @@ public class CircleImpl implements CircleService {
     @Override
     public PageInfo<Circle> getByPage(Integer page, Integer size) {
     	PageHelper.startPage(page, size);
-        List<Circle> list = circleDao.selectAll();
-        if(list == null) {
-        	return null;
-        }
-        for (Circle circle : list) {
-            Integer count = articleDao.countByCircleId(circle.getId());
-            circle.setCount(count);
-		}
-        PageInfo<Circle> pageInfo = new PageInfo<Circle>(list);
-        return pageInfo;
+    	PageHelper.orderBy("sort1 desc,create_time desc");
+        return getArticleCount();
+    }
+    
+    @Override
+    public PageInfo<Circle> getHostByPage(Integer page, Integer size) {
+    	PageHelper.startPage(page, size);
+    	PageHelper.orderBy("sort2 desc,create_time desc");
+    	return getArticleCount();
     }
 
     @Override
     public void add(Circle circle) {
         circle.setCreateTime(new Date());
-        circleDao.insert(circle);
+        circleDao.insertSelective(circle);
     }
 
     @Override
@@ -66,10 +68,40 @@ public class CircleImpl implements CircleService {
      */
     @Override
     public void delete(Integer id) {
-        Integer resutl = articleDao.countByCircleId(id);
+    	Integer resutl = queryArticleCount(id);
         if(resutl > 0){
             throw new BusinessException(ResultEnum.ARTICLE_NO_EMPTY);
         }
         circleDao.deleteByPrimaryKey(id);
     }
+
+    /**
+     * 查询对应圈子id的帖子数量
+     * @param id
+     * @return
+     */
+	private Integer queryArticleCount(Integer id) {
+		Example example = new Example(Article.class);
+    	example.createCriteria().andEqualTo("circleId",id);
+        Integer resutl = articleDao.selectCountByExample(example);
+		return resutl;
+	}
+    
+    /**
+     * 查询对应圈子下的帖子数量
+     * @param list
+     * @return
+     */
+	private PageInfo<Circle> getArticleCount() {
+		List<Circle> list = circleDao.selectAll();
+		if(list == null) {
+    		return null;
+    	}
+    	for (Circle circle : list) {
+    		Integer count = queryArticleCount(circle.getId());
+    		circle.setCount(count);
+    	}
+    	PageInfo<Circle> pageInfo = new PageInfo<Circle>(list);
+    	return pageInfo;
+	}
 }

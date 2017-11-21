@@ -16,7 +16,7 @@ public interface ArticleService {
     Article get(Integer id);
 
     /**
-     * 分页查询
+     * 分页查询当前圈子下的热门帖子
      * @param page
      * @param size
      * @param circleId 
@@ -43,14 +43,7 @@ public interface ArticleService {
     void delete(Integer id);
 
     /**
-     * 查询该articleId下所有帖子的数目
-     * @param articleId
-     * @return
-     */
-    Integer getCountByCircleId(Integer articleId);
-
-    /**
-     * 分页插叙热门帖子
+     * 分页查询热门帖子
      * @param page
      * @param size
      * @return
