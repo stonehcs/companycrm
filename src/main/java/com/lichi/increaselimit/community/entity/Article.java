@@ -26,6 +26,7 @@ public class Article implements Serializable{
 
     private String content;
     
+//    @OrderBy("desc") //可以直接排序
     private Date createTime;
 
     private Date updateTime;
