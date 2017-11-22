@@ -2,6 +2,7 @@ package com.lichi.increaselimit.community.controller;
 
 import javax.validation.Valid;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.pagehelper.PageInfo;
-import com.lichi.increaselimit.common.utils.CopyUtils;
 import com.lichi.increaselimit.common.utils.ResultVoUtil;
 import com.lichi.increaselimit.common.vo.ResultVo;
 import com.lichi.increaselimit.community.controller.dto.ArticleDto;
@@ -45,7 +45,7 @@ public class ArticleController {
             return ResultVoUtil.error(1,errors);
         }
         Article article = new Article();
-        CopyUtils.copyProperties(articledto,article);
+        BeanUtils.copyProperties(articledto,article);
         articleService.add(article);
         return ResultVoUtil.success(article);
     }
@@ -54,7 +54,7 @@ public class ArticleController {
     @ApiOperation(value = "更新帖子")
     public ResultVo<Article> update(ArticleDto articledto){
     	Article article = new Article();
-		CopyUtils.copyProperties(articledto,article);
+    	BeanUtils.copyProperties(articledto,article);
         articleService.update(article);
         return ResultVoUtil.success();
 

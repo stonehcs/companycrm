@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import javax.validation.Valid;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.pagehelper.PageInfo;
-import com.lichi.increaselimit.common.utils.CopyUtils;
 import com.lichi.increaselimit.common.utils.ResultVoUtil;
 import com.lichi.increaselimit.common.vo.ResultVo;
 import com.lichi.increaselimit.community.controller.dto.CircleDto;
@@ -51,7 +51,7 @@ public class CircleController {
             return ResultVoUtil.error(1,errors);
         }
         Circle circle = new Circle();
-        CopyUtils.copyProperties(circledto, circle);
+        BeanUtils.copyProperties(circledto, circle);
 		circleService.add(circle);
         return ResultVoUtil.success(circle);
     }
@@ -61,7 +61,7 @@ public class CircleController {
     public ResultVo<Circle> update(CircleDto circledto){
     	log.info("更新圈子信息：{}" , circledto.getName());
     	Circle circle = new Circle();
-		CopyUtils.copyProperties(circledto, circle);
+    	BeanUtils.copyProperties(circledto, circle);
         circleService.update(circle);
         return ResultVoUtil.success();
 
