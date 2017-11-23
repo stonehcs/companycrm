@@ -1,17 +1,16 @@
 package com.lichi.increaselimit.third.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.tomcat.util.security.MD5Encoder;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
-
-import com.alibaba.fastjson.JSONObject;
-import com.lichi.increaselimit.common.utils.MD5Utils;
 import com.lichi.increaselimit.common.utils.ResultVoUtil;
 import com.lichi.increaselimit.common.vo.ResultVo;
 
@@ -34,7 +33,7 @@ public class CreditController {
 	private RestTemplate restTemplate;
 
 	private final static String uid = "900024";
-	private final static String ukey = "b2abd726e314c0978";
+	private final static String ukey = "b2abd726ey314c09781";
 	private final static String success_url = "http://mengcan.vicp.io/credit/getUserId";
 	private final static String error_url = "http://mengcan.vicp.io/credit/getUserId/erro";
 
@@ -42,11 +41,11 @@ public class CreditController {
 	private final static String getForUserId = "http://cc.intecredit.cn/creditreport.html";
 
 	@GetMapping
-	public ResultVo<String> getUserId() {
+	public ResultVo<String> getUserId() throws UnsupportedEncodingException {
 		long ctm = System.currentTimeMillis();
-		String token = MD5Utils.getResult((ukey + ctm));
+		String token = DigestUtils.md5Hex(ukey + ctm);
 		String result = getForUserId + "?uid=" + uid + "&ctm=" + ctm + "&token=" + token + "&Surl="
-		+ success_url + "&Eurl" + error_url;
+		+ URLEncoder.encode(success_url, "UTF-8") + "&Eurl" + URLEncoder.encode(error_url, "UTF-8");
 		
 //		System.out.println(a);
 //		String result = restTemplate.getForObject(getForUserId + "?uid=" + uid + "&ctm=" + ctm + "&token=" + token + "&Surl="
