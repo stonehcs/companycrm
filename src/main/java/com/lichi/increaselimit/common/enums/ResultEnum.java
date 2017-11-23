@@ -20,7 +20,7 @@ public enum ResultEnum {
     
     CIRCLE_HAS_EXIST(4, "圈子已存在"),
     
-    COURSE_NOT_EMPTY(4, "课程不为空,不能删除讲师"),
+    COURSE_NOT_EMPTY(4, "该讲师有对应课程，不能删除"),
     
     FILE_UPLOAD_ERROR(4, "文件上传异常"),
     

@@ -38,4 +38,7 @@ public class ArticleDto implements Serializable {
 	@ApiModelProperty(value = "圈子id")
 	@NotNull(message = "圈子id不能为空")
 	private Integer circleId;
+	
+	@ApiModelProperty(value = "热门帖子排序")
+	private Integer sort;
 }
