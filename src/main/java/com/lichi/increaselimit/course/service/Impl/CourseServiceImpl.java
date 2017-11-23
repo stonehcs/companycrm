@@ -52,8 +52,8 @@ public class CourseServiceImpl implements CourseService {
 	}
 
 	@Override
-	public void updateCourseTimes() {
-		courseMapper.updateCourseTimes();
+	public void updateCourseTimes(Integer id) {
+		courseMapper.updateCourseTimes(id);
 	}
 
 }

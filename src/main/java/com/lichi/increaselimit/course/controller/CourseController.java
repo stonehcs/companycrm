@@ -72,7 +72,7 @@ public class CourseController {
 		return ResultVoUtil.success();
 	}
 
-	@DeleteMapping
+	@DeleteMapping("/{id}")
 	@ApiOperation(value = "删除课程")
 	public ResultVo<Course> deleteCourse(@PathVariable Integer id) {
 		courseService.deleteCourse(id);
@@ -88,10 +88,10 @@ public class CourseController {
 		return ResultVoUtil.success();
 	}
 
-	@PutMapping("/watch")
+	@PutMapping("/watch/{id}")
 	@ApiOperation(value = "修改课程观看次数")
-	public ResultVo<Course> updateCourse() {
-		courseService.updateCourseTimes();
+	public ResultVo<Course> updateCourse(@PathVariable Integer id) {
+		courseService.updateCourseTimes(id);
 		return ResultVoUtil.success();
 	}
 

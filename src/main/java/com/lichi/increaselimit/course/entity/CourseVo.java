@@ -16,6 +16,16 @@ public class CourseVo extends Course{
 	private String teachername;
 	
 	private String introduce;
+	
+	private String imgUrl;
+
+	public String getImgUrl() {
+		return imgUrl;
+	}
+
+	public void setImgUrl(String imgUrl) {
+		this.imgUrl = imgUrl;
+	}
 
 	public String getTeachername() {
 		return teachername;

@@ -8,12 +8,15 @@ import com.lichi.increaselimit.common.utils.ResultVoUtil;
 import com.lichi.increaselimit.common.vo.ResultVo;
 import com.lichi.increaselimit.security.validate.code.ValidateCodeException;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * 异常处理
  * @author majie
  *
  */
 @RestControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
 	
 	@ExceptionHandler(Exception.class)
@@ -26,6 +29,7 @@ public class GlobalExceptionHandler {
 			return ResultVoUtil.error(401, e.getMessage());
 		}
 		e.printStackTrace();
+		log.error(e.getMessage());
 		return ResultVoUtil.error(1,"系统异常");
 	}
 }
