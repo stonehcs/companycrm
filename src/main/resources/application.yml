@@ -2,6 +2,12 @@ spring:
   profiles:
     active:
     - dev  #开发环境
+   
+  #时间格式
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Chongqing
+      
 
 #  redis:
 #    database: 0

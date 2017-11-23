@@ -25,4 +25,6 @@ public class Teacher implements Serializable{
 	
 	private String introduce;
 	
+	private String imgUrl;
+	
 }

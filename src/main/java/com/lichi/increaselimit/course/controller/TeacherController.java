@@ -68,7 +68,7 @@ public class TeacherController {
 		return ResultVoUtil.success();
 	}
 
-	@DeleteMapping
+	@DeleteMapping("/{id}")
 	@ApiOperation(value = "删除讲师")
 	public ResultVo<Teacher> deleteTeacher(@PathVariable Integer id) {
 		teacherService.deleteTeacher(id);

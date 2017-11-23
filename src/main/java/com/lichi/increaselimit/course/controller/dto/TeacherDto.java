@@ -28,4 +28,7 @@ public class TeacherDto implements Serializable{
 	@ApiModelProperty("老师简介")
 	private String introduce;
 	
+	@ApiModelProperty("讲师头像")
+	private String imgUrl;
+	
 }

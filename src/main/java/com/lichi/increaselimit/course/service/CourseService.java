@@ -47,6 +47,6 @@ public interface CourseService {
 	/**
 	 * 更新课程观看次数
 	 */
-	void updateCourseTimes();
+	void updateCourseTimes(Integer id);
 
 }

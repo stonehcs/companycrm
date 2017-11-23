@@ -20,6 +20,8 @@ public enum ResultEnum {
     
     CIRCLE_HAS_EXIST(4, "圈子已存在"),
     
+    COURSE_NOT_EMPTY(4, "课程不为空,不能删除讲师"),
+    
     FILE_UPLOAD_ERROR(4, "文件上传异常"),
     
     NOT_SUPPORT_ERROR(5, "不支持该银行卡类型"),
