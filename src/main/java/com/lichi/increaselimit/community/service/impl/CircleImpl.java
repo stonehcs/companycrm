@@ -40,31 +40,35 @@ public class CircleImpl implements CircleService {
     @Override
     public PageInfo<Circle> getByPage(Integer page, Integer size) {
     	PageHelper.startPage(page, size);
-    	PageHelper.orderBy("sort1 desc,create_time desc");
+    	PageHelper.orderBy("sort1 asc,create_time desc");
         return getArticleCount();
     }
     
     @Override
     public PageInfo<Circle> getHostByPage(Integer page, Integer size) {
     	PageHelper.startPage(page, size);
-    	PageHelper.orderBy("sort2 desc,create_time desc");
+    	PageHelper.orderBy("sort2 asc,create_time desc");
     	return getArticleCount();
     }
-
+    
+    /**
+     * 添加圈子时候名字不能重复
+     */
     @Override
     public void add(Circle circle) {
-    	Example example = new Example(Circle.class);
-    	example.createCriteria().andEqualTo("name",circle.getName());
-		List<Circle> list = circleDao.selectByExample(example);
-		if(!list.isEmpty()) {
-			throw new BusinessException(ResultEnum.CIRCLE_HAS_EXIST);
-		}
+    	getByName(circle);
         circle.setCreateTime(new Date());
         circleDao.insertSelective(circle);
     }
 
+    /**
+     * 更新时候圈子名称不能重复
+     */
     @Override
     public void update(Circle circle) {
+    	if(circle.getName() != null) {
+    		getByName(circle);
+    	}
         circle.setUpdateTime(new Date());
         circleDao.updateByPrimaryKeySelective(circle);
     }
@@ -109,5 +113,18 @@ public class CircleImpl implements CircleService {
     	}
     	PageInfo<Circle> pageInfo = new PageInfo<Circle>(list);
     	return pageInfo;
+	}
+	
+	/**
+	 * 根据名字查询
+	 * @param circle
+	 */
+	private void getByName(Circle circle) {
+		Example example = new Example(Circle.class);
+    	example.createCriteria().andEqualTo("name",circle.getName());
+		List<Circle> list = circleDao.selectByExample(example);
+		if(!list.isEmpty()) {
+			throw new BusinessException(ResultEnum.CIRCLE_HAS_EXIST);
+		}
 	}
 }

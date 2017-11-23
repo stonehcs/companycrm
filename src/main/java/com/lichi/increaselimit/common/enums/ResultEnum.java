@@ -18,7 +18,7 @@ public enum ResultEnum {
 
     CIRCLE_NO_EXIST(3, "圈子不存在"),
     
-    CIRCLE_HAS_EXIST(4, "圈子不存在"),
+    CIRCLE_HAS_EXIST(4, "圈子已存在"),
     
     FILE_UPLOAD_ERROR(4, "文件上传异常"),
     
