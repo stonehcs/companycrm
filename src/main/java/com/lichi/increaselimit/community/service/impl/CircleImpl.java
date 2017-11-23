@@ -40,14 +40,14 @@ public class CircleImpl implements CircleService {
     @Override
     public PageInfo<Circle> getByPage(Integer page, Integer size) {
     	PageHelper.startPage(page, size);
-    	PageHelper.orderBy("sort1 asc,create_time desc");
+    	PageHelper.orderBy("sort1 desc,create_time desc");
         return getArticleCount();
     }
     
     @Override
     public PageInfo<Circle> getHostByPage(Integer page, Integer size) {
     	PageHelper.startPage(page, size);
-    	PageHelper.orderBy("sort2 asc,create_time desc");
+    	PageHelper.orderBy("sort2 desc,create_time desc");
     	return getArticleCount();
     }
     
