@@ -24,6 +24,14 @@
 	</properties>
 
 	<dependencies>
+
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-parent</artifactId>
+			<version>42</version>
+			<type>pom</type>
+		</dependency>
+		
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjweaver</artifactId>
