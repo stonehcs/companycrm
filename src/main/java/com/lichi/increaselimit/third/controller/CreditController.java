@@ -45,8 +45,13 @@ public class CreditController {
 	public ResultVo<String> getUserId() {
 		long ctm = System.currentTimeMillis();
 		String token = MD5Utils.getResult((ukey + ctm));
-		String result = restTemplate.getForObject(getForUserId + "?uid=" + uid + "&ctm=" + ctm + "&token=" + token + "&Surl="
-				+ success_url + "&Eurl" + error_url, String.class);
+		String result = getForUserId + "?uid=" + uid + "&ctm=" + ctm + "&token=" + token + "&Surl="
+		+ success_url + "&Eurl" + error_url;
+		
+//		System.out.println(a);
+//		String result = restTemplate.getForObject(getForUserId + "?uid=" + uid + "&ctm=" + ctm + "&token=" + token + "&Surl="
+//				+ success_url + "&Eurl" + error_url, String.class);
+//		return null;
 		
 		return ResultVoUtil.success(result);
 	}
