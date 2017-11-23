@@ -78,7 +78,7 @@ public class ArticleImpl implements ArticleService {
 	@Override
 	public PageInfo<Article> getHotByPage(Integer page, Integer size) {
 		PageHelper.startPage(page, size);
-		PageHelper.orderBy("sort desc,create_time desc");
+		PageHelper.orderBy("sort asc,create_time desc");
 		List<Article> list = articleDao.selectAll();
 		PageInfo<Article> pageInfo = new PageInfo<Article>(list);
 		return pageInfo;
