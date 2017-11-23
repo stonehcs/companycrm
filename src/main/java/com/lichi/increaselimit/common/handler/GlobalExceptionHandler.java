@@ -30,6 +30,6 @@ public class GlobalExceptionHandler {
 		}
 		e.printStackTrace();
 		log.error(e.getMessage());
-		return ResultVoUtil.error(1,"系统异常");
+		return ResultVoUtil.error(1,e.getMessage());
 	}
 }

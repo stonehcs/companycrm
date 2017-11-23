@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
@@ -17,6 +18,7 @@ import com.lichi.increaselimit.common.utils.ResultVoUtil;
 import com.lichi.increaselimit.common.vo.ResultVo;
 
 import lombok.extern.slf4j.Slf4j;
+import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
 @Slf4j
@@ -36,6 +38,7 @@ public class LoginController {
 	 * @return
 	 * @throws IOException
 	 */
+	@ApiIgnore
 	@GetMapping("/authentication/require")
 	public ResultVo<String> requireAuthentication(HttpServletRequest request, HttpServletResponse response)
 			throws IOException {
