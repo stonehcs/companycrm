@@ -47,7 +47,7 @@ public class ArticleController {
         Article article = new Article();
         BeanUtils.copyProperties(articledto,article);
         articleService.add(article);
-        return ResultVoUtil.success(article);
+        return ResultVoUtil.success();
     }
 
     @PutMapping

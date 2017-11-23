@@ -8,16 +8,16 @@ import javax.persistence.Table;
 import lombok.Data;
 
 /**
- * 诊断字典表
+ * 诊断模型
  * @author majie
  *
  */
-@Table(name ="t_diagnosis_dic")
+@Table(name ="t_diagnosis_moudle")
 @Data
-public class DiagnosisDic implements Serializable{
+public class DiagnosisMoudle implements Serializable{
 
-	private static final long serialVersionUID = -3603548829861336843L;
-	
+	private static final long serialVersionUID = -9039863723678937325L;
+
 	@Id
 	private Integer id;
 	
@@ -27,6 +27,15 @@ public class DiagnosisDic implements Serializable{
 	
 	private Integer max;
 	
-	private String name;
+	private String bankname;
+	
+	private Double minPer;
+	
+	private Double maxPer;
+	
+	private Integer minTimes;
+	
+	private Integer maxTimes;
+	
 	
 }

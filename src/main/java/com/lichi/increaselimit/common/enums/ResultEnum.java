@@ -18,7 +18,11 @@ public enum ResultEnum {
 
     CIRCLE_NO_EXIST(3, "圈子不存在"),
     
+    CIRCLE_HAS_EXIST(4, "圈子不存在"),
+    
     FILE_UPLOAD_ERROR(4, "文件上传异常"),
+    
+    NOT_SUPPORT_ERROR(5, "不支持该银行卡类型"),
 
     LOGIN_FAIL(25, "登录失败, 登录信息不正确"),
 

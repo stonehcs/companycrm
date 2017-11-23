@@ -24,6 +24,6 @@ public interface CourseMapper extends BaseMapper<Course>{
 	 * @param id
 	 * @return
 	 */
-	@Select("select c.*,t.teachername,t.introduce from t_course c,t_teacher t where c.id = #{id} and c.teacher_id = t.id")
+	@Select("select a.*,b.teachername,b.introduce from t_course a left join t_teacher b on a.teacher_id = b.id where a.id=#{id}")
 	CourseVo selectCourseDetails(Integer id);
 }

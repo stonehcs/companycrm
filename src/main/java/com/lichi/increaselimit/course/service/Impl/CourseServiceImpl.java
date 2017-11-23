@@ -25,14 +25,14 @@ public class CourseServiceImpl implements CourseService {
 	public List<Course> getCourseList(Integer page, Integer size, Integer locationId) {
 		PageHelper.startPage(page, size);
 		Example example = new Example(Course.class);
-		example.createCriteria().andEqualTo("locationId",locationId);
+		example.createCriteria().andEqualTo("locationId", locationId);
 		List<Course> list = courseMapper.selectByExample(example);
 		return list;
 	}
 
 	@Override
 	public CourseVo getCourse(Integer id) {
-		
+
 		return courseMapper.selectCourseDetails(id);
 	}
 

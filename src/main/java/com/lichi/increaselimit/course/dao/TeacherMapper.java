@@ -7,11 +7,11 @@ import com.lichi.increaselimit.course.entity.Teacher;
 
 /**
  * TeacherMapper
+ * 
  * @author majie
  *
  */
 @Mapper
-public interface TeacherMapper extends BaseMapper<Teacher>{
-	
+public interface TeacherMapper extends BaseMapper<Teacher> {
 
 }

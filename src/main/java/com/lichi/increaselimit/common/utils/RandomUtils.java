@@ -42,7 +42,7 @@ public class RandomUtils {
 
 			int a = (int) (Math.random() * (rangeR - rangeL + 1) + rangeL);
 
-			a = a - (a % 10) + 10;  //进位
+//			a = a - (a % 10) + 10;  //进位
 
 			set.add(a);
 
@@ -71,7 +71,7 @@ public class RandomUtils {
 
 			int a = (int) (Math.random() * (min - max + 1) + max);
 
-			a = a - (a % 10) + 10;  //进位
+//			a = a - (a % 10) + 10;  //进位
 
 			set.add(a);
 

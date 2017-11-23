@@ -30,6 +30,7 @@ import io.swagger.annotations.ApiParam;
 
 /**
  * 课程controller
+ * 
  * @author majie
  *
  */
@@ -37,60 +38,61 @@ import io.swagger.annotations.ApiParam;
 @RequestMapping("/course")
 @Api(description = "课程")
 public class CourseController {
-	
+
 	@Autowired
 	private CourseService courseService;
-	
+
 	@GetMapping("/list/{locationId}")
 	@ApiOperation(value = "查看课程列表")
-	public ResultVo<List<Course>> getCourseList(@ApiParam(value = "页码",required = false) @RequestParam(defaultValue = "1",required = false) Integer page,
-												@ApiParam(value = "条数",required = false) @RequestParam(defaultValue = "20",required = false) Integer size,
-												@PathVariable Integer locationId) {
-		List<Course> list = courseService.getCourseList(page,size,locationId);
+	public ResultVo<List<Course>> getCourseList(
+			@ApiParam(value = "页码", required = false) @RequestParam(defaultValue = "1", required = false) Integer page,
+			@ApiParam(value = "条数", required = false) @RequestParam(defaultValue = "20", required = false) Integer size,
+			@PathVariable Integer locationId) {
+		List<Course> list = courseService.getCourseList(page, size, locationId);
 		return ResultVoUtil.success(list);
 	}
-	
+
 	@GetMapping("/{id}")
 	@ApiOperation(value = "查看课程详情")
-	public ResultVo<CourseVo> getCourse(@PathVariable Integer id){
+	public ResultVo<CourseVo> getCourse(@PathVariable Integer id) {
 		CourseVo course = courseService.getCourse(id);
 		return ResultVoUtil.success(course);
 	}
-	
+
 	@PostMapping
 	@ApiOperation(value = "添加课程")
-	public ResultVo<Course> addCourse(@Valid @RequestBody CourseDto courseDto,BindingResult result){
-        if(result.hasErrors()){
-            String errors = result.getFieldError().getDefaultMessage();
-            return ResultVoUtil.error(1,errors);
-        }
-        Course course = new Course();
-        BeanUtils.copyProperties(courseDto, course);
-        courseService.addCourse(course);
+	public ResultVo<Course> addCourse(@Valid @RequestBody CourseDto courseDto, BindingResult result) {
+		if (result.hasErrors()) {
+			String errors = result.getFieldError().getDefaultMessage();
+			return ResultVoUtil.error(1, errors);
+		}
+		Course course = new Course();
+		BeanUtils.copyProperties(courseDto, course);
+		courseService.addCourse(course);
 		return ResultVoUtil.success();
 	}
-	
+
 	@DeleteMapping
 	@ApiOperation(value = "删除课程")
-	public ResultVo<Course> deleteCourse(@PathVariable Integer id){
+	public ResultVo<Course> deleteCourse(@PathVariable Integer id) {
 		courseService.deleteCourse(id);
 		return ResultVoUtil.success();
 	}
-	
+
 	@PutMapping
 	@ApiOperation(value = "修改课程")
-	public ResultVo<Course> updateCourse(CourseDto courseDto){
-        Course course = new Course();
-        BeanUtils.copyProperties(courseDto, course);
+	public ResultVo<Course> updateCourse(CourseDto courseDto) {
+		Course course = new Course();
+		BeanUtils.copyProperties(courseDto, course);
 		courseService.updateCourse(course);
 		return ResultVoUtil.success();
 	}
-	
+
 	@PutMapping("/watch")
 	@ApiOperation(value = "修改课程观看次数")
-	public ResultVo<Course> updateCourse(){
+	public ResultVo<Course> updateCourse() {
 		courseService.updateCourseTimes();
 		return ResultVoUtil.success();
 	}
-	
+
 }
