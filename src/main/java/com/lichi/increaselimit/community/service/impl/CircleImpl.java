@@ -53,6 +53,12 @@ public class CircleImpl implements CircleService {
 
     @Override
     public void add(Circle circle) {
+    	Example example = new Example(Circle.class);
+    	example.createCriteria().andEqualTo("name",circle.getName());
+		List<Circle> list = circleDao.selectByExample(example);
+		if(!list.isEmpty()) {
+			throw new BusinessException(ResultEnum.CIRCLE_HAS_EXIST);
+		}
         circle.setCreateTime(new Date());
         circleDao.insertSelective(circle);
     }

@@ -53,7 +53,7 @@ public class CircleController {
         Circle circle = new Circle();
         BeanUtils.copyProperties(circledto, circle);
 		circleService.add(circle);
-        return ResultVoUtil.success(circle);
+        return ResultVoUtil.success();
     }
 
     @PutMapping
