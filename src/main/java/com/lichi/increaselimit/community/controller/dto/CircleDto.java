@@ -33,6 +33,9 @@ public class CircleDto implements Serializable{
     @NotNull(message = "头像不能为空")
     private String url;
     
+    @ApiModelProperty(value = "圈子描述")
+    private String introduce;
+    
     @ApiModelProperty(value = "所有圈子排序，可以为空")
     private Integer sort1;
     
