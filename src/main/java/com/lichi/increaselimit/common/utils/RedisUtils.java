@@ -92,7 +92,11 @@ public class RedisUtils {
 			@Override
 			public String doInRedis(RedisConnection connection) throws DataAccessException {
 				try {
-					return new String(connection.get(key.getBytes()), REDIS_CODE);
+					byte[] bs = connection.get(key.getBytes());
+					if(bs == null) {
+						return null;
+					}
+					return new String(bs, REDIS_CODE);
 				} catch (UnsupportedEncodingException e) {
 					e.printStackTrace();
 				}

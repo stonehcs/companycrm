@@ -35,6 +35,8 @@ public class Circle implements Serializable {
 	private Date updateTime;
 
 	private String url;
+	
+	private String introduce;
 
 	@Transient
 	private Integer count;
