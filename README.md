@@ -1,9 +1,9 @@
 #api文档地址
-http://localhost:8080/swagger-ui.html#/
+http://192.168.0.101:9090/swagger-ui.html#/
 
 
 #druid监控
-http://localhost:8080/druid/index.html
+http://192.168.0.101:9090/druid/index.html
 
 
 
