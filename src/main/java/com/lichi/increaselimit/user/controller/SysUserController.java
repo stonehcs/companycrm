@@ -33,6 +33,7 @@ import com.lichi.increaselimit.common.vo.ResultVo;
 import com.lichi.increaselimit.security.properties.SecurityProperties;
 import com.lichi.increaselimit.security.validate.code.ValidateCode;
 import com.lichi.increaselimit.user.controller.dto.SysUserDto;
+import com.lichi.increaselimit.user.controller.dto.SysUserUpdateDto;
 import com.lichi.increaselimit.user.entity.SysUser;
 import com.lichi.increaselimit.user.service.SysUserService;
 
@@ -108,7 +109,7 @@ public class SysUserController {
 	
 	@PutMapping
 	@ApiOperation("修改密码,要先调用发生验证码的接口")
-	public ResultVo<SysUser> updateSysUser(@Valid @RequestBody SysUserDto sysUserDto, BindingResult result) {
+	public ResultVo<SysUser> updateSysUser(@Valid @RequestBody SysUserUpdateDto sysUserDto, BindingResult result) {
 		if (result.hasErrors()) {
 			String errors = result.getFieldError().getDefaultMessage();
 			return ResultVoUtil.error(1, errors);
