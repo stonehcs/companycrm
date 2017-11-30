@@ -22,7 +22,7 @@ public class User implements Serializable{
 	private static final long serialVersionUID = -368895461220621034L;
 
 	@Id
-	private Integer id;
+	private String id;
 	
 	private String headImg;
 	
@@ -30,12 +30,6 @@ public class User implements Serializable{
 	private String password;
 	
 	private String mobile;
-	
-	@JsonIgnore
-	private String qq;
-	
-	@JsonIgnore
-	private String weixin;
 	
 	private Integer vipLevel;
 	

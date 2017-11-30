@@ -10,9 +10,17 @@ import com.lichi.increaselimit.user.entity.User;
 public interface UserService {
 	
 	/**
-	 * 获取用户信息
+	 * 通过手机号获取用户信息
 	 * @param username
 	 * @return
 	 */
-	User loadUserInfo(String username);
+	User loadUserInfoByMobile(String mobile);
+
+	/**
+	 * 通过用户id获取用户信息
+	 * @param userId
+	 * @return
+	 */
+	User loadUserInfoByUserId(String userId);
+	
 }
