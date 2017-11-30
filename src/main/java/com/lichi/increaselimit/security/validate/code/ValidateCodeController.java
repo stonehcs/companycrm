@@ -11,6 +11,7 @@ import org.springframework.web.context.request.ServletWebRequest;
 
 import com.lichi.increaselimit.security.properties.SecurityConstants;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -21,6 +22,7 @@ import io.swagger.annotations.ApiOperation;
  *
  */
 @Controller
+@Api(description = "验证码")
 public class ValidateCodeController {
 
 	@Autowired
