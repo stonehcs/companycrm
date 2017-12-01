@@ -45,8 +45,9 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     		.and()
                 .authorizeRequests()
 	                .antMatchers("/").permitAll()
-	                .antMatchers("/v2/**","/swagger**", "/druid/**","/swagger-resources/**","/oauth2/client").permitAll()
-	                .anyRequest().permitAll()
+	                .antMatchers("/v2/**","/swagger**", "/druid/**","/swagger-resources/**",
+	                		"/oauth2/client","/authentication/mobile","/code/**","/sysuser/regiter").permitAll()
+	                .anyRequest().authenticated()
                 .and()
                 .csrf().disable();
         

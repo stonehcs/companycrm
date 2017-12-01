@@ -17,6 +17,13 @@ public interface SysUserService {
 	 * @return
 	 */
 	SysUser loadUserInfoByMobile(String mobile);
+	
+	/**
+	 * 通过手机名获取用户信息
+	 * @param username
+	 * @return
+	 */
+	SysUser loadUserInfoByUsername(String username);
 
 	/**
 	 * 通过用户id获取用户信息

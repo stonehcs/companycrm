@@ -10,7 +10,6 @@ import javax.validation.Valid;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,16 +29,14 @@ import com.lichi.increaselimit.common.utils.RedisUtils;
 import com.lichi.increaselimit.common.utils.ResultVoUtil;
 import com.lichi.increaselimit.common.utils.StringUtil;
 import com.lichi.increaselimit.common.vo.ResultVo;
-import com.lichi.increaselimit.security.properties.SecurityProperties;
+import com.lichi.increaselimit.security.UserUtils;
 import com.lichi.increaselimit.security.validate.code.ValidateCode;
 import com.lichi.increaselimit.user.controller.dto.SysUserDto;
 import com.lichi.increaselimit.user.controller.dto.SysUserUpdateDto;
 import com.lichi.increaselimit.user.entity.SysUser;
 import com.lichi.increaselimit.user.service.SysUserService;
 
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.swagger.annotations.Api;
@@ -60,9 +57,6 @@ import io.swagger.annotations.ApiParam;
 public class SysUserController {
 
 	@Autowired
-	private SecurityProperties systemProperties;
-
-	@Autowired
 	private RedisUtils redisUtils;
 
 	@Autowired
@@ -80,6 +74,10 @@ public class SysUserController {
 		}
 		String json = redisUtils.get(Constants.MOBILE_REDIS_KEY + sysUserDto.getMobile());
 		
+		if(StringUtils.isBlank(json)) {
+			throw new BusinessException(ResultEnum.VALIDATECODE_TIMEOUT);
+		}
+		
 		ValidateCode code = JSONObject.parseObject(json, ValidateCode.class);
 		if (!sysUserDto.getCode().equals(code.getCode())) {
 			throw new BusinessException(ResultEnum.VALIDATECODE_ERROR);
@@ -87,6 +85,9 @@ public class SysUserController {
 
 		SysUser sysUser = new SysUser();
 		BeanUtils.copyProperties(sysUserDto, sysUser);
+		
+		//注册的时候用户名默认为手机号码
+		sysUser.setUsername(sysUser.getMobile());
 		sysUserService.insertUser(sysUser);
 		return ResultVoUtil.success();
 	}
@@ -137,18 +138,16 @@ public class SysUserController {
 	@ApiOperation("获取当前用户信息")
 	@ApiImplicitParams({
 			@ApiImplicitParam(name = "Authorization", value = "认证token", required = true, dataType = "string", paramType = "header", defaultValue = "bearer ") })
-	public ResultVo<SysUser> getCurrentUser(Authentication authentication, HttpServletRequest request)
+	public Object getCurrentUser(HttpServletRequest request)
 			throws ExpiredJwtException, UnsupportedJwtException, MalformedJwtException, SignatureException,
 			IllegalArgumentException, UnsupportedEncodingException {
-		String header = request.getHeader("Authorization");
 
-		String token = StringUtils.substringAfter(header, "bearer ");
+		String username = UserUtils.getUsername();
+		
+		SysUser user = sysUserService.loadUserInfoByUsername(username);
 
-		Claims claims = Jwts.parser()
-				.setSigningKey(systemProperties.getOauth2Properties().getJwtSigningKey().getBytes("UTF-8"))
-				.parseClaimsJws(token).getBody();
-
-		return ResultVoUtil.success((SysUser) claims.get("user"));
+		return ResultVoUtil.success(user);
+		
 	}
 
 }

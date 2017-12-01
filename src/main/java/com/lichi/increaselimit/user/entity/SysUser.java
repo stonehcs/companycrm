@@ -8,6 +8,9 @@ import javax.persistence.Table;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.social.security.SocialUserDetails;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 
@@ -18,7 +21,7 @@ import lombok.Data;
  */
 @Table(name = "t_sys_user")
 @Data
-public class SysUser implements UserDetails{
+public class SysUser implements UserDetails,SocialUserDetails{
 	
 	private static final long serialVersionUID = -2126752373347970007L;
 
@@ -29,6 +32,7 @@ public class SysUser implements UserDetails{
 	
 	private String mobile;
 	
+	@JsonIgnore
 	private String password;
 	
 	private Date createTime;
@@ -63,6 +67,13 @@ public class SysUser implements UserDetails{
 	public boolean isEnabled() {
 		// TODO Auto-generated method stub
 		return true;
+	}
+
+	@JsonIgnore
+	@Override
+	public String getUserId() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

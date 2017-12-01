@@ -30,7 +30,13 @@ public enum ResultEnum {
     
     MOBILE_ERROR(5, "请输入正确的手机号码"),
     
+    MOBILE_EXIST(5, "该手机号已存在"),
+    
+    CODE_EXIST(5, "请一分钟后再尝试"),
+    
     VALIDATECODE_ERROR(5, "请填写正确的验证码"),
+    
+    VALIDATECODE_TIMEOUT(5, "验证码已失效"),
 
     LOGIN_FAIL(25, "登录失败, 登录信息不正确"),
 
