@@ -12,8 +12,6 @@ import javax.validation.Valid;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.web.DefaultRedirectStrategy;
-import org.springframework.security.web.RedirectStrategy;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,7 +39,6 @@ import com.lichi.increaselimit.user.entity.SysUser;
 import com.lichi.increaselimit.user.service.SysUserService;
 
 import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.swagger.annotations.Api;
@@ -66,9 +63,6 @@ public class SysUserController {
 
 	@Autowired
 	private SysUserService sysUserService;
-
-	// 重定向策略
-	private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
 	@PostMapping("/regiter")
 	@ApiOperation("注册，调用此接口请先调用发送验证码的接口")
@@ -99,8 +93,6 @@ public class SysUserController {
 		sysUser.setUsername(sysUser.getMobile());
 		sysUserService.insertUser(sysUser);
 
-//		redirectStrategy.sendRedirect(request, response, "/authentication/form");
-		
 		return ResultVoUtil.success();
 	}
 
