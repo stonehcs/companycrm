@@ -26,7 +26,7 @@ public class SysUser implements UserDetails,SocialUserDetails{
 	private static final long serialVersionUID = -2126752373347970007L;
 
 	@Id
-	private Integer id;
+	private String id;
 	
 	private String username;
 	

@@ -103,7 +103,7 @@ public class SysUserController {
 	
 	@DeleteMapping("/{id}")
 	@ApiOperation("根据系统用户id删除用户信息")
-	public ResultVo<SysUser> deleteSysUser(@PathVariable Integer id) {
+	public ResultVo<SysUser> deleteSysUser(@PathVariable String id) {
 		sysUserService.deleteSysUser(id);
 		return ResultVoUtil.success();
 	}

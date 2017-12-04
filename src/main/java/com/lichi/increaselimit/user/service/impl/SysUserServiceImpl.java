@@ -6,12 +6,18 @@ import java.util.List;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
+
 import com.github.pagehelper.PageHelper;
 import com.lichi.increaselimit.common.enums.ResultEnum;
 import com.lichi.increaselimit.common.exception.BusinessException;
+import com.lichi.increaselimit.common.utils.HuanXinUtils;
+import com.lichi.increaselimit.common.utils.UserIdUtils;
 import com.lichi.increaselimit.user.dao.SysUserMapper;
 import com.lichi.increaselimit.user.entity.SysUser;
 import com.lichi.increaselimit.user.service.SysUserService;
+
 import tk.mybatis.mapper.entity.Example;
 
 @Service
@@ -19,6 +25,9 @@ public class SysUserServiceImpl implements SysUserService{
 	
 	@Autowired
 	private SysUserMapper sysUserMapper;
+	
+	@Autowired
+	private RestTemplate restTemplate;
 
 	@Override
 	public SysUser loadUserInfoByMobile(String mobile) {
@@ -32,14 +41,23 @@ public class SysUserServiceImpl implements SysUserService{
 		return user;
 	}
 
+	/**
+	 * 插入用户的时候要注册环信用户
+	 */
 	@Override
+	@Transactional(rollbackFor=Exception.class)
 	public void insertUser(SysUser sysUser) {
+		String userId = UserIdUtils.getUserId();
+		sysUser.setId(userId);
 		sysUser.setCreateTime(new Date());
 		SysUser user = sysUserMapper.loadUserInfoByMobile(sysUser.getMobile());
 		if(user != null) {
 			throw new BusinessException(ResultEnum.MOBILE_EXIST);
 		}
 		sysUserMapper.insert(sysUser);
+		
+		HuanXinUtils.registerUser(userId,restTemplate);
+		
 	}
 
 	@Override
@@ -51,7 +69,7 @@ public class SysUserServiceImpl implements SysUserService{
 	}
 
 	@Override
-	public void deleteSysUser(Integer id) {
+	public void deleteSysUser(String id) {
 		sysUserMapper.deleteByPrimaryKey(id);
 	}
 

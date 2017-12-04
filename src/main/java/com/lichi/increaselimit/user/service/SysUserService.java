@@ -35,6 +35,7 @@ public interface SysUserService {
 	/**
 	 * 新增用户
 	 * @param sysUser
+	 * @return 
 	 */
 	void insertUser(SysUser sysUser);
 
@@ -50,7 +51,7 @@ public interface SysUserService {
 	 * 根据id删除用户信息
 	 * @param id
 	 */
-	void deleteSysUser(Integer id);
+	void deleteSysUser(String id);
 
 	/**
 	 * 更新用户信息
