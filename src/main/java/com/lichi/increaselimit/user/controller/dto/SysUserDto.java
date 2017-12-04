@@ -27,5 +27,11 @@ public class SysUserDto implements Serializable {
 	@ApiModelProperty("验证码")
 	@NotNull(message = "验证码不能为空")
 	private String code;
+	
+	@ApiModelProperty("密码")
+	@NotNull(message = "密码不能为空")
+	private String password;
+	
+	
 
 }
