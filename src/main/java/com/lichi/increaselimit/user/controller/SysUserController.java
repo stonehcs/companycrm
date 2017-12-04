@@ -1,15 +1,19 @@
 package com.lichi.increaselimit.user.controller;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.SignatureException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.web.DefaultRedirectStrategy;
+import org.springframework.security.web.RedirectStrategy;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,6 +41,7 @@ import com.lichi.increaselimit.user.entity.SysUser;
 import com.lichi.increaselimit.user.service.SysUserService;
 
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.swagger.annotations.Api;
@@ -62,22 +67,26 @@ public class SysUserController {
 	@Autowired
 	private SysUserService sysUserService;
 
+	// 重定向策略
+	private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
+
 	@PostMapping("/regiter")
 	@ApiOperation("注册，调用此接口请先调用发送验证码的接口")
-	public ResultVo<SysUser> register(@Valid @RequestBody SysUserDto sysUserDto, BindingResult result) {
+	public ResultVo<SysUser> register(@Valid @RequestBody SysUserDto sysUserDto, BindingResult result,
+			HttpServletRequest request, HttpServletResponse response) throws IOException {
 		if (result.hasErrors()) {
 			String errors = result.getFieldError().getDefaultMessage();
 			return ResultVoUtil.error(1, errors);
 		}
-		if(!StringUtil.ValidateMobile(sysUserDto.getMobile())) {
+		if (!StringUtil.ValidateMobile(sysUserDto.getMobile())) {
 			throw new BusinessException(ResultEnum.MOBILE_ERROR);
 		}
 		String json = redisUtils.get(Constants.MOBILE_REDIS_KEY + sysUserDto.getMobile());
-		
-		if(StringUtils.isBlank(json)) {
+
+		if (StringUtils.isBlank(json)) {
 			throw new BusinessException(ResultEnum.VALIDATECODE_TIMEOUT);
 		}
-		
+
 		ValidateCode code = JSONObject.parseObject(json, ValidateCode.class);
 		if (!sysUserDto.getCode().equals(code.getCode())) {
 			throw new BusinessException(ResultEnum.VALIDATECODE_ERROR);
@@ -85,10 +94,13 @@ public class SysUserController {
 
 		SysUser sysUser = new SysUser();
 		BeanUtils.copyProperties(sysUserDto, sysUser);
-		
-		//注册的时候用户名默认为手机号码
+
+		// 注册的时候用户名默认为手机号码
 		sysUser.setUsername(sysUser.getMobile());
 		sysUserService.insertUser(sysUser);
+
+//		redirectStrategy.sendRedirect(request, response, "/authentication/form");
+		
 		return ResultVoUtil.success();
 	}
 
@@ -97,17 +109,17 @@ public class SysUserController {
 	public ResultVo<List<SysUser>> getAll(
 			@ApiParam(value = "页码", required = false) @RequestParam(defaultValue = "1", required = false) Integer page,
 			@ApiParam(value = "条数", required = false) @RequestParam(defaultValue = "20", required = false) Integer size) {
-		List<SysUser> list = sysUserService.selectAll(page,size);
+		List<SysUser> list = sysUserService.selectAll(page, size);
 		return ResultVoUtil.success(list);
 	}
-	
+
 	@DeleteMapping("/{id}")
 	@ApiOperation("根据系统用户id删除用户信息")
 	public ResultVo<SysUser> deleteSysUser(@PathVariable String id) {
 		sysUserService.deleteSysUser(id);
 		return ResultVoUtil.success();
 	}
-	
+
 	@PutMapping
 	@ApiOperation("修改密码,要先调用发生验证码的接口")
 	public ResultVo<SysUser> updateSysUser(@Valid @RequestBody SysUserUpdateDto sysUserDto, BindingResult result) {
@@ -115,7 +127,7 @@ public class SysUserController {
 			String errors = result.getFieldError().getDefaultMessage();
 			return ResultVoUtil.error(1, errors);
 		}
-		if(!StringUtil.ValidateMobile(sysUserDto.getMobile())) {
+		if (!StringUtil.ValidateMobile(sysUserDto.getMobile())) {
 			throw new BusinessException(ResultEnum.MOBILE_ERROR);
 		}
 		String json = redisUtils.get(Constants.MOBILE_REDIS_KEY + sysUserDto.getMobile());
@@ -128,8 +140,6 @@ public class SysUserController {
 		sysUserService.updateSysUser(sysUser);
 		return ResultVoUtil.success();
 	}
-	
-	
 
 	/**
 	 * 获取当前用户信息 解析jwt的token
@@ -138,16 +148,16 @@ public class SysUserController {
 	@ApiOperation("获取当前用户信息")
 	@ApiImplicitParams({
 			@ApiImplicitParam(name = "Authorization", value = "认证token", required = true, dataType = "string", paramType = "header", defaultValue = "bearer ") })
-	public Object getCurrentUser(HttpServletRequest request)
-			throws ExpiredJwtException, UnsupportedJwtException, MalformedJwtException, SignatureException,
-			IllegalArgumentException, UnsupportedEncodingException {
+	public Object getCurrentUser(HttpServletRequest request) throws ExpiredJwtException, UnsupportedJwtException,
+			MalformedJwtException, SignatureException, IllegalArgumentException, UnsupportedEncodingException {
 
+//		Jwts.claims().re
 		String username = UserUtils.getUsername();
-		
+
 		SysUser user = sysUserService.loadUserInfoByUsername(username);
 
 		return ResultVoUtil.success(user);
-		
+
 	}
 
 }

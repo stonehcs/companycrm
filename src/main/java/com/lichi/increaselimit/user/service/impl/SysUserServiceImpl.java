@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
@@ -21,20 +23,23 @@ import com.lichi.increaselimit.user.service.SysUserService;
 import tk.mybatis.mapper.entity.Example;
 
 @Service
-public class SysUserServiceImpl implements SysUserService{
-	
+public class SysUserServiceImpl implements SysUserService {
+
 	@Autowired
 	private SysUserMapper sysUserMapper;
-	
+
 	@Autowired
 	private RestTemplate restTemplate;
+
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	@Override
 	public SysUser loadUserInfoByMobile(String mobile) {
 		SysUser user = sysUserMapper.loadUserInfoByMobile(mobile);
 		return user;
 	}
-	
+
 	@Override
 	public SysUser loadUserInfoByUserId(String userId) {
 		SysUser user = sysUserMapper.selectByPrimaryKey(userId);
@@ -45,24 +50,25 @@ public class SysUserServiceImpl implements SysUserService{
 	 * 插入用户的时候要注册环信用户
 	 */
 	@Override
-	@Transactional(rollbackFor=Exception.class)
+	@Transactional(rollbackFor = Exception.class)
 	public void insertUser(SysUser sysUser) {
 		String userId = UserIdUtils.getUserId();
 		sysUser.setId(userId);
 		sysUser.setCreateTime(new Date());
+		sysUser.setPassword(passwordEncoder.encode(sysUser.getPassword()));
 		SysUser user = sysUserMapper.loadUserInfoByMobile(sysUser.getMobile());
-		if(user != null) {
+		if (user != null) {
 			throw new BusinessException(ResultEnum.MOBILE_EXIST);
 		}
 		sysUserMapper.insert(sysUser);
-		
-		HuanXinUtils.registerUser(userId,restTemplate);
-		
+
+		HuanXinUtils.registerUser(userId, restTemplate);
+
 	}
 
 	@Override
 	public List<SysUser> selectAll(Integer page, Integer size) {
-		PageHelper.startPage(page,size);
+		PageHelper.startPage(page, size);
 		PageHelper.orderBy("create_time desc");
 		List<SysUser> list = sysUserMapper.selectAll();
 		return list;
@@ -87,12 +93,13 @@ public class SysUserServiceImpl implements SysUserService{
 
 	/**
 	 * 通过用户名查找用户信息
+	 * 
 	 * @param username
 	 * @return
 	 */
 	private List<SysUser> selectByUsername(String username) {
 		Example example = new Example(SysUser.class);
-		example.createCriteria().andEqualTo("username",username);
+		example.createCriteria().andEqualTo("username", username);
 		List<SysUser> list = sysUserMapper.selectByExample(example);
 		return list;
 	}
