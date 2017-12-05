@@ -34,6 +34,8 @@ public enum ResultEnum {
     
     CODE_EXIST(5, "请一分钟后再尝试"),
     
+    CODE_NOT_EXIST(5, "验证码不存在"),
+    
     VALIDATECODE_ERROR(5, "请填写正确的验证码"),
     
     VALIDATECODE_TIMEOUT(5, "验证码已失效"),

@@ -123,6 +123,9 @@ public class SysUserController {
 			throw new BusinessException(ResultEnum.MOBILE_ERROR);
 		}
 		String json = redisUtils.get(Constants.MOBILE_REDIS_KEY + sysUserDto.getMobile());
+		if(StringUtils.isBlank(json)) {
+			throw new BusinessException(ResultEnum.CODE_NOT_EXIST);
+		}
 		ValidateCode code = JSONObject.parseObject(json, ValidateCode.class);
 		if (!sysUserDto.getCode().equals(code.getCode())) {
 			throw new BusinessException(ResultEnum.VALIDATECODE_ERROR);
