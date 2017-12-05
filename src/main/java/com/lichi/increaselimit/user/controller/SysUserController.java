@@ -91,6 +91,7 @@ public class SysUserController {
 
 		// 注册的时候用户名默认为手机号码
 		sysUser.setUsername(sysUser.getMobile());
+		sysUser.setNickname(sysUser.getMobile());
 		sysUserService.insertUser(sysUser);
 
 		return ResultVoUtil.success();

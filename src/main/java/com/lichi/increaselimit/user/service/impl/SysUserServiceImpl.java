@@ -20,7 +20,6 @@ import com.lichi.increaselimit.user.entity.SysUser;
 import com.lichi.increaselimit.user.service.SysUserService;
 
 import tk.mybatis.mapper.entity.Example;
-import tk.mybatis.mapper.entity.Example.Criteria;
 
 @Service
 public class SysUserServiceImpl implements SysUserService {
@@ -81,14 +80,16 @@ public class SysUserServiceImpl implements SysUserService {
 
 	@Override
 	public void updateSysUser(SysUser sysUser) {
-		sysUser.setUpdateTime(new Date());
-		Example example = new Example(SysUser.class);
-		Criteria criteria = example.createCriteria();
-		criteria.andEqualTo("password",passwordEncoder.encode(sysUser.getPassword()))
-				.andEqualTo("updateTime",new Date());
-		//手机号不允许修改
-		sysUser.setMobile(null);
-		sysUserMapper.updateByExampleSelective(sysUser, example);
+		SysUser user = sysUserMapper.loadUserInfoByMobile(sysUser.getMobile());
+		if(user == null) {
+			throw new BusinessException(ResultEnum.MOBILE_NUM_EMPTY);
+		}
+//		if(user.getMobile().equals(sysUser.getMobile())) {
+//			throw new BusinessException(ResultEnum.MOBILE_NUM_EMPTY);
+//		}
+		user.setUpdateTime(new Date());
+		user.setPassword(passwordEncoder.encode(sysUser.getPassword()));
+		sysUserMapper.updateByPrimaryKey(user);
 	}
 
 	@Override
