@@ -7,6 +7,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 
 import com.lichi.increaselimit.security.authentication.mobile.SmsCodeAuthenticationSecurityConfig;
+import com.lichi.increaselimit.security.handler.LoginFailureHandler;
 import com.lichi.increaselimit.security.handler.LoginSuccessHandler;
 import com.lichi.increaselimit.security.validate.code.ValidateCodeSecurityConfig;
 
@@ -25,6 +26,9 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
 	@Autowired
 	private ValidateCodeSecurityConfig validateCodeSecurityConfig;
+	
+	@Autowired
+	private LoginFailureHandler loginFailureHandler;
 
 	@Autowired
 	private SmsCodeAuthenticationSecurityConfig smsCodeAuthenticationSecurityConfig;
@@ -36,6 +40,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 	    		.loginPage("/authentication/require") // 登陆校验权限，controller路径
 	    		.loginProcessingUrl("/authentication/form") // 登陆表单路径，要和页面表达路径一样
 	    		.successHandler(loginSuccessHandler)
+	    		.failureHandler(loginFailureHandler)
 	    		.and()
 			.authorizeRequests()
 			.antMatchers("/login.html", "/authentication/require", "/captcha-image")
