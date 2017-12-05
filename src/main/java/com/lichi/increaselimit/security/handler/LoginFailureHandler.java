@@ -34,6 +34,8 @@ public class LoginFailureHandler extends SimpleUrlAuthenticationFailureHandler{
 		log.info("登录认证失败");
 		response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
 		response.setContentType("application/json;charset=UTF-8");
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		response.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT, OPTIONS, HEAD");
 		response.getWriter().write(objectMapper.writeValueAsString(ResultVoUtil.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), exception.getMessage())));
 	}
 
