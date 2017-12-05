@@ -81,7 +81,10 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
 		OAuth2AccessToken oAuth2AccessToken = authorizationServerTokenServices.createAccessToken(oAuth2Authentication);
 		
 		response.setContentType("application/json;charset=UTF-8");
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		response.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT, OPTIONS, HEAD");
 		response.getWriter().write(objectMapper.writeValueAsString(oAuth2AccessToken));
+		
 	}
 
 	/**
