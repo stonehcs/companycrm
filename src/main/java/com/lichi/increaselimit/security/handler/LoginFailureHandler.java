@@ -7,10 +7,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lichi.increaselimit.common.utils.ResultVoUtil;
 
@@ -32,11 +32,10 @@ public class LoginFailureHandler extends SimpleUrlAuthenticationFailureHandler{
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException exception) throws IOException, ServletException {
 		log.info("登录认证失败");
-		response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
 		response.setContentType("application/json;charset=UTF-8");
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		response.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT, OPTIONS, HEAD");
-		response.getWriter().write(objectMapper.writeValueAsString(ResultVoUtil.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), exception.getMessage())));
+		response.getWriter().write(objectMapper.writeValueAsString(ResultVoUtil.error(1, "用户名或密码错误")));
 	}
 
 }
