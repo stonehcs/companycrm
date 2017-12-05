@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +20,7 @@ import com.lichi.increaselimit.user.entity.SysUser;
 import com.lichi.increaselimit.user.service.SysUserService;
 
 import tk.mybatis.mapper.entity.Example;
+import tk.mybatis.mapper.entity.Example.Criteria;
 
 @Service
 public class SysUserServiceImpl implements SysUserService {
@@ -82,7 +82,13 @@ public class SysUserServiceImpl implements SysUserService {
 	@Override
 	public void updateSysUser(SysUser sysUser) {
 		sysUser.setUpdateTime(new Date());
-		sysUserMapper.updateByPrimaryKeySelective(sysUser);
+		Example example = new Example(SysUser.class);
+		Criteria criteria = example.createCriteria();
+		criteria.andEqualTo("password",passwordEncoder.encode(sysUser.getPassword()))
+				.andEqualTo("updateTime",new Date());
+		//手机号不允许修改
+		sysUser.setMobile(null);
+		sysUserMapper.updateByExampleSelective(sysUser, example);
 	}
 
 	@Override

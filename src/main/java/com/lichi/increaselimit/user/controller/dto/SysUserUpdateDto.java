@@ -22,7 +22,7 @@ public class SysUserUpdateDto implements Serializable {
 	
 
 	@ApiModelProperty("id")
-	@NotNull(message = "请选择要修改的用户")
+//	@NotNull(message = "请选择要修改的用户")
 	private Integer id;
 	
 	@ApiModelProperty("用户名")
