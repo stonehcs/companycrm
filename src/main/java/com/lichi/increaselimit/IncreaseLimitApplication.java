@@ -22,12 +22,4 @@ public class IncreaseLimitApplication {
 		SpringApplication.run(IncreaseLimitApplication.class, args);
 	}
 	
-//    @Bean
-//    public FilterRegistrationBean filterRegistrationBean() {
-//        FilterRegistrationBean registrationBean = new FilterRegistrationBean();
-//        ControllFilter characterEncodingFilter = new ControllFilter();
-//        registrationBean.setFilter(characterEncodingFilter);
-//        return registrationBean;
-//    }
-
 }

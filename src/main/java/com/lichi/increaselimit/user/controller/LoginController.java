@@ -44,7 +44,8 @@ public class LoginController {
 			throws IOException {
 
 		SavedRequest savedRequest = requestCache.getRequest(request, response);
-
+		System.out.println("跳转...");
+		
 		if (savedRequest != null) {
 			String redirectUrl = savedRequest.getRedirectUrl();
 			log.info("引发跳转的请求是:" + redirectUrl);
