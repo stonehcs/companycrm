@@ -26,7 +26,7 @@ public enum ResultEnum {
     
     NOT_SUPPORT_ERROR(5, "不支持该银行卡类型"),
     
-    MOBILE_NUM_EMPTY(5, "手机号为空"),
+    MOBILE_NUM_EMPTY(5, "该手机号用户不存在"),
     
     MOBILE_ERROR(5, "请输入正确的手机号码"),
     

@@ -84,9 +84,6 @@ public class SysUserServiceImpl implements SysUserService {
 		if(user == null) {
 			throw new BusinessException(ResultEnum.MOBILE_NUM_EMPTY);
 		}
-//		if(user.getMobile().equals(sysUser.getMobile())) {
-//			throw new BusinessException(ResultEnum.MOBILE_NUM_EMPTY);
-//		}
 		user.setUpdateTime(new Date());
 		user.setPassword(passwordEncoder.encode(sysUser.getPassword()));
 		sysUserMapper.updateByPrimaryKey(user);
