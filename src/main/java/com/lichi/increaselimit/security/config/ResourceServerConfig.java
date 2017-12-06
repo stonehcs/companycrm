@@ -13,7 +13,6 @@ import org.springframework.security.oauth2.provider.error.DefaultWebResponseExce
 import org.springframework.security.oauth2.provider.error.WebResponseExceptionTranslator;
 import org.springframework.security.web.context.SecurityContextPersistenceFilter;
 import org.springframework.web.cors.CorsUtils;
-
 import com.alibaba.fastjson.JSONObject;
 import com.lichi.increaselimit.common.config.CorsControllerFilter;
 import com.lichi.increaselimit.common.vo.ResultVo;
