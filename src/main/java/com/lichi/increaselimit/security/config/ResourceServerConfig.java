@@ -55,13 +55,13 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 				.successHandler(loginSuccessHandler).failureHandler(loginFailureHandler).and().authorizeRequests()
 				.requestMatchers(CorsUtils::isPreFlightRequest).permitAll()// 解决preflight跨域
 				.antMatchers("/login.html", "/authentication/require", "/captcha-image").permitAll().anyRequest()
-				.authenticated().and().csrf().disable();
+				.permitAll();
 
 		http.apply(validateCodeSecurityConfig).and().apply(smsCodeAuthenticationSecurityConfig).and()
 				.authorizeRequests().antMatchers("/").permitAll()
 				.antMatchers("/v2/**", "/swagger**", "/druid/**", "/swagger-resources/**", "/oauth2/client",
 						"/authentication/mobile", "/code/**", "/sysuser/regiter")
-				.permitAll().anyRequest().authenticated().and().csrf().disable();
+				.permitAll().anyRequest().permitAll();
 
 		http.addFilterBefore(corsControllerFilter, SecurityContextPersistenceFilter.class);
 		
