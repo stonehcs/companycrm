@@ -24,14 +24,19 @@
 	</properties>
 
 	<dependencies>
-		
+		<!-- 阿里短信 -->
+		<dependency>
+			<groupId>com.alicom.dysms</groupId>
+			<artifactId>alicom-dysms-api</artifactId>
+			<version>1.0</version>
+		</dependency>
 		<!-- jpush -->
 		<dependency>
 			<groupId>cn.jpush.api</groupId>
 			<artifactId>jpush-client</artifactId>
 			<version>3.3.3</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-parent</artifactId>
@@ -51,11 +56,11 @@
 		</dependency>
 
 		<!-- websocket -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-websocket</artifactId>
-        </dependency>
-        
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-websocket</artifactId>
+		</dependency>
+
 		<!-- oauth2 -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>

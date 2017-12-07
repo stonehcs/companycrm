@@ -39,7 +39,7 @@ public class Circle implements Serializable {
 	private String introduce;
 
 	@Transient
-	private Integer count;
+	private Integer count = 0;
 
 	private Integer sort1;
 

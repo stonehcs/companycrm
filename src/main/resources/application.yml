@@ -62,7 +62,7 @@ lichi:
     clients:
     - client-id: lichi
       client-secret: abcdef
-      access-token-validity-seconds: 7200
+      access-token-validity-seconds: 0  #0表示不过期
       grant-types:
       - password, refresh_token,implicit
       scopes:
