@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.context.request.ServletWebRequest;
 
+import com.lichi.increaselimit.common.utils.ResultVoUtil;
+import com.lichi.increaselimit.common.vo.ResultVo;
 import com.lichi.increaselimit.security.properties.SecurityConstants;
 
 import io.swagger.annotations.Api;
@@ -39,9 +41,10 @@ public class ValidateCodeController {
 	@GetMapping(SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX + "/{type}")
 	@ApiOperation(value = "短信验证码路径  sms?mobile=xxxxx,图片验证码image")
 	@ApiImplicitParams({@ApiImplicitParam(name = "deviceId", value = "设备id", required = true, dataType = "string", paramType = "header",defaultValue="007")})
-	public void createCode(HttpServletRequest request, HttpServletResponse response, @PathVariable String type)
+	public ResultVo<Object> createCode(HttpServletRequest request, HttpServletResponse response, @PathVariable String type)
 			throws Exception {
 		validateCodeProcessorHolder.findValidateCodeProcessor(type).create(new ServletWebRequest(request, response));
+		return ResultVoUtil.success();
 	}
 
 }

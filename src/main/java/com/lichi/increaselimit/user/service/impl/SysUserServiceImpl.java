@@ -61,7 +61,11 @@ public class SysUserServiceImpl implements SysUserService {
 		}
 		sysUserMapper.insert(sysUser);
 
-		HuanXinUtils.registerUser(userId, restTemplate);
+		try {
+			HuanXinUtils.registerUser(userId, restTemplate);
+		} catch (Exception e) {
+			throw new BusinessException(ResultEnum.REGISTER_ERROR);
+		}
 
 	}
 
