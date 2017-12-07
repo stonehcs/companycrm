@@ -1,21 +1,14 @@
 package com.lichi.increaselimit.security.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.oauth2.common.exceptions.OAuth2Exception;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
-import org.springframework.security.oauth2.provider.error.DefaultWebResponseExceptionTranslator;
-import org.springframework.security.oauth2.provider.error.WebResponseExceptionTranslator;
 import org.springframework.security.web.context.SecurityContextPersistenceFilter;
 import org.springframework.web.cors.CorsUtils;
-import com.alibaba.fastjson.JSONObject;
+
 import com.lichi.increaselimit.common.config.CorsControllerFilter;
-import com.lichi.increaselimit.common.vo.ResultVo;
 import com.lichi.increaselimit.security.authentication.mobile.SmsCodeAuthenticationSecurityConfig;
 import com.lichi.increaselimit.security.handler.LoginFailureHandler;
 import com.lichi.increaselimit.security.handler.LoginSuccessHandler;
@@ -29,7 +22,6 @@ import com.lichi.increaselimit.security.validate.code.ValidateCodeSecurityConfig
  */
 @Configuration
 @EnableResourceServer
-// @CrossOrigin
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
 	@Autowired
@@ -66,26 +58,4 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 		
 	}
 
-//	@Bean  
-//    public WebResponseExceptionTranslator webResponseExceptionTranslator() {  
-//        return new DefaultWebResponseExceptionTranslator() {  
-//            @Override  
-//            public ResponseEntity translate(Exception e) throws Exception {  
-//                ResponseEntity responseEntity = super.translate(e);  
-//                OAuth2Exception body = (OAuth2Exception) responseEntity.getBody();  
-//                HttpHeaders headers = new HttpHeaders();  
-//                headers.setAll(responseEntity.getHeaders().toSingleValueMap());  
-//                // do something with header or response  
-//                if(401==responseEntity.getStatusCode().value()){      
-//                    ResultVo r = new ResultVo<>(); 
-//                    r.setCode(401);
-//                    r.setMsg( "Invalid access token");
-//                    return new ResponseEntity(JSONObject.toJSON(r), headers, responseEntity.getStatusCode());  
-//                }else{  
-//                    return new ResponseEntity(body, headers, responseEntity.getStatusCode());  
-//                }  
-//                  
-//            }  
-//        };
-//	}
 }
