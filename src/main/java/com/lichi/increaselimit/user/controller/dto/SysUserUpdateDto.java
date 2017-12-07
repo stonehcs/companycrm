@@ -2,7 +2,7 @@ package com.lichi.increaselimit.user.controller.dto;
 
 import java.io.Serializable;
 
-import javax.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.NotBlank;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -22,23 +22,23 @@ public class SysUserUpdateDto implements Serializable {
 	
 
 	@ApiModelProperty("id")
-//	@NotNull(message = "请选择要修改的用户")
-	private Integer id;
+//	@NotBlank(message = "请选择要修改的用户")
+	private String id;
 	
 	@ApiModelProperty("用户名")
 	private String username;
 
 	@ApiModelProperty("手机号码")
-	@NotNull(message = "手机号不能为空")
+	@NotBlank(message = "手机号不能为空")
 	private String mobile;
 
 	@ApiModelProperty("密码")
-	@NotNull(message = "密码不能为空")
+	@NotBlank(message = "密码不能为空")
 	private String password;
 	
 	
 	@ApiModelProperty("验证码")
-	@NotNull(message = "验证码不能为空")
+	@NotBlank(message = "验证码不能为空")
 	private String code;
 
 }
