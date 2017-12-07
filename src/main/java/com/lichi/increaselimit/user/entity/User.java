@@ -1,7 +1,7 @@
 package com.lichi.increaselimit.user.entity;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
+import java.util.Date;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -33,8 +33,26 @@ public class User implements Serializable{
 	
 	private Integer vipLevel;
 	
-	private BigDecimal money;
+	/**
+	 * 佣金
+	 */
+	private Double money;
 	
+	@JsonIgnore
 	private String username;
 	
+	private String nickname;
+
+	/**
+	 * 邀请人数
+	 */
+	private Integer rank;
+	
+	/**
+	 * 积分
+	 */
+	private Integer points;
+	
+	private Date updateTime;
+	private Date createTime;
 }

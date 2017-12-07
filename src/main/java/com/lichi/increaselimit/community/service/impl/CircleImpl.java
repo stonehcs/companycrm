@@ -124,7 +124,9 @@ public class CircleImpl implements CircleService {
     	example.createCriteria().andEqualTo("name",circle.getName());
 		List<Circle> list = circleDao.selectByExample(example);
 		if(!list.isEmpty()) {
-			throw new BusinessException(ResultEnum.CIRCLE_HAS_EXIST);
+			if(list.get(0).getId() != circle.getId()) {
+				throw new BusinessException(ResultEnum.CIRCLE_HAS_EXIST);
+			}
 		}
 	}
 }

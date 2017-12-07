@@ -47,6 +47,8 @@ public enum ResultEnum {
 //    PASSWORD_NOT_CHANGE(25, "注册用户失败"),
 
     LOGOUT_SUCCESS(26, "登出成功"),
+    
+    TOKEN_EXPIRED(26, "token已失效"),
     ;
 
     private Integer code;

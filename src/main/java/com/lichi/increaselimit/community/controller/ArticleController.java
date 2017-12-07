@@ -19,6 +19,7 @@ import com.github.pagehelper.PageInfo;
 import com.lichi.increaselimit.common.utils.ResultVoUtil;
 import com.lichi.increaselimit.common.vo.ResultVo;
 import com.lichi.increaselimit.community.controller.dto.ArticleDto;
+import com.lichi.increaselimit.community.controller.dto.ArticleUpdateDto;
 import com.lichi.increaselimit.community.entity.Article;
 import com.lichi.increaselimit.community.service.ArticleService;
 
@@ -54,7 +55,11 @@ public class ArticleController {
 
     @PutMapping
     @ApiOperation(value = "更新帖子")
-    public ResultVo<Article> update(ArticleDto articledto){
+    public ResultVo<Article> update(@Valid ArticleUpdateDto articledto, BindingResult result){
+        if(result.hasErrors()){
+            String errors = result.getFieldError().getDefaultMessage();
+            return ResultVoUtil.error(1,errors);
+        }
     	Article article = new Article();
     	BeanUtils.copyProperties(articledto,article);
         articleService.update(article);
