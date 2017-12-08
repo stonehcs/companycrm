@@ -60,6 +60,7 @@ public class ArticleImpl implements ArticleService {
 			throw new BusinessException(ResultEnum.CIRCLE_NO_EXIST);
 		}
 		article.setCreateTime(new Date());
+		article.setUpdateTime(new Date());
 		articleDao.insertSelective(article);
 	}
 

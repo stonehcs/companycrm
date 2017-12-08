@@ -59,6 +59,7 @@ public class CircleImpl implements CircleService {
     public void add(Circle circle) {
     	getByName(circle);
         circle.setCreateTime(new Date());
+        circle.setUpdateTime(new Date());
         circleDao.insertSelective(circle);
     }
 

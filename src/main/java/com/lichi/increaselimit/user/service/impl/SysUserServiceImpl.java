@@ -54,12 +54,13 @@ public class SysUserServiceImpl implements SysUserService {
 		String userId = UserIdUtils.getUserId();
 		sysUser.setId(userId);
 		sysUser.setCreateTime(new Date());
+		sysUser.setUpdateTime(new Date());
 		sysUser.setPassword(passwordEncoder.encode(sysUser.getPassword()));
 		SysUser user = sysUserMapper.loadUserInfoByMobile(sysUser.getMobile());
 		if (user != null) {
 			throw new BusinessException(ResultEnum.MOBILE_EXIST);
 		}
-		sysUserMapper.insert(sysUser);
+		sysUserMapper.insertSelective(sysUser);
 
 		try {
 			HuanXinUtils.registerUser(userId, restTemplate);
