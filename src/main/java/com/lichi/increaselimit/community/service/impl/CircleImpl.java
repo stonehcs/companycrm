@@ -130,4 +130,12 @@ public class CircleImpl implements CircleService {
 			}
 		}
 	}
+
+	@Override
+	public List<CircleVo> seleteByLike(Integer page, Integer size , String name) {
+    	PageHelper.startPage(page, size);
+    	PageHelper.orderBy("sort2 desc,create_time desc");
+    	List<CircleVo> list = circleDao.selectListLike(name);
+		return list;
+	}
 }
