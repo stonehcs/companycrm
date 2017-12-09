@@ -3,7 +3,6 @@ package com.lichi.increaselimit.user.controller;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.SignatureException;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageInfo;
 import com.lichi.increaselimit.common.Constants;
 import com.lichi.increaselimit.common.enums.ResultEnum;
 import com.lichi.increaselimit.common.exception.BusinessException;
@@ -99,10 +99,10 @@ public class SysUserController {
 
 	@GetMapping("/all")
 	@ApiOperation("分页查询所有用户")
-	public ResultVo<List<SysUser>> getAll(
+	public ResultVo<PageInfo<SysUser>> getAll(
 			@ApiParam(value = "页码", required = false) @RequestParam(defaultValue = "1", required = false) Integer page,
 			@ApiParam(value = "条数", required = false) @RequestParam(defaultValue = "20", required = false) Integer size) {
-		List<SysUser> list = sysUserService.selectAll(page, size);
+		PageInfo<SysUser> list = sysUserService.selectAll(page, size);
 		return ResultVoUtil.success(list);
 	}
 

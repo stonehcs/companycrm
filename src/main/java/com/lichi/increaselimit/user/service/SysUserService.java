@@ -1,7 +1,6 @@
 package com.lichi.increaselimit.user.service;
 
-import java.util.List;
-
+import com.github.pagehelper.PageInfo;
 import com.lichi.increaselimit.user.entity.SysUser;
 
 /**
@@ -45,7 +44,7 @@ public interface SysUserService {
 	 * @param page 
 	 * @return
 	 */
-	List<SysUser> selectAll(Integer page, Integer size);
+	PageInfo<SysUser> selectAll(Integer page, Integer size);
 
 	/**
 	 * 根据id删除用户信息

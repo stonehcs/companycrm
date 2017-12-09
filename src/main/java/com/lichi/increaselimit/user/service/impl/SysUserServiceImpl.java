@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.lichi.increaselimit.common.enums.ResultEnum;
 import com.lichi.increaselimit.common.exception.BusinessException;
 import com.lichi.increaselimit.common.utils.HuanXinUtils;
@@ -71,11 +72,12 @@ public class SysUserServiceImpl implements SysUserService {
 	}
 
 	@Override
-	public List<SysUser> selectAll(Integer page, Integer size) {
+	public PageInfo<SysUser> selectAll(Integer page, Integer size) {
 		PageHelper.startPage(page, size);
 		PageHelper.orderBy("create_time desc");
 		List<SysUser> list = sysUserMapper.selectAll();
-		return list;
+		PageInfo<SysUser> pageInfo = new PageInfo<>(list);
+		return pageInfo;
 	}
 
 	@Override
