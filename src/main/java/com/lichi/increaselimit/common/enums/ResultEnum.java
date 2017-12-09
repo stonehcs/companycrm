@@ -44,6 +44,8 @@ public enum ResultEnum {
     
     REGISTER_ERROR(25, "注册用户失败"),
     
+    CONTENT_ERRO(25, "帖子内容异常"),
+    
 //    PASSWORD_NOT_CHANGE(25, "注册用户失败"),
 
     LOGOUT_SUCCESS(26, "登出成功"),
