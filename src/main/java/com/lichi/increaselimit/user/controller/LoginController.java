@@ -5,9 +5,6 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.security.web.DefaultRedirectStrategy;
-import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
@@ -28,10 +25,6 @@ public class LoginController {
 
 	private RequestCache requestCache = new HttpSessionRequestCache();
 
-	// 重定向策略
-
-	private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
-	
 	/**
 	 * 当需要身份认证时候跳转到这里 请求页面的就跳到登录页面,非页面就用ajax
 	 * 
@@ -43,6 +36,8 @@ public class LoginController {
 	public ResultVo<String> requireAuthentication(HttpServletRequest request, HttpServletResponse response)
 			throws IOException {
 
+		log.info("用户权限校验：" + request.getRequestURI());
+		
 		SavedRequest savedRequest = requestCache.getRequest(request, response);
 		System.out.println("跳转...");
 		
@@ -51,9 +46,7 @@ public class LoginController {
 			log.info("引发跳转的请求是:" + redirectUrl);
 			// 是html的请求直接跳走,不是就要做验证,跳到BrowserProperties配置的路径
 
-			if (StringUtils.endsWithIgnoreCase(redirectUrl, ".html")) {
-				redirectStrategy.sendRedirect(request, response, "/login.html");
-			}
+			return ResultVoUtil.error(401, "权限不足"); // 这里应该封装
 		}
 		return ResultVoUtil.error(401, "访问的服务需要身份认证,请引导用户到登录页"); // 这里应该封装
 	}
