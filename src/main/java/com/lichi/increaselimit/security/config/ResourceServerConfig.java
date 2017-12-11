@@ -3,8 +3,7 @@ package com.lichi.increaselimit.security.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
-import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.context.SecurityContextPersistenceFilter;
 import org.springframework.web.cors.CorsUtils;
 
@@ -21,8 +20,7 @@ import com.lichi.increaselimit.security.validate.code.ValidateCodeSecurityConfig
  *
  */
 @Configuration
-@EnableResourceServer
-public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
+public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	private LoginSuccessHandler loginSuccessHandler;
@@ -45,14 +43,14 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 				.loginProcessingUrl("/authentication/form") // 登陆表单路径，要和页面表达路径一样
 				.successHandler(loginSuccessHandler).failureHandler(loginFailureHandler).and().authorizeRequests()
 				.requestMatchers(CorsUtils::isPreFlightRequest).permitAll()// 解决preflight跨域
-				.antMatchers("/login.html", "/authentication/require", "/captcha-image").permitAll().anyRequest()
-				.permitAll();
+				.antMatchers("/login.html", "/authentication/require", "/captcha-image","/authentication/form").permitAll();
 
 		http.apply(validateCodeSecurityConfig).and().apply(smsCodeAuthenticationSecurityConfig).and()
 				.authorizeRequests().antMatchers("/").permitAll()
 				.antMatchers("/v2/**", "/swagger**", "/druid/**", "/swagger-resources/**", "/oauth2/client",
 						"/authentication/mobile", "/code/**", "/sysuser/regiter")
-				.permitAll().anyRequest().permitAll();
+				.permitAll().anyRequest().authenticated()
+				.and().csrf().disable();
 
 		http.addFilterBefore(corsControllerFilter, SecurityContextPersistenceFilter.class);
 		

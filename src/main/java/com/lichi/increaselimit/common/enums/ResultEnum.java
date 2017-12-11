@@ -51,6 +51,8 @@ public enum ResultEnum {
     LOGOUT_SUCCESS(26, "登出成功"),
     
     TOKEN_EXPIRED(26, "token已失效"),
+    
+    ENDTIME_BIGGER_THEN_STARTTIME(25, "结束时间应该大于开课时间"),
     ;
 
     private Integer code;

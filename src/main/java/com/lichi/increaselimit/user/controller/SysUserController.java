@@ -1,8 +1,6 @@
 package com.lichi.increaselimit.user.controller;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.security.SignatureException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -38,12 +36,7 @@ import com.lichi.increaselimit.user.controller.dto.SysUserUpdateDto;
 import com.lichi.increaselimit.user.entity.SysUser;
 import com.lichi.increaselimit.user.service.SysUserService;
 
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.UnsupportedJwtException;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
@@ -142,15 +135,9 @@ public class SysUserController {
 	 */
 	@GetMapping
 	@ApiOperation("获取当前用户信息")
-	@ApiImplicitParams({
-			@ApiImplicitParam(name = "Authorization", value = "认证token", required = true, dataType = "string", paramType = "header", defaultValue = "bearer ") })
-	public Object getCurrentUser(HttpServletRequest request) throws ExpiredJwtException, UnsupportedJwtException,
-			MalformedJwtException, SignatureException, IllegalArgumentException, UnsupportedEncodingException {
+	public Object getCurrentUser(HttpServletRequest request)  {
 
-//		Jwts.claims().re
-		String username = UserUtils.getUsername();
-
-		SysUser user = sysUserService.loadUserInfoByUsername(username);
+		SysUser user = UserUtils.getUserInfo();
 
 		return ResultVoUtil.success(user);
 

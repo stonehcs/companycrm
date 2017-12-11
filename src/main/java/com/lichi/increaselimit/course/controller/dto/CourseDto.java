@@ -41,12 +41,13 @@ public class CourseDto implements Serializable{
 	
 	@ApiModelProperty("开课时间")
 	@NotNull(message = "开课时间不能为空")
+	@Future(message = "开课时间应该大于当前时间")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date startTime;
 	
 	@ApiModelProperty("结课时间")
 	@NotNull(message = "结课时间不能为空")
-	@Future(message = "结束时间应该大于当前时间")
+	@Future(message = "结课时间应该大于当前时间")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date endTime;
 	
@@ -70,4 +71,8 @@ public class CourseDto implements Serializable{
 	@ApiModelProperty("1武汉 2成都 3广州 4...")
 	@NotNull(message = "课程地址不能为空")
 	private Integer locationId;
+	
+	@ApiModelProperty("课程介绍")
+	@NotNull(message = "课程介绍不能为空")
+	private String description;
 }
