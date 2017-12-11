@@ -49,7 +49,7 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
 				.authorizeRequests().antMatchers("/").permitAll()
 				.antMatchers("/v2/**", "/swagger**", "/druid/**", "/swagger-resources/**", "/oauth2/client",
 						"/authentication/mobile", "/code/**", "/sysuser/regiter")
-				.permitAll().anyRequest().authenticated()
+				.permitAll().anyRequest().permitAll()
 				.and().csrf().disable();
 
 		http.addFilterBefore(corsControllerFilter, SecurityContextPersistenceFilter.class);

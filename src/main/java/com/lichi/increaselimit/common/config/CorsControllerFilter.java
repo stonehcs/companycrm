@@ -34,7 +34,30 @@ public class CorsControllerFilter extends OncePerRequestFilter implements Initia
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
 			throws ServletException, IOException {
-		HttpServletResponse res = (HttpServletResponse) response;
+		String method = request.getMethod();
+		
+		if(!"OPTIONS".equals(method)) {
+			HttpServletResponse res = response;
+			res.setContentType("text/html;charset=UTF-8");
+			res.setHeader("Access-Control-Allow-Origin", "*");
+			res.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE ,PUT");
+			res.setHeader("Access-Control-Max-Age", "30");
+			res.setHeader("Access-Control-Allow-Headers", "Origin, No-Cache, X-Requested-With, If-Modified-Since,"
+					+ " Pragma, Last-Modified, Cache-Control, Expires, Content-Type, "
+					+ "X-E4M-With,userId,token,Authorization,deviceId,Access-Control-Allow-Origin,Access-Control-Allow-Headers,Access-Control-Allow-Methods");
+			res.setHeader("Access-Control-Allow-Credentials", "true");
+			res.setHeader("XDomainRequestAllowed", "1");
+			chain.doFilter(request, response);
+		}else {
+			refreshToken(request, response);
+			chain.doFilter(request, response);
+		}
+		
+		
+	}
+	
+	private void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		HttpServletResponse res = response;
 		res.setContentType("text/html;charset=UTF-8");
 		res.setHeader("Access-Control-Allow-Origin", "*");
 		res.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE ,PUT");
@@ -45,13 +68,6 @@ public class CorsControllerFilter extends OncePerRequestFilter implements Initia
 		res.setHeader("Access-Control-Allow-Credentials", "true");
 		res.setHeader("XDomainRequestAllowed", "1");
 		
-		refreshToken(request, response);
-		
-		chain.doFilter(request, response);
-		
-	}
-	
-	private void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String username = request.getHeader("token");
 		log.info("登录用户:" + username);
 		if (!StringUtils.isBlank(username)) {
