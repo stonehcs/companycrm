@@ -46,7 +46,7 @@ public class LoginController {
 			log.info("引发跳转的请求是:" + redirectUrl);
 			// 是html的请求直接跳走,不是就要做验证,跳到BrowserProperties配置的路径
 
-			return ResultVoUtil.error(401, "权限不足"); // 这里应该封装
+			return ResultVoUtil.error(401, "访问的服务需要身份认证,请引导用户到登录页"); // 这里应该封装
 		}
 		return ResultVoUtil.error(401, "访问的服务需要身份认证,请引导用户到登录页"); // 这里应该封装
 	}

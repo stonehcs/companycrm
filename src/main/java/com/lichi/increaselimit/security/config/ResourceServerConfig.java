@@ -55,7 +55,7 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
 			.apply(smsCodeAuthenticationSecurityConfig)
 				.and().
 			formLogin()
-				.loginProcessingUrl("/authentication/require")
+				.loginPage("/authentication/require")
 				.loginProcessingUrl("/authentication/form") // 登陆表单路径，要和页面表达路径一样
 				.successHandler(loginSuccessHandler)
 				.failureHandler(loginFailureHandler)
