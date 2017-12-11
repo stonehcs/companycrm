@@ -8,7 +8,9 @@ import org.springframework.security.web.context.SecurityContextPersistenceFilter
 import org.springframework.web.cors.CorsUtils;
 
 import com.lichi.increaselimit.common.config.CorsControllerFilter;
+//import com.lichi.increaselimit.common.config.CorsControllerFilter;
 import com.lichi.increaselimit.security.authentication.mobile.SmsCodeAuthenticationSecurityConfig;
+import com.lichi.increaselimit.security.config.auth.AuthorizeConfigManager;
 import com.lichi.increaselimit.security.handler.LoginFailureHandler;
 import com.lichi.increaselimit.security.handler.LoginSuccessHandler;
 import com.lichi.increaselimit.security.validate.code.ValidateCodeSecurityConfig;
@@ -36,22 +38,28 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	private SmsCodeAuthenticationSecurityConfig smsCodeAuthenticationSecurityConfig;
+	
+	@Autowired
+	private AuthorizeConfigManager authorizeConfigManager;
 
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
-		http.formLogin().loginPage("/authentication/require") // 登陆校验权限，controller路径
+		http.apply(validateCodeSecurityConfig)
+				.and()
+			.apply(smsCodeAuthenticationSecurityConfig)
+				.and().
+			formLogin().loginPage("/authentication/require") // 登陆校验权限，controller路径
 				.loginProcessingUrl("/authentication/form") // 登陆表单路径，要和页面表达路径一样
-				.successHandler(loginSuccessHandler).failureHandler(loginFailureHandler).and().authorizeRequests()
-				.requestMatchers(CorsUtils::isPreFlightRequest).permitAll()// 解决preflight跨域
-				.antMatchers("/login.html", "/authentication/require", "/captcha-image","/authentication/form").permitAll();
+				.successHandler(loginSuccessHandler)
+				.failureHandler(loginFailureHandler)
+				.and()
+			.authorizeRequests()
+				.requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+				.and()
+			.csrf().disable();
 
-		http.apply(validateCodeSecurityConfig).and().apply(smsCodeAuthenticationSecurityConfig).and()
-				.authorizeRequests().antMatchers("/").permitAll()
-				.antMatchers("/v2/**", "/swagger**", "/druid/**", "/swagger-resources/**", "/oauth2/client",
-						"/authentication/mobile", "/code/**", "/sysuser/regiter")
-				.permitAll().anyRequest().permitAll()
-				.and().csrf().disable();
-
+		authorizeConfigManager.config(http.authorizeRequests());
+		
 		http.addFilterBefore(corsControllerFilter, SecurityContextPersistenceFilter.class);
 		
 	}
