@@ -57,6 +57,22 @@ public class RedisUtils {
 			}
 		});
 	}
+	/**
+	 * @param string
+	 * @param value
+	 * @param liveTime
+	 */
+	public void expire(final String string,final long liveTime) {
+		redisTemplate.execute(new RedisCallback() {
+			@Override
+			public Long doInRedis(RedisConnection connection) throws DataAccessException {
+				if (liveTime > 0) {
+					connection.expire(string.getBytes(), liveTime);
+				}
+				return 1L;
+			}
+		});
+	}
 
 	/**
 	 * @param key

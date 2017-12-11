@@ -29,7 +29,6 @@ import com.lichi.increaselimit.common.utils.RedisUtils;
 import com.lichi.increaselimit.common.utils.ResultVoUtil;
 import com.lichi.increaselimit.common.utils.StringUtil;
 import com.lichi.increaselimit.common.vo.ResultVo;
-import com.lichi.increaselimit.security.UserUtils;
 import com.lichi.increaselimit.security.validate.code.ValidateCode;
 import com.lichi.increaselimit.user.controller.dto.SysUserDto;
 import com.lichi.increaselimit.user.controller.dto.SysUserUpdateDto;
@@ -117,7 +116,7 @@ public class SysUserController {
 			throw new BusinessException(ResultEnum.MOBILE_ERROR);
 		}
 		String json = redisUtils.get(Constants.MOBILE_REDIS_KEY + sysUserDto.getMobile());
-		if(StringUtils.isBlank(json)) {
+		if (StringUtils.isBlank(json)) {
 			throw new BusinessException(ResultEnum.CODE_NOT_EXIST);
 		}
 		ValidateCode code = JSONObject.parseObject(json, ValidateCode.class);
@@ -135,9 +134,14 @@ public class SysUserController {
 	 */
 	@GetMapping
 	@ApiOperation("获取当前用户信息")
-	public Object getCurrentUser(HttpServletRequest request)  {
+//	@ApiImplicitParams({
+//			@ApiImplicitParam(name = "token", value = "认证token", required = true, 
+//					dataType = "string", paramType = "header", defaultValue = "username") })
+	public ResultVo<SysUser> getCurrentUser(HttpServletRequest request) {
 
-		SysUser user = UserUtils.getUserInfo();
+		String strJson = redisUtils.get("login_user:" + request.getHeader("token"));
+
+		SysUser user = JSONObject.parseObject(strJson, SysUser.class);
 
 		return ResultVoUtil.success(user);
 

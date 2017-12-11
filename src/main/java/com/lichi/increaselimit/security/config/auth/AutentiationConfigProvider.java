@@ -12,7 +12,8 @@ public class AutentiationConfigProvider implements AuthorizeConfigProvider {
 	@Override
 	public void config(ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry config) {
 		config.
-			antMatchers("/login.html", "/authentication/require", "/captcha-image").
+			antMatchers("/","/login.html", "/authentication/require", "/captcha-image","/v2/**","/swagger**", "/druid/**","/swagger-resources/**",
+            		"/oauth2/client","/social/signUp","/authentication/require","/code/sms").
 			permitAll();
 	}
 
