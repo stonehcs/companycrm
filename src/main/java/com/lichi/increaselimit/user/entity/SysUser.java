@@ -28,7 +28,6 @@ public class SysUser implements UserDetails,SocialUserDetails{
 	@Id
 	private String id;
 	
-	@JsonIgnore
 	private String username;
 	
 	private String nickname;
