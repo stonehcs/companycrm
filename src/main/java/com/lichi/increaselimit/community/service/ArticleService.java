@@ -14,7 +14,7 @@ public interface ArticleService {
      * @param id
      * @return
      */
-    Article get(Integer id);
+    ArticleVo get(Integer id);
 
     /**
      * 分页查询当前圈子下的热门帖子

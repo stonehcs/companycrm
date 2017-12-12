@@ -28,6 +28,10 @@ public interface ArticleMapper extends BaseMapper<Article>{
 	@Select("select a.*,b.nickname,b.id as createUserId from t_article a ,"
 			+ " t_sys_user b where a.create_user_id = b.id")
 	List<ArticleVo> selectHot();
+
+	@Select("select a.*,b.nickname,b.id as createUserId from t_article a ,"
+			+ " t_sys_user b where a.create_user_id = b.id and a.id = #{id}")
+	ArticleVo selectById(Integer id);
 	
 
 }

@@ -25,8 +25,6 @@ import com.lichi.increaselimit.community.entity.ArticleVo;
 import com.lichi.increaselimit.community.service.ArticleService;
 
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
@@ -95,10 +93,9 @@ public class ArticleController {
     }
 
     @GetMapping("/{id}")
-    @ApiImplicitParams({@ApiImplicitParam(name = "Authorization", value = "token", required = true, dataType = "string", paramType = "header",defaultValue="bearer ")})
     @ApiOperation(value = "根据id查询帖子")
-    public ResultVo<Article> getArticle(@PathVariable  Integer id){
-        Article article = articleService.get(id);
+    public ResultVo<ArticleVo> getArticle(@PathVariable  Integer id){
+    	ArticleVo article = articleService.get(id);
         return ResultVoUtil.success(article);
 
     }

@@ -33,9 +33,9 @@ public class ArticleImpl implements ArticleService {
 	private CircleMapper circleDao;
 
 	@Override
-	public Article get(Integer id) {
+	public ArticleVo get(Integer id) {
 
-		return articleDao.selectByPrimaryKey(id);
+		return articleDao.selectById(id);
 	}
 
 	@Override
