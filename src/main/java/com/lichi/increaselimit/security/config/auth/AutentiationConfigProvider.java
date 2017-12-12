@@ -13,8 +13,8 @@ public class AutentiationConfigProvider implements AuthorizeConfigProvider {
 	public void config(ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry config) {
 		try {
 			config.
-				antMatchers("/","/login.html", "/authentication/require", "/captcha-image","/v2/**","/swagger**", "/druid/**","/swagger-resources/**",
-			    		"/oauth2/client","/social/signUp","/authentication/require","/code/sms").
+				antMatchers("/","/login.html","/captcha-image","/v2/**","/swagger**", "/druid/**","/swagger-resources/**",
+			    		"/social/signUp","/authentication/require","/code/sms","/webjars/**","/circle/article/**").
 				permitAll().and().csrf().disable();
 		} catch (Exception e) {
 			e.printStackTrace();
