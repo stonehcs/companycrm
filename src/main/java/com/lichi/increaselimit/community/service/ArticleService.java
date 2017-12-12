@@ -3,6 +3,7 @@ package com.lichi.increaselimit.community.service;
 import com.github.pagehelper.PageInfo;
 import com.lichi.increaselimit.community.entity.Article;
 import com.lichi.increaselimit.community.entity.ArticleVo;
+import com.lichi.increaselimit.community.entity.CircleVo;
 
 /**
  * @author by majie on 2017/11/15.
@@ -50,4 +51,13 @@ public interface ArticleService {
      * @return
      */
 	PageInfo<ArticleVo> getHotByPage(Integer page, Integer size);
+	
+	/**
+	 * 模糊查询
+	 * @param page
+	 * @param size
+	 * @param name
+	 * @return
+	 */
+	PageInfo<CircleVo> seleteByLike(Integer page, Integer size, String name);
 }

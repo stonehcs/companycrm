@@ -22,6 +22,7 @@ import com.lichi.increaselimit.community.controller.dto.ArticleDto;
 import com.lichi.increaselimit.community.controller.dto.ArticleUpdateDto;
 import com.lichi.increaselimit.community.entity.Article;
 import com.lichi.increaselimit.community.entity.ArticleVo;
+import com.lichi.increaselimit.community.entity.CircleVo;
 import com.lichi.increaselimit.community.service.ArticleService;
 
 import io.swagger.annotations.Api;
@@ -29,76 +30,87 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
 /**
- * @author  by majie on 2017/11/15.
+ * @author by majie on 2017/11/15.
  */
 @RestController
 @Api(description = "帖子")
 @RequestMapping("/circle/article")
 public class ArticleController {
 
-    @Autowired
-    private ArticleService articleService;
+	@Autowired
+	private ArticleService articleService;
 
-    @PostMapping
-    @ApiOperation(value = "发帖")
-    public ResultVo<Article> postArticle(@Valid @RequestBody ArticleDto articledto, BindingResult result){
-        if(result.hasErrors()){
-            String errors = result.getFieldError().getDefaultMessage();
-            return ResultVoUtil.error(1,errors);
-        }
-        Article article = new Article();
-        BeanUtils.copyProperties(articledto,article);
-        articleService.add(article);
-        return ResultVoUtil.success();
-    }
+	@PostMapping
+	@ApiOperation(value = "发帖")
+	public ResultVo<Article> postArticle(@Valid @RequestBody ArticleDto articledto, BindingResult result) {
+		if (result.hasErrors()) {
+			String errors = result.getFieldError().getDefaultMessage();
+			return ResultVoUtil.error(1, errors);
+		}
+		Article article = new Article();
+		BeanUtils.copyProperties(articledto, article);
+		articleService.add(article);
+		return ResultVoUtil.success();
+	}
 
-    @PutMapping
-    @ApiOperation(value = "更新帖子")
-    public ResultVo<Article> update(@Valid @RequestBody ArticleUpdateDto articledto, BindingResult result){
-        if(result.hasErrors()){
-            String errors = result.getFieldError().getDefaultMessage();
-            return ResultVoUtil.error(1,errors);
-        }
-    	Article article = new Article();
-    	BeanUtils.copyProperties(articledto,article);
-        articleService.update(article);
-        return ResultVoUtil.success();
+	@PutMapping
+	@ApiOperation(value = "更新帖子")
+	public ResultVo<Article> update(@Valid @RequestBody ArticleUpdateDto articledto, BindingResult result) {
+		if (result.hasErrors()) {
+			String errors = result.getFieldError().getDefaultMessage();
+			return ResultVoUtil.error(1, errors);
+		}
+		Article article = new Article();
+		BeanUtils.copyProperties(articledto, article);
+		articleService.update(article);
+		return ResultVoUtil.success();
 
-    }
+	}
 
-    @DeleteMapping("/{id}")
-    @ApiOperation(value = "根据id删除帖子")
-    public ResultVo<Article> deleteArticle(@PathVariable  Integer id){
-        articleService.delete(id);
-        return ResultVoUtil.success();
-    }
+	@DeleteMapping("/{id}")
+	@ApiOperation(value = "根据id删除帖子")
+	public ResultVo<Article> deleteArticle(@PathVariable Integer id) {
+		articleService.delete(id);
+		return ResultVoUtil.success();
+	}
 
-    @GetMapping
-    @ApiOperation(value = "分页查询列表")
-    public ResultVo<PageInfo<ArticleVo>> getArticle(@ApiParam(value = "页码",required = false) @RequestParam(defaultValue = "1",required = false) Integer page,
-                                              @ApiParam(value = "条数",required = false) @RequestParam(defaultValue = "20",required = false) Integer size,
-                                              @ApiParam(value = "圈子id",required = true) @RequestParam Integer circleId){
-    	PageInfo<ArticleVo> articles = articleService.getByPage(page,size,circleId);
-        return ResultVoUtil.success(articles);
+	@GetMapping
+	@ApiOperation(value = "分页查询列表")
+	public ResultVo<PageInfo<ArticleVo>> getArticle(
+			@ApiParam(value = "页码", required = false) @RequestParam(defaultValue = "1", required = false) Integer page,
+			@ApiParam(value = "条数", required = false) @RequestParam(defaultValue = "20", required = false) Integer size,
+			@ApiParam(value = "圈子id", required = true) @RequestParam Integer circleId) {
+		PageInfo<ArticleVo> articles = articleService.getByPage(page, size, circleId);
+		return ResultVoUtil.success(articles);
 
-    }
-    
-    @GetMapping("/hot")
-    @ApiOperation(value = "查询热门帖子")
-    public ResultVo<PageInfo<ArticleVo>> getHotArticle(@ApiParam(value = "页码",required = false) @RequestParam(defaultValue = "1",required = false) Integer page,
-                                              @ApiParam(value = "条数",required = false) @RequestParam(defaultValue = "20",required = false) Integer size){
-        PageInfo<ArticleVo> articles = articleService.getHotByPage(page,size);
-        return ResultVoUtil.success(articles);
+	}
 
-    }
+	@GetMapping("/hot")
+	@ApiOperation(value = "查询热门帖子")
+	public ResultVo<PageInfo<ArticleVo>> getHotArticle(
+			@ApiParam(value = "页码", required = false) @RequestParam(defaultValue = "1", required = false) Integer page,
+			@ApiParam(value = "条数", required = false) @RequestParam(defaultValue = "20", required = false) Integer size) {
+		PageInfo<ArticleVo> articles = articleService.getHotByPage(page, size);
+		return ResultVoUtil.success(articles);
 
-    @GetMapping("/{id}")
-    @ApiOperation(value = "根据id查询帖子")
-    public ResultVo<ArticleVo> getArticle(@PathVariable  Integer id){
-    	ArticleVo article = articleService.get(id);
-        return ResultVoUtil.success(article);
+	}
 
-    }
+	@GetMapping("/{id}")
+	@ApiOperation(value = "根据id查询帖子")
+	public ResultVo<ArticleVo> getArticle(@PathVariable Integer id) {
+		ArticleVo article = articleService.get(id);
+		return ResultVoUtil.success(article);
 
+	}
+
+	@GetMapping("/get/{name}")
+	@ApiOperation(value = "根据帖子标题或创建人模糊查询")
+	public ResultVo<PageInfo<CircleVo>> getArticleLike(
+			@ApiParam(value = "页码", required = false) @RequestParam(defaultValue = "1", required = false) Integer page,
+			@ApiParam(value = "条数", required = false) @RequestParam(defaultValue = "20", required = false) Integer size,
+			@PathVariable String name) {
+		PageInfo<CircleVo> circle = articleService.seleteByLike(page, size, name);
+		return ResultVoUtil.success(circle);
+	}
 
 }

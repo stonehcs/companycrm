@@ -18,6 +18,7 @@ import com.lichi.increaselimit.community.dao.CircleMapper;
 import com.lichi.increaselimit.community.entity.Article;
 import com.lichi.increaselimit.community.entity.ArticleVo;
 import com.lichi.increaselimit.community.entity.Circle;
+import com.lichi.increaselimit.community.entity.CircleVo;
 import com.lichi.increaselimit.community.service.ArticleService;
 
 /**
@@ -87,6 +88,15 @@ public class ArticleImpl implements ArticleService {
 		PageHelper.orderBy("sort desc,create_time desc");
 		List<ArticleVo> list = articleDao.selectHot();
 		PageInfo<ArticleVo> pageInfo = new PageInfo<ArticleVo>(list);
+		return pageInfo;
+	}
+
+	@Override
+	public PageInfo<CircleVo> seleteByLike(Integer page, Integer size, String name) {
+    	PageHelper.startPage(page, size);
+    	PageHelper.orderBy("create_time desc");
+    	List<CircleVo> list = articleDao.selectListLike(name);
+    	PageInfo<CircleVo> pageInfo = new PageInfo<CircleVo>(list);
 		return pageInfo;
 	}
 }

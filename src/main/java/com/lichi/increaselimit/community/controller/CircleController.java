@@ -107,14 +107,15 @@ public class CircleController {
         return ResultVoUtil.success(circle);
     }
     
-    @GetMapping("/get/{name}")
-    @ApiOperation(value = "根据圈子名字或创建人模糊查询")
-    public ResultVo<PageInfo<CircleVo>> getArticleLike(@ApiParam(value = "页码",required = false) @RequestParam(defaultValue = "1",required = false) Integer page,
-    		@ApiParam(value = "条数",required = false) @RequestParam(defaultValue = "20",required = false) Integer size,
-    		@PathVariable  String name){
-    	PageInfo<CircleVo> circle = circleService.seleteByLike(page,size,name);
-    	return ResultVoUtil.success(circle);
-    }
+	@GetMapping("/get/{name}")
+	@ApiOperation(value = "根据圈子名字或创建人模糊查询")
+	public ResultVo<PageInfo<CircleVo>> getArticleLike(
+			@ApiParam(value = "页码", required = false) @RequestParam(defaultValue = "1", required = false) Integer page,
+			@ApiParam(value = "条数", required = false) @RequestParam(defaultValue = "20", required = false) Integer size,
+			@PathVariable String name) {
+		PageInfo<CircleVo> circle = circleService.seleteByLike(page, size, name);
+		return ResultVoUtil.success(circle);
+	}
 
 
 }

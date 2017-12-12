@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Select;
 import com.lichi.increaselimit.common.mapper.BaseMapper;
 import com.lichi.increaselimit.community.entity.Article;
 import com.lichi.increaselimit.community.entity.ArticleVo;
+import com.lichi.increaselimit.community.entity.CircleVo;
 
 
 /**
@@ -33,5 +34,10 @@ public interface ArticleMapper extends BaseMapper<Article>{
 			+ " t_sys_user b where a.create_user_id = b.id and a.id = #{id}")
 	ArticleVo selectById(Integer id);
 	
+	@Select("select a.*,b.nickname,b.id as createUserId from t_article a ," + 
+			"t_sys_user b where a.create_user_id = b.id "
+			+ "and a.title LIKE concat('%', #{name}, '%')" + 
+			"or b.nickname LIKE concat('%', #{name}, '%')")
+	List<CircleVo> selectListLike(String name);
 
 }
