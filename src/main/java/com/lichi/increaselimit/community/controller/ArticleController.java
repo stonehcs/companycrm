@@ -56,7 +56,7 @@ public class ArticleController {
 
     @PutMapping
     @ApiOperation(value = "更新帖子")
-    public ResultVo<Article> update(@Valid ArticleUpdateDto articledto, BindingResult result){
+    public ResultVo<Article> update(@Valid @RequestBody ArticleUpdateDto articledto, BindingResult result){
         if(result.hasErrors()){
             String errors = result.getFieldError().getDefaultMessage();
             return ResultVoUtil.error(1,errors);
