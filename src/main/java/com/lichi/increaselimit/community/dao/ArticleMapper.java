@@ -3,12 +3,12 @@ package com.lichi.increaselimit.community.dao;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import com.lichi.increaselimit.common.mapper.BaseMapper;
 import com.lichi.increaselimit.community.entity.Article;
 import com.lichi.increaselimit.community.entity.ArticleVo;
-import com.lichi.increaselimit.community.entity.CircleVo;
 
 
 /**
@@ -35,9 +35,9 @@ public interface ArticleMapper extends BaseMapper<Article>{
 	ArticleVo selectById(Integer id);
 	
 	@Select("select a.*,b.nickname,b.id as createUserId from t_article a ," + 
-			"t_sys_user b where a.create_user_id = b.id "
+			"t_sys_user b where a.create_user_id = b.id and a.circle_id = #{circleId}"
 			+ "and a.title LIKE concat('%', #{name}, '%')" + 
-			"or b.nickname LIKE concat('%', #{name}, '%')")
-	List<CircleVo> selectListLike(String name);
+			"or b.nickname LIKE concat('%', #{name}, '%') ")
+	List<ArticleVo> selectListLike(@Param(value = "name") String name, @Param(value = "circleId")Integer circleId);
 
 }

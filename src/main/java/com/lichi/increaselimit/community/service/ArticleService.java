@@ -3,7 +3,6 @@ package com.lichi.increaselimit.community.service;
 import com.github.pagehelper.PageInfo;
 import com.lichi.increaselimit.community.entity.Article;
 import com.lichi.increaselimit.community.entity.ArticleVo;
-import com.lichi.increaselimit.community.entity.CircleVo;
 
 /**
  * @author by majie on 2017/11/15.
@@ -57,7 +56,8 @@ public interface ArticleService {
 	 * @param page
 	 * @param size
 	 * @param name
+	 * @param circleId 
 	 * @return
 	 */
-	PageInfo<CircleVo> seleteByLike(Integer page, Integer size, String name);
+	PageInfo<ArticleVo> seleteByLike(Integer page, Integer size, String name, Integer circleId);
 }

@@ -22,7 +22,6 @@ import com.lichi.increaselimit.community.controller.dto.ArticleDto;
 import com.lichi.increaselimit.community.controller.dto.ArticleUpdateDto;
 import com.lichi.increaselimit.community.entity.Article;
 import com.lichi.increaselimit.community.entity.ArticleVo;
-import com.lichi.increaselimit.community.entity.CircleVo;
 import com.lichi.increaselimit.community.service.ArticleService;
 
 import io.swagger.annotations.Api;
@@ -103,13 +102,14 @@ public class ArticleController {
 
 	}
 
-	@GetMapping("/get/{name}")
+	@GetMapping("/get/{name}/{circleId}")
 	@ApiOperation(value = "根据帖子标题或创建人模糊查询")
-	public ResultVo<PageInfo<CircleVo>> getArticleLike(
+	public ResultVo<PageInfo<ArticleVo>> getArticleLike(
 			@ApiParam(value = "页码", required = false) @RequestParam(defaultValue = "1", required = false) Integer page,
 			@ApiParam(value = "条数", required = false) @RequestParam(defaultValue = "20", required = false) Integer size,
-			@PathVariable String name) {
-		PageInfo<CircleVo> circle = articleService.seleteByLike(page, size, name);
+			@PathVariable String name,
+			@PathVariable Integer circleId) {
+		PageInfo<ArticleVo> circle = articleService.seleteByLike(page, size, name,circleId);
 		return ResultVoUtil.success(circle);
 	}
 
