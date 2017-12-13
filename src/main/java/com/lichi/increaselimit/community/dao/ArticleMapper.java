@@ -36,8 +36,8 @@ public interface ArticleMapper extends BaseMapper<Article>{
 	
 	@Select("select a.*,b.nickname,b.id as createUserId from t_article a ," + 
 			"t_sys_user b where a.create_user_id = b.id and a.circle_id = #{circleId}"
-			+ "and a.title LIKE concat('%', #{name}, '%')" + 
-			"or b.nickname LIKE concat('%', #{name}, '%') ")
+			+ "and (a.title LIKE concat('%', #{name}, '%')" + 
+			"or b.nickname LIKE concat('%', #{name}, '%') )")
 	List<ArticleVo> selectListLike(@Param(value = "name") String name, @Param(value = "circleId")Integer circleId);
 
 }
