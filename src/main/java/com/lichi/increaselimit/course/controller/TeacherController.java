@@ -1,5 +1,7 @@
 package com.lichi.increaselimit.course.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.BeanUtils;
@@ -21,6 +23,7 @@ import com.lichi.increaselimit.common.vo.ResultVo;
 import com.lichi.increaselimit.course.controller.dto.TeacherDto;
 import com.lichi.increaselimit.course.controller.dto.TeacherUpdateDto;
 import com.lichi.increaselimit.course.entity.Teacher;
+import com.lichi.increaselimit.course.entity.TeacherVo;
 import com.lichi.increaselimit.course.service.TeacherService;
 
 import io.swagger.annotations.Api;
@@ -47,6 +50,12 @@ public class TeacherController {
 			@ApiParam(value = "页码", required = false) @RequestParam(defaultValue = "1", required = false) Integer page,
 			@ApiParam(value = "条数", required = false) @RequestParam(defaultValue = "20", required = false) Integer size) {
 		PageInfo<Teacher> list = teacherService.getTeacherList(page, size);
+		return ResultVoUtil.success(list);
+	}
+	@GetMapping
+	@ApiOperation(value = "查询所有老师")
+	public ResultVo<List<TeacherVo>> getAll() {
+		List<TeacherVo> list = teacherService.getAll();
 		return ResultVoUtil.success(list);
 	}
 

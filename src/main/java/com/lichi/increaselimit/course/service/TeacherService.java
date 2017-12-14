@@ -1,7 +1,10 @@
 package com.lichi.increaselimit.course.service;
 
+import java.util.List;
+
 import com.github.pagehelper.PageInfo;
 import com.lichi.increaselimit.course.entity.Teacher;
+import com.lichi.increaselimit.course.entity.TeacherVo;
 
 /**
  * TeacherService
@@ -41,5 +44,11 @@ public interface TeacherService {
 	 * @param Teacher
 	 */
 	void updateTeacher(Teacher teacher);
+
+	/**
+	 * 查询所有讲师不分页
+	 * @return
+	 */
+	List<TeacherVo> getAll();
 
 }

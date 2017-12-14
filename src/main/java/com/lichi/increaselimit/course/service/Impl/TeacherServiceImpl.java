@@ -14,6 +14,7 @@ import com.lichi.increaselimit.course.dao.CourseMapper;
 import com.lichi.increaselimit.course.dao.TeacherMapper;
 import com.lichi.increaselimit.course.entity.Course;
 import com.lichi.increaselimit.course.entity.Teacher;
+import com.lichi.increaselimit.course.entity.TeacherVo;
 import com.lichi.increaselimit.course.service.TeacherService;
 
 import tk.mybatis.mapper.entity.Example;
@@ -64,6 +65,12 @@ public class TeacherServiceImpl implements TeacherService{
 	public void updateTeacher(Teacher teacher) {
 		teacher.setUpdateTime(new Date());
 		mapper.updateByPrimaryKeySelective(teacher);
+	}
+
+	@Override
+	public List<TeacherVo> getAll() {
+		List<TeacherVo> list = mapper.selectAllTeacher();
+		return list;
 	}
 
 }
