@@ -89,7 +89,13 @@ public class CourseUpdateDto implements Serializable{
 	@ApiModelProperty("1武汉 2成都 3广州 4...")
 	private Integer locationId;
 	
+	@ApiModelProperty("课程介绍")
+	private String description;
+	
 	@ApiModelProperty("课程封面图")
-	@NotNull(message = "课程封面图不能为空")
 	private String courseUrl;
+	
+	
+	@ApiModelProperty("结课时间")
+	private Date endTime;
 }
