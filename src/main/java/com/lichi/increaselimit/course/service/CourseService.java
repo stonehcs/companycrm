@@ -18,7 +18,7 @@ public interface CourseService {
 	 * @param size 
 	 * @return
 	 */
-	PageInfo<Course> getCourseList(Integer page, Integer size, Integer locationId);
+	PageInfo<CourseVo> getCourseList(Integer page, Integer size, Integer locationId);
 
 	/**
 	 * 根据id查看课程
@@ -54,6 +54,15 @@ public interface CourseService {
 	 * @param size
 	 * @return
 	 */
-	PageInfo<Course> getCourseList(Integer page, Integer size);
+	PageInfo<CourseVo> getCourseList(Integer page, Integer size);
+	
+	/**
+	 * 通过课程名称或者老师名称模糊查询
+	 * @param page
+	 * @param size
+	 * @param name
+	 * @return
+	 */
+	PageInfo<CourseVo> seleteByLike(Integer page, Integer size, String name);
 
 }

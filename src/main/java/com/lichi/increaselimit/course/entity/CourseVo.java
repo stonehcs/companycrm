@@ -18,6 +18,10 @@ public class CourseVo extends Course{
 	private String introduce;
 	
 	private String imgUrl;
+	
+	private Integer signUpPerson;
+	
+	private Integer payPerson;
 
 	public String getImgUrl() {
 		return imgUrl;
@@ -42,6 +46,23 @@ public class CourseVo extends Course{
 	public void setIntroduce(String introduce) {
 		this.introduce = introduce;
 	}
+
+	public Integer getSignUpPerson() {
+		return signUpPerson;
+	}
+
+	public void setSignUpPerson(Integer signUpPerson) {
+		this.signUpPerson = signUpPerson;
+	}
+
+	public Integer getPayPerson() {
+		return payPerson;
+	}
+
+	public void setPayPerson(Integer payPerson) {
+		this.payPerson = payPerson;
+	}
+	
 	
 	
 }

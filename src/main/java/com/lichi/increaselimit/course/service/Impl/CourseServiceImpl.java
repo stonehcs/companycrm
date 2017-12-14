@@ -16,8 +16,6 @@ import com.lichi.increaselimit.course.entity.Course;
 import com.lichi.increaselimit.course.entity.CourseVo;
 import com.lichi.increaselimit.course.service.CourseService;
 
-import tk.mybatis.mapper.entity.Example;
-
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class CourseServiceImpl implements CourseService {
@@ -26,30 +24,33 @@ public class CourseServiceImpl implements CourseService {
 	private CourseMapper courseMapper;
 
 	@Override
-	public PageInfo<Course> getCourseList(Integer page, Integer size, Integer locationId) {
+	public PageInfo<CourseVo> getCourseList(Integer page, Integer size, Integer locationId) {
 		PageHelper.startPage(page, size);
-		Example example = new Example(Course.class);
-		example.createCriteria().andEqualTo("locationId", locationId);
-		List<Course> list = courseMapper.selectByExample(example);
-		PageInfo<Course> pageInfo = new PageInfo<>(list);
+		List<CourseVo> list = courseMapper.selectByLocationId(locationId);
+		list.stream().forEach(e -> {
+			getPersons(e);
+		});
+		PageInfo<CourseVo> pageInfo = new PageInfo<>(list);
 		return pageInfo;
 	}
 	
 	@Override
-	public PageInfo<Course> getCourseList(Integer page, Integer size) {
+	public PageInfo<CourseVo> getCourseList(Integer page, Integer size) {
 		PageHelper.startPage(page, size);
 		PageHelper.orderBy("start_time asc");
-		Example example = new Example(Course.class);
-		example.createCriteria().andCondition("end_time >=",new Date());
-		List<Course> list = courseMapper.selectByExample(example);
-		PageInfo<Course> pageInfo = new PageInfo<>(list);
+		List<CourseVo> list = courseMapper.selectList();
+		list.stream().forEach(e -> {
+			getPersons(e);
+		});
+		PageInfo<CourseVo> pageInfo = new PageInfo<>(list);
 		return pageInfo;
 	}
 
 	@Override
 	public CourseVo getCourse(Integer id) {
-
-		return courseMapper.selectCourseDetails(id);
+		CourseVo courseVo = courseMapper.selectCourseDetails(id);
+		getPersons(courseVo);
+		return courseVo;
 	}
 
 	@Override
@@ -78,5 +79,28 @@ public class CourseServiceImpl implements CourseService {
 		courseMapper.updateCourseTimes(id);
 	}
 
+	@Override
+	public PageInfo<CourseVo> seleteByLike(Integer page, Integer size, String name) {
+		PageHelper.startPage(page, size);
+		PageHelper.orderBy("start_time asc");
+		List<CourseVo> list = courseMapper.selectByLike(name);
+		list.stream().forEach(e -> {
+			getPersons(e);
+		});
+		PageInfo<CourseVo> pageInfo = new PageInfo<>(list);
+		return pageInfo;
+	}
+
+	
+	/**
+	 * 获取报名人数
+	 * @param vo
+	 */
+	private void getPersons(CourseVo vo) {
+		Integer signpersons = courseMapper.getCount(vo.getId(), 0);
+		vo.setSignUpPerson(signpersons);
+		Integer paypersons = courseMapper.getCount(vo.getId(), 1);
+		vo.setPayPerson(paypersons);
+	}
 
 }

@@ -44,19 +44,20 @@ public class CourseController {
 
 	@GetMapping("/list/{locationId}")
 	@ApiOperation(value = "查看课程列表")
-	public ResultVo<PageInfo<Course>> getCourseList(
+	public ResultVo<PageInfo<CourseVo>> getCourseList(
 			@ApiParam(value = "页码", required = false) @RequestParam(defaultValue = "1", required = false) Integer page,
 			@ApiParam(value = "条数", required = false) @RequestParam(defaultValue = "20", required = false) Integer size,
 			@PathVariable Integer locationId) {
-		PageInfo<Course> list = courseService.getCourseList(page, size, locationId);
+		PageInfo<CourseVo> list = courseService.getCourseList(page, size, locationId);
 		return ResultVoUtil.success(list);
 	}
+	
 	@GetMapping("/list")
 	@ApiOperation(value = "首页课程显示")
-	public ResultVo<PageInfo<Course>> getCourseList(
+	public ResultVo<PageInfo<CourseVo>> getCourseList(
 			@ApiParam(value = "页码", required = false) @RequestParam(defaultValue = "1", required = false) Integer page,
 			@ApiParam(value = "条数", required = false) @RequestParam(defaultValue = "20", required = false) Integer size) {
-		PageInfo<Course> list = courseService.getCourseList(page, size);
+		PageInfo<CourseVo> list = courseService.getCourseList(page, size);
 		return ResultVoUtil.success(list);
 	}
 
@@ -105,6 +106,17 @@ public class CourseController {
 	public ResultVo<Course> updateCourse(@PathVariable Integer id) {
 		courseService.updateCourseTimes(id);
 		return ResultVoUtil.success();
+	}
+
+	
+	@GetMapping("/get/{name}")
+	@ApiOperation(value = "通过课程名称或者老师名称模糊查询")
+	public ResultVo<PageInfo<CourseVo>> getArticleLike(
+			@ApiParam(value = "页码", required = false) @RequestParam(defaultValue = "1", required = false) Integer page,
+			@ApiParam(value = "条数", required = false) @RequestParam(defaultValue = "20", required = false) Integer size,
+			@PathVariable String name) {
+		PageInfo<CourseVo> circle = courseService.seleteByLike(page, size, name);
+		return ResultVoUtil.success(circle);
 	}
 
 }
