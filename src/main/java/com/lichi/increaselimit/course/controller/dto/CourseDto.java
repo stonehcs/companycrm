@@ -34,6 +34,7 @@ public class CourseDto implements Serializable{
 	private Integer teacherId;
 	
 	@ApiModelProperty("视频url")
+	@NotNull(message = "视频url不能为空")
 	private String url;
 	
 	@ApiModelProperty("观看次数,新增不用传入")
@@ -59,7 +60,7 @@ public class CourseDto implements Serializable{
 	 * 金额.为0就表示免费
 	 */
 	@ApiModelProperty("课程金额,不传就默认免费")
-	private Double money;
+	private Double money = 0d;
 	
 	@ApiModelProperty("地址")
 	@NotBlank(message = "地址不能为空")
