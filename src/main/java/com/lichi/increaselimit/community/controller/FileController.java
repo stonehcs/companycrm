@@ -38,7 +38,7 @@ public class FileController {
 		String upload = null;
 		try {
 			upload = uploadUtils.upload(file, fileName);
-			upload = upload + "SHUIYIN";
+			upload = "http://" + upload + SHUIYIN;
 		} catch (IOException e) {
 			throw new BusinessException(ResultEnum.FILE_UPLOAD_ERROR);
 		}
