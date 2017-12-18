@@ -31,7 +31,7 @@ public class TokenLoginFailureHandler implements AccessDeniedHandler{
 	@Override
 	public void handle(HttpServletRequest arg0, HttpServletResponse response, AccessDeniedException arg2)
 			throws IOException, ServletException {
-		log.info("登录认证失败");
+		log.info("token验证失败");
 		response.setContentType("application/json;charset=UTF-8");
 		response.getWriter().write(objectMapper.writeValueAsString(ResultVoUtil.error(1, "权限不足")));
 		
