@@ -1,3 +1,6 @@
+server:
+  port: 8080
+
 spring:
   #数据库
   datasource:
@@ -31,16 +34,5 @@ security:
 #      max-idle: 8
 #      min-idle: 0
 #    timeout: 3000
-    
-server:
-  port: 8888
 
-  http:
-    multipart:
-      enabled: true
-      file-size-threshold: 0
-      location: 
-      max-file-size: 1MB
-      max-request-size: 10Mb
-      
 
