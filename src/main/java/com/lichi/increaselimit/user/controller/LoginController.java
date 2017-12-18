@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lichi.increaselimit.common.utils.ResultVoUtil;
@@ -32,7 +32,7 @@ public class LoginController {
 	 * @throws IOException
 	 */
 	@ApiIgnore
-	@GetMapping("/authentication/require")
+	@RequestMapping("/authentication/require")  //这里不能设置方法,否则跳不过
 	public ResultVo<String> requireAuthentication(HttpServletRequest request, HttpServletResponse response)
 			throws IOException {
 
