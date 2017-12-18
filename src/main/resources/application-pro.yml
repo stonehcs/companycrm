@@ -17,6 +17,6 @@ spring:
       #filters: stat     #sql监控,建议测试阶段用，生产阶段不要使用
     
 server:
-  port: 9090
+  port: 8889
       
 
