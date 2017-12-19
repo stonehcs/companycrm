@@ -36,7 +36,10 @@ public class StringUtil {
 		String collect = null;
 		try {
 			String[] substringBetween = StringUtils.substringsBetween(content, ">", "<");
-					Arrays.asList(substringBetween).stream().collect(Collectors.joining());
+			if(substringBetween == null) {
+				return "...";
+			}
+			Arrays.asList(substringBetween).stream().collect(Collectors.joining());
 		}catch (Exception e) {
 			throw new BusinessException(ResultEnum.CONTENT_ERRO);
 		}
