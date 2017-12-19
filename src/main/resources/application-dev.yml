@@ -34,4 +34,6 @@ security:
 #      min-idle: 0
 #    timeout: 3000
 
-
+logging:
+  level:
+    root: debug
