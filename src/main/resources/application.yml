@@ -79,4 +79,4 @@ lichi:
 
 logging:
   config: 
-  - classpath:logback-lichi.xml
+  - classpath:logback.xml

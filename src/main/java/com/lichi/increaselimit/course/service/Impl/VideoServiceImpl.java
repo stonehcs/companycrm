@@ -54,6 +54,15 @@ public class VideoServiceImpl implements VideoService {
 		return info;
 	}
 
+	@Override
+	public PageInfo<Video> seleteByLike(Integer page, Integer size, String description) {
+		PageHelper.startPage(page, size);
+		PageHelper.orderBy("create_time asc");
+		List<Video> list = videoMapper.selectByLike(description);
+		PageInfo<Video> pageInfo = new PageInfo<>(list);
+		return pageInfo;
+	}
+
 
 
 }

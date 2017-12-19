@@ -26,7 +26,7 @@
 		<logger name="com.lichi.increaselimit.third.dao.CreditBillDetailDao" level="DEBUG"/>
 		<logger name="com.lichi.increaselimit.third.dao.UserEmailDao" level="DEBUG"/>
 
-		<root level="DEBUG">
+		<root level="info">
 			<appender-ref ref="CONSOLE" />
 		</root>
 	</springProfile>

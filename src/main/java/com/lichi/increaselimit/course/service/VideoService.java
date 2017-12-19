@@ -43,6 +43,15 @@ public interface VideoService {
 	 */
 	PageInfo<Video> getVideoList(Integer page, Integer size);
 
+	/**
+	 * 模糊查询
+	 * @param page
+	 * @param size
+	 * @param description
+	 * @return
+	 */
+	PageInfo<Video> seleteByLike(Integer page, Integer size, String description);
+
 
 
 }
