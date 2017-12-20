@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.github.pagehelper.PageInfo;
 import com.lichi.increaselimit.common.utils.ResultVoUtil;
 import com.lichi.increaselimit.common.vo.ResultVo;
-import com.lichi.increaselimit.sys.controller.dto.DeptDto;
-import com.lichi.increaselimit.sys.controller.dto.DeptUpdateDto;
+import com.lichi.increaselimit.sys.controller.dto.SysDeptDto;
+import com.lichi.increaselimit.sys.controller.dto.SysDeptUpdateDto;
 import com.lichi.increaselimit.sys.entity.SysDept;
 import com.lichi.increaselimit.sys.service.SysDeptService;
 
@@ -54,7 +54,7 @@ public class DeptController {
 
 	@PostMapping
 	@ApiOperation("添加部门信息")
-	public ResultVo<SysDept> add(@Valid @RequestBody DeptDto deptDto, BindingResult result) {
+	public ResultVo<SysDept> add(@Valid @RequestBody SysDeptDto deptDto, BindingResult result) {
 		if (result.hasErrors()) {
 			String errors = result.getFieldError().getDefaultMessage();
 			return ResultVoUtil.error(1, errors);
@@ -67,7 +67,7 @@ public class DeptController {
 
 	@PutMapping
 	@ApiOperation("修改部门信息")
-	public ResultVo<SysDept> update(@Valid @RequestBody DeptUpdateDto deptDto, BindingResult result) {
+	public ResultVo<SysDept> update(@Valid @RequestBody SysDeptUpdateDto deptDto, BindingResult result) {
 		if (result.hasErrors()) {
 			String errors = result.getFieldError().getDefaultMessage();
 			return ResultVoUtil.error(1, errors);

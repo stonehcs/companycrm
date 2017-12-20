@@ -8,14 +8,14 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Data
-public class RoleUpdateDto {
+public class SysDeptUpdateDto {
 	
-	@ApiModelProperty("角色id")
-	@NotNull(message = "角色id不能为空")
+	@ApiModelProperty("部门id")
+	@NotNull(message = "部门id不能为空")
 	private Integer id;
 	
-	@ApiModelProperty("角色名称")
-	@NotBlank(message = "角色名称不能为空")
-	private String roleName;
+	@ApiModelProperty("部门名称")
+	@NotBlank(message = "部门名称不能为空")
+	private String deptName;
 	
 }

@@ -22,4 +22,6 @@ public interface SysRoleService {
 
 	void addResource(List<SysRoleResource> resultlist);
 
+	List<SysRoleResource> selectResource(Integer id);
+
 }

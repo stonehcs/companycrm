@@ -59,6 +59,14 @@ public enum ResultEnum {
     ROLE_EXIST(25, "角色已存在"), 
     
     MUNE_BOTTUN_BOTH_NULL(25, "菜单id和按钮id不能同时为空"), 
+    
+    MENU_EXIST(25, "菜单已存在"),
+    
+    MENU_NOT_EXIST(25, "菜单不存在"),
+    
+    HAVE_CHILD_MENU(25, "该菜单下有子菜单,不能删除"),
+    
+    HAVE_BUTTON(25, "该菜单下有按钮,不能删除"), 
     ;
 
     private Integer code;

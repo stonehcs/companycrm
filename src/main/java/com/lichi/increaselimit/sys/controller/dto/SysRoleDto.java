@@ -6,10 +6,10 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Data
-public class DeptDto {
+public class SysRoleDto {
 	
-	@ApiModelProperty("部门名称")
-	@NotBlank(message = "部门名称不能为空")
-	private String deptName;
+	@ApiModelProperty("角色名称")
+	@NotBlank(message = "角色名称不能为空")
+	private String roleName;
 	
 }

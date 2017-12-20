@@ -23,8 +23,8 @@ import com.lichi.increaselimit.common.enums.ResultEnum;
 import com.lichi.increaselimit.common.exception.BusinessException;
 import com.lichi.increaselimit.common.utils.ResultVoUtil;
 import com.lichi.increaselimit.common.vo.ResultVo;
-import com.lichi.increaselimit.sys.controller.dto.RoleDto;
-import com.lichi.increaselimit.sys.controller.dto.RoleUpdateDto;
+import com.lichi.increaselimit.sys.controller.dto.SysRoleDto;
+import com.lichi.increaselimit.sys.controller.dto.SysRoleUpdateDto;
 import com.lichi.increaselimit.sys.controller.dto.SysRoleResourceDto;
 import com.lichi.increaselimit.sys.entity.SysRole;
 import com.lichi.increaselimit.sys.entity.SysRoleResource;
@@ -59,7 +59,7 @@ public class RoleController {
 
 	@PostMapping
 	@ApiOperation("添加角色信息")
-	public ResultVo<SysRole> add(@Valid @RequestBody RoleDto RoleDto, BindingResult result) {
+	public ResultVo<SysRole> add(@Valid @RequestBody SysRoleDto RoleDto, BindingResult result) {
 		if (result.hasErrors()) {
 			String errors = result.getFieldError().getDefaultMessage();
 			return ResultVoUtil.error(1, errors);
@@ -72,7 +72,7 @@ public class RoleController {
 
 	@PutMapping
 	@ApiOperation("修改角色信息")
-	public ResultVo<SysRole> update(@Valid @RequestBody RoleUpdateDto RoleDto, BindingResult result) {
+	public ResultVo<SysRole> update(@Valid @RequestBody SysRoleUpdateDto RoleDto, BindingResult result) {
 		if (result.hasErrors()) {
 			String errors = result.getFieldError().getDefaultMessage();
 			return ResultVoUtil.error(1, errors);
@@ -98,7 +98,7 @@ public class RoleController {
 	}
 	
 	@PostMapping("/resource")
-	@ApiOperation("添加角色信息")
+	@ApiOperation("添加角色资源")
 	public ResultVo<SysRole> addResource(@Valid @RequestBody List<SysRoleResourceDto> list, BindingResult result) {
 		if (result.hasErrors()) {
 			String errors = result.getFieldError().getDefaultMessage();
@@ -106,7 +106,7 @@ public class RoleController {
 		}
 		List<SysRoleResource> resultlist = new ArrayList<>();
 		list.stream().forEach(e ->{
-			if(null == e.getButtonId() && null == e.getMenuId()) {
+			if(-1 == e.getButtonId() && -1 == e.getMenuId()) {
 				throw new BusinessException(ResultEnum.MUNE_BOTTUN_BOTH_NULL);
 			}
 			SysRoleResource sysRoleResource = new SysRoleResource();
@@ -115,6 +115,13 @@ public class RoleController {
 		});
 		roleService.addResource(resultlist);
 		return ResultVoUtil.success();
+	}
+	
+	@GetMapping("/resource/{id}")
+	@ApiOperation("查询角色资源")
+	public ResultVo<List<SysRoleResource>> selectResource(@PathVariable Integer id) {
+		List<SysRoleResource> list = roleService.selectResource(id);
+		return ResultVoUtil.success(list);
 	}
 
 }

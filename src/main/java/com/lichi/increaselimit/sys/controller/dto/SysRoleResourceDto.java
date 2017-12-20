@@ -13,10 +13,10 @@ public class SysRoleResourceDto {
 	private Integer roleId;
 	
 	@ApiModelProperty("菜单id")
-	private Integer menuId;
+	private Integer menuId = -1;
 	
 	@ApiModelProperty("按钮id")
-	private Integer buttonId;
+	private Integer buttonId = -1;
 	
 	@ApiModelProperty("类型0是菜单   1是按钮")
 	@NotNull(message = "类型不能为空")

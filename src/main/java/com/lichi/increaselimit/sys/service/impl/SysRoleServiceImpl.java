@@ -16,6 +16,8 @@ import com.lichi.increaselimit.sys.entity.SysRole;
 import com.lichi.increaselimit.sys.entity.SysRoleResource;
 import com.lichi.increaselimit.sys.service.SysRoleService;
 
+import tk.mybatis.mapper.entity.Example;
+
 @Service
 public class SysRoleServiceImpl implements SysRoleService{
 	@Autowired
@@ -70,6 +72,14 @@ public class SysRoleServiceImpl implements SysRoleService{
 	@Override
 	public void addResource(List<SysRoleResource> resultlist) {
 		sysRoleResourceDao.insertList(resultlist);
+	}
+
+	@Override
+	public List<SysRoleResource> selectResource(Integer id) {
+		Example example = new Example(SysRoleResource.class);
+		example.createCriteria().andEqualTo("roleId",id);
+		List<SysRoleResource> list = sysRoleResourceDao.selectByExample(example);
+		return list;
 	}
 
 }
