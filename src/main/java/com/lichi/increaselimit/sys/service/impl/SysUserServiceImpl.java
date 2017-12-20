@@ -1,5 +1,6 @@
-package com.lichi.increaselimit.user.service.impl;
+package com.lichi.increaselimit.sys.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -16,9 +17,12 @@ import com.lichi.increaselimit.common.enums.ResultEnum;
 import com.lichi.increaselimit.common.exception.BusinessException;
 import com.lichi.increaselimit.common.utils.HuanXinUtils;
 import com.lichi.increaselimit.common.utils.UserIdUtils;
-import com.lichi.increaselimit.user.dao.SysUserMapper;
-import com.lichi.increaselimit.user.entity.SysUser;
-import com.lichi.increaselimit.user.service.SysUserService;
+import com.lichi.increaselimit.sys.controller.dto.SysUserRoleDto;
+import com.lichi.increaselimit.sys.dao.SysUserMapper;
+import com.lichi.increaselimit.sys.dao.SysUserRoleMapper;
+import com.lichi.increaselimit.sys.entity.SysUser;
+import com.lichi.increaselimit.sys.entity.SysUserRole;
+import com.lichi.increaselimit.sys.service.SysUserService;
 
 import tk.mybatis.mapper.entity.Example;
 
@@ -27,6 +31,8 @@ public class SysUserServiceImpl implements SysUserService {
 
 	@Autowired
 	private SysUserMapper sysUserMapper;
+	@Autowired
+	private SysUserRoleMapper sysUserRoleMapper;
 
 	@Autowired
 	private RestTemplate restTemplate;
@@ -86,7 +92,7 @@ public class SysUserServiceImpl implements SysUserService {
 	}
 
 	@Override
-	public void updateSysUser(SysUser sysUser) {
+	public void updatePassword(SysUser sysUser) {
 		SysUser user = sysUserMapper.loadUserInfoByMobile(sysUser.getMobile());
 		if(user == null) {
 			throw new BusinessException(ResultEnum.MOBILE_NUM_EMPTY);
@@ -114,5 +120,24 @@ public class SysUserServiceImpl implements SysUserService {
 		List<SysUser> list = sysUserMapper.selectByExample(example);
 		return list;
 	}
+
+	@Override
+	public void updateSysUserDept(SysUser sysUser) {
+		sysUser.setUpdateTime(new Date());
+		sysUserMapper.updateByPrimaryKeySelective(sysUser);
+	}
+
+	@Override
+	public void updateRole(List<SysUserRoleDto> list) {
+		List<SysUserRole> resultlist = new ArrayList<>();
+		list.stream().forEach( e -> {
+			SysUserRole sysUserRole = new SysUserRole();
+			sysUserRole.setUserId(e.getId());
+			sysUserRole.setRoleId(e.getRoleId());
+			resultlist.add(sysUserRole);
+		});
+		sysUserRoleMapper.insertList(resultlist);
+	}
+	
 
 }

@@ -1,4 +1,4 @@
-package com.lichi.increaselimit.user.controller.dto;
+package com.lichi.increaselimit.sys.controller.dto;
 
 import java.io.Serializable;
 

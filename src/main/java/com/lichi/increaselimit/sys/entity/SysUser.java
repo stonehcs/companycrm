@@ -1,4 +1,4 @@
-package com.lichi.increaselimit.user.entity;
+package com.lichi.increaselimit.sys.entity;
 
 import java.util.Collection;
 import java.util.Date;
@@ -41,6 +41,8 @@ public class SysUser implements UserDetails,SocialUserDetails{
 	
 	private Date updateTime;
 
+	private Integer deptId;
+	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		// TODO Auto-generated method stub

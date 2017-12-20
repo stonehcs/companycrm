@@ -1,10 +1,11 @@
-package com.lichi.increaselimit.user.dao;
+package com.lichi.increaselimit.sys.dao;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
 import com.lichi.increaselimit.common.mapper.BaseMapper;
-import com.lichi.increaselimit.user.entity.SysUser;
+import com.lichi.increaselimit.sys.entity.SysUser;
+import com.lichi.increaselimit.sys.entity.SysUserVo;
 
 /**
  * userdao
@@ -21,6 +22,7 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
 	 * @param username
 	 * @return
 	 */
-	@Select("select * from t_sys_user where mobile=#{mobile}")
-	SysUser loadUserInfoByMobile(String mobile);
+	@Select("select a.*,b.dept_name from t_sys_user a,t_sys_dept b where a.dept_id = b.id and mobile=#{mobile}")
+	SysUserVo loadUserInfoByMobile(String mobile);
+
 }

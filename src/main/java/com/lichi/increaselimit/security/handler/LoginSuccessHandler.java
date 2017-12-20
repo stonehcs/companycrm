@@ -15,7 +15,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.lichi.increaselimit.common.utils.RedisUtils;
 import com.lichi.increaselimit.common.utils.ResultVoUtil;
 import com.lichi.increaselimit.security.UserUtils;
-import com.lichi.increaselimit.user.entity.SysUser;
+import com.lichi.increaselimit.sys.entity.SysUser;
 
 import lombok.extern.slf4j.Slf4j;
 

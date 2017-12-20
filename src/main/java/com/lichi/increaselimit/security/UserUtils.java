@@ -2,7 +2,7 @@ package com.lichi.increaselimit.security;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import com.lichi.increaselimit.user.entity.SysUser;
+import com.lichi.increaselimit.sys.entity.SysUser;
 
 /**
  * 获取当前用户信息

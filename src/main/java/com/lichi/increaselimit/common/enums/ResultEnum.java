@@ -53,6 +53,10 @@ public enum ResultEnum {
     TOKEN_EXPIRED(26, "token已失效"),
     
     ENDTIME_BIGGER_THEN_STARTTIME(25, "结束时间应该大于开课时间"),
+    
+    DEPT_EXIST(25, "部门已存在"), 
+    
+    ROLE_EXIST(25, "角色已存在"), 
     ;
 
     private Integer code;

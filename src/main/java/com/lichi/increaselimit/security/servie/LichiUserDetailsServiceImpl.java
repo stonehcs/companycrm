@@ -6,8 +6,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.social.security.SocialUserDetailsService;
 import org.springframework.stereotype.Component;
 
-import com.lichi.increaselimit.user.entity.SysUser;
-import com.lichi.increaselimit.user.service.SysUserService;
+import com.lichi.increaselimit.sys.entity.SysUser;
+import com.lichi.increaselimit.sys.service.SysUserService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -33,8 +33,6 @@ public class LichiUserDetailsServiceImpl implements UserDetailsService,SocialUse
 
 		log.info("手机号码为:" + mobile);
 		return sysUserService.loadUserInfoByMobile(mobile);
-		// return new User(mobile, passwordEncoder.encode("123456"),
-		// AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_USER"));
 	}
 
 	@Override

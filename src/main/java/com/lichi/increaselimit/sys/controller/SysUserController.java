@@ -1,6 +1,7 @@
-package com.lichi.increaselimit.user.controller;
+package com.lichi.increaselimit.sys.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,10 +31,12 @@ import com.lichi.increaselimit.common.utils.ResultVoUtil;
 import com.lichi.increaselimit.common.utils.StringUtil;
 import com.lichi.increaselimit.common.vo.ResultVo;
 import com.lichi.increaselimit.security.validate.code.ValidateCode;
-import com.lichi.increaselimit.user.controller.dto.SysUserDto;
-import com.lichi.increaselimit.user.controller.dto.SysUserUpdateDto;
-import com.lichi.increaselimit.user.entity.SysUser;
-import com.lichi.increaselimit.user.service.SysUserService;
+import com.lichi.increaselimit.sys.controller.dto.SysUserDeptDto;
+import com.lichi.increaselimit.sys.controller.dto.SysUserDto;
+import com.lichi.increaselimit.sys.controller.dto.SysUserRoleDto;
+import com.lichi.increaselimit.sys.controller.dto.SysUserUpdateDto;
+import com.lichi.increaselimit.sys.entity.SysUser;
+import com.lichi.increaselimit.sys.service.SysUserService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -125,7 +128,31 @@ public class SysUserController {
 		}
 		SysUser sysUser = new SysUser();
 		BeanUtils.copyProperties(sysUserDto, sysUser);
-		sysUserService.updateSysUser(sysUser);
+		sysUserService.updatePassword(sysUser);
+		return ResultVoUtil.success();
+	}
+	
+	@PutMapping("/dept")
+	@ApiOperation("修改用户对应的部门")
+	public ResultVo<SysUser> updateSysUserDept(@Valid @RequestBody SysUserDeptDto sysUserDto, BindingResult result) {
+		if (result.hasErrors()) {
+			String errors = result.getFieldError().getDefaultMessage();
+			return ResultVoUtil.error(1, errors);
+		}
+		SysUser sysUser = new SysUser();
+		BeanUtils.copyProperties(sysUserDto, sysUser);
+		sysUserService.updateSysUserDept(sysUser);
+		return ResultVoUtil.success();
+	}
+	
+	@PutMapping("/role")
+	@ApiOperation("给用户添加对应的角色")
+	public ResultVo<SysUser> updateSysUserDept(@Valid @RequestBody List<SysUserRoleDto> list, BindingResult result) {
+		if (result.hasErrors()) {
+			String errors = result.getFieldError().getDefaultMessage();
+			return ResultVoUtil.error(1, errors);
+		}
+		sysUserService.updateRole(list);
 		return ResultVoUtil.success();
 	}
 

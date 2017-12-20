@@ -1,7 +1,10 @@
-package com.lichi.increaselimit.user.service;
+package com.lichi.increaselimit.sys.service;
+
+import java.util.List;
 
 import com.github.pagehelper.PageInfo;
-import com.lichi.increaselimit.user.entity.SysUser;
+import com.lichi.increaselimit.sys.controller.dto.SysUserRoleDto;
+import com.lichi.increaselimit.sys.entity.SysUser;
 
 /**
  * 系统用户service
@@ -56,6 +59,18 @@ public interface SysUserService {
 	 * 更新用户信息
 	 * @param sysUser
 	 */
-	void updateSysUser(SysUser sysUser);
+	void updatePassword(SysUser sysUser);
+
+	/**
+	 * 更新用户部门
+	 * @param sysUser
+	 */
+	void updateSysUserDept(SysUser sysUser);
+
+	/**
+	 * 跟用户添加角色信息
+	 * @param list
+	 */
+	void updateRole(List<SysUserRoleDto> list);
 	
 }
