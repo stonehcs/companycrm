@@ -16,14 +16,12 @@ public class SysMenu {
 	
 	private String menuName;
 	
-	/**
-	 * 父级
-	 */
-	private Integer parent;
+	private Integer pid;
 	
 	private Date createTime;
 	
 	private Date updateTime;
 	
 	private String remark;
+	
 }

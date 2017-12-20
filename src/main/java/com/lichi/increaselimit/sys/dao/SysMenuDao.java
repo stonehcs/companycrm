@@ -16,10 +16,29 @@ import com.lichi.increaselimit.sys.entity.SysMenu;
 @Mapper
 public interface SysMenuDao extends BaseMapper<SysMenu>{
 
+	/**
+	 * 根据名称查询
+	 * @param menuName
+	 * @return
+	 */
 	@Select("select * from t_sys_menu where menu_name = #{menuName}")
 	SysMenu selectByName(String menuName);
 
-	@Select("select * from t_sys_menu where parent = #{id}")
+	/**
+	 * 根据主键查询子节点
+	 * @param id
+	 * @return
+	 */
+	@Select("select * from t_sys_menu where pid = #{id}")
 	List<SysMenu> selectChild(Integer id);
+
+	/**
+	 * 根据parent查询父节点
+	 * @param parent
+	 * @return
+	 */
+	@Select("select * from t_sys_menu where pid = -1")
+	SysMenu selectRoot();
+	
 
 }

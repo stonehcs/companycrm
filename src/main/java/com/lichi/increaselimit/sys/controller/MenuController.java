@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.lichi.increaselimit.common.utils.ResultVoUtil;
 import com.lichi.increaselimit.common.vo.ResultVo;
 import com.lichi.increaselimit.sys.controller.dto.SysMenuDto;
@@ -33,12 +36,30 @@ public class MenuController {
 
 	@Autowired
 	private SysMenuService menuService;
+	
+	private JSONArray treeMenuList(List<SysMenu> menuList, int parentId) {
+        JSONArray childMenu = new JSONArray();  
+           for (SysMenu object : menuList) {  
+               JSONObject jsonMenu = (JSONObject) JSON.toJSON(object);
+               int menuId = (int) jsonMenu.get("id");  
+               int pid = (int) jsonMenu.get("pid");  
+               if (parentId == pid) {  
+                   JSONArray childs = treeMenuList(menuList, menuId);  
+                   jsonMenu.put("childs", childs);
+                   childMenu.add(jsonMenu);  
+               }  
+           }  
+           return childMenu;  
+   }
 
 	@GetMapping("/tree")
-	@ApiOperation("查询菜单树,暂时是列表  要修改")
-	public ResultVo<List<SysMenu>> getAll() {
+	@ApiOperation("查询菜单树")
+	public Object getAll() {
 		List<SysMenu> list = menuService.selectList();
-		return ResultVoUtil.success(list);
+		
+		JSONArray jsonArray = this.treeMenuList(list, -1);
+		
+		return ResultVoUtil.success(jsonArray);
 	}
 
 	@PostMapping

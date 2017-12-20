@@ -16,7 +16,7 @@ public class SysMenuUpdateDto {
 	private String menuName;
 	
 	@ApiModelProperty("父级菜单,如果是顶级菜单传-1")
-	private Integer parent;
+	private Integer pid;
 	
 	@ApiModelProperty("备注")
 	private String remark;
