@@ -1,5 +1,6 @@
 package com.lichi.increaselimit.sys.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -18,12 +19,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.pagehelper.PageInfo;
+import com.lichi.increaselimit.common.enums.ResultEnum;
+import com.lichi.increaselimit.common.exception.BusinessException;
 import com.lichi.increaselimit.common.utils.ResultVoUtil;
 import com.lichi.increaselimit.common.vo.ResultVo;
 import com.lichi.increaselimit.sys.controller.dto.RoleDto;
 import com.lichi.increaselimit.sys.controller.dto.RoleUpdateDto;
-import com.lichi.increaselimit.sys.entity.Role;
-import com.lichi.increaselimit.sys.service.RoleService;
+import com.lichi.increaselimit.sys.controller.dto.SysRoleResourceDto;
+import com.lichi.increaselimit.sys.entity.SysRole;
+import com.lichi.increaselimit.sys.entity.SysRoleResource;
+import com.lichi.increaselimit.sys.service.SysRoleService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -35,31 +40,31 @@ import io.swagger.annotations.ApiParam;
 public class RoleController {
 
 	@Autowired
-	private RoleService roleService;
+	private SysRoleService roleService;
 
 	@GetMapping
 	@ApiOperation("分页查询所有角色")
-	public ResultVo<PageInfo<Role>> getAll(
+	public ResultVo<PageInfo<SysRole>> getAll(
 			@ApiParam(value = "页码", required = false) @RequestParam(defaultValue = "1", required = false) Integer page,
 			@ApiParam(value = "条数", required = false) @RequestParam(defaultValue = "20", required = false) Integer size) {
-		PageInfo<Role> list = roleService.selectAll(page, size);
+		PageInfo<SysRole> list = roleService.selectAll(page, size);
 		return ResultVoUtil.success(list);
 	}
 	@GetMapping("/list")
 	@ApiOperation("查询所有角色")
-	public ResultVo<List<Role>> getAll() {
-		List<Role> list = roleService.selectList();
+	public ResultVo<List<SysRole>> getAll() {
+		List<SysRole> list = roleService.selectList();
 		return ResultVoUtil.success(list);
 	}
 
 	@PostMapping
 	@ApiOperation("添加角色信息")
-	public ResultVo<Role> add(@Valid @RequestBody RoleDto RoleDto, BindingResult result) {
+	public ResultVo<SysRole> add(@Valid @RequestBody RoleDto RoleDto, BindingResult result) {
 		if (result.hasErrors()) {
 			String errors = result.getFieldError().getDefaultMessage();
 			return ResultVoUtil.error(1, errors);
 		}
-		Role Role = new Role();
+		SysRole Role = new SysRole();
 		BeanUtils.copyProperties(RoleDto, Role);
 		roleService.insertOne(Role);
 		return ResultVoUtil.success();
@@ -67,12 +72,12 @@ public class RoleController {
 
 	@PutMapping
 	@ApiOperation("修改角色信息")
-	public ResultVo<Role> update(@Valid @RequestBody RoleUpdateDto RoleDto, BindingResult result) {
+	public ResultVo<SysRole> update(@Valid @RequestBody RoleUpdateDto RoleDto, BindingResult result) {
 		if (result.hasErrors()) {
 			String errors = result.getFieldError().getDefaultMessage();
 			return ResultVoUtil.error(1, errors);
 		}
-		Role Role = new Role();
+		SysRole Role = new SysRole();
 		BeanUtils.copyProperties(RoleDto, Role);
 		roleService.update(Role);
 		return ResultVoUtil.success();
@@ -80,15 +85,36 @@ public class RoleController {
 
 	@DeleteMapping("/{id}")
 	@ApiOperation("根据id删除角色信息")
-	public ResultVo<Role> delete(@PathVariable Integer id) {
+	public ResultVo<SysRole> delete(@PathVariable Integer id) {
 		roleService.deleteOne(id);
 		return ResultVoUtil.success();
 	}
 
 	@GetMapping("/{id}")
 	@ApiOperation("根据id查询角色信息")
-	public ResultVo<Role> get(@PathVariable Integer id) {
-		Role list = roleService.selectOne(id);
+	public ResultVo<SysRole> get(@PathVariable Integer id) {
+		SysRole list = roleService.selectOne(id);
 		return ResultVoUtil.success(list);
 	}
+	
+	@PostMapping("/resource")
+	@ApiOperation("添加角色信息")
+	public ResultVo<SysRole> addResource(@Valid @RequestBody List<SysRoleResourceDto> list, BindingResult result) {
+		if (result.hasErrors()) {
+			String errors = result.getFieldError().getDefaultMessage();
+			return ResultVoUtil.error(1, errors);
+		}
+		List<SysRoleResource> resultlist = new ArrayList<>();
+		list.stream().forEach(e ->{
+			if(null == e.getButtonId() && null == e.getMenuId()) {
+				throw new BusinessException(ResultEnum.MUNE_BOTTUN_BOTH_NULL);
+			}
+			SysRoleResource sysRoleResource = new SysRoleResource();
+			BeanUtils.copyProperties(e, sysRoleResource);
+			resultlist.add(sysRoleResource);
+		});
+		roleService.addResource(resultlist);
+		return ResultVoUtil.success();
+	}
+
 }

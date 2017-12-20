@@ -57,6 +57,8 @@ public enum ResultEnum {
     DEPT_EXIST(25, "部门已存在"), 
     
     ROLE_EXIST(25, "角色已存在"), 
+    
+    MUNE_BOTTUN_BOTH_NULL(25, "菜单id和按钮id不能同时为空"), 
     ;
 
     private Integer code;

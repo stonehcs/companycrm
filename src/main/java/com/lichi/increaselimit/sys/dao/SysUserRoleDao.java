@@ -12,6 +12,6 @@ import com.lichi.increaselimit.sys.entity.SysUserRole;
  *
  */
 @Mapper
-public interface SysUserRoleMapper extends BaseMapper<SysUserRole> {
+public interface SysUserRoleDao extends BaseMapper<SysUserRole> {
 
 }

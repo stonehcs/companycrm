@@ -14,7 +14,7 @@ import com.lichi.increaselimit.sys.entity.SysUserVo;
  *
  */
 @Mapper
-public interface SysUserMapper extends BaseMapper<SysUser> {
+public interface SysUserDao extends BaseMapper<SysUser> {
 
 	/**
 	 * 获取用户信息
@@ -22,7 +22,7 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
 	 * @param username
 	 * @return
 	 */
-	@Select("select a.*,b.dept_name from t_sys_user a,t_sys_dept b where a.dept_id = b.id and mobile=#{mobile}")
+	@Select("select a.*,b.dept_name from t_sys_user a left join t_sys_dept b on a.dept_id = b.id where mobile=#{mobile}")
 	SysUserVo loadUserInfoByMobile(String mobile);
 
 }

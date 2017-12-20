@@ -10,32 +10,32 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.lichi.increaselimit.common.enums.ResultEnum;
 import com.lichi.increaselimit.common.exception.BusinessException;
-import com.lichi.increaselimit.sys.dao.DeptDao;
-import com.lichi.increaselimit.sys.entity.Dept;
-import com.lichi.increaselimit.sys.service.DeptService;
+import com.lichi.increaselimit.sys.dao.SysDeptDao;
+import com.lichi.increaselimit.sys.entity.SysDept;
+import com.lichi.increaselimit.sys.service.SysDeptService;
 
 @Service
-public class DeptServiceImpl implements DeptService{
+public class SysDeptServiceImpl implements SysDeptService{
 	@Autowired
-	private DeptDao deptDao;
+	private SysDeptDao deptDao;
 
 	@Override
-	public PageInfo<Dept> selectAll(Integer page, Integer size) {
+	public PageInfo<SysDept> selectAll(Integer page, Integer size) {
 		PageHelper.startPage(page, size);
 		PageHelper.orderBy("create_time desc");
-		List<Dept> list = deptDao.selectAll();
-		PageInfo<Dept> info = new PageInfo<>(list);
+		List<SysDept> list = deptDao.selectAll();
+		PageInfo<SysDept> info = new PageInfo<>(list);
 		return info;
 	}
 
 	@Override
-	public Dept selectOne(Integer id) {
+	public SysDept selectOne(Integer id) {
 		return deptDao.selectByPrimaryKey(id);
 	}
 
 	@Override
-	public void insertOne(Dept dept) {
-		Dept deptresult = deptDao.selectByName(dept.getDeptName());
+	public void insertOne(SysDept dept) {
+		SysDept deptresult = deptDao.selectByName(dept.getDeptName());
 		if(deptresult != null) {
 			throw new BusinessException(ResultEnum.DEPT_EXIST);
 		}
@@ -50,16 +50,16 @@ public class DeptServiceImpl implements DeptService{
 	}
 
 	@Override
-	public void update(Dept dept) {
+	public void update(SysDept dept) {
 		dept.setUpdateTime(new Date());
 		deptDao.updateByPrimaryKeySelective(dept);
 		
 	}
 
 	@Override
-	public List<Dept> selectList() {
+	public List<SysDept> selectList() {
 		PageHelper.orderBy("create_time desc");
-		List<Dept> list = deptDao.selectAll();
+		List<SysDept> list = deptDao.selectAll();
 		return list;
 	}
 

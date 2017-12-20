@@ -7,17 +7,16 @@ import javax.persistence.Table;
 
 import lombok.Data;
 
-@Table(name = "t_sys_role")
+@Table(name = "t_sys_dept")
 @Data
-public class Role {
+public class SysDept {
 	
 	@Id
 	private Integer id;
 	
-	private String roleName;
+	private String deptName;
 	
 	private Date createTime;
 	
 	private Date updateTime;
-	
 }

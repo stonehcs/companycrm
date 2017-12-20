@@ -10,32 +10,36 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.lichi.increaselimit.common.enums.ResultEnum;
 import com.lichi.increaselimit.common.exception.BusinessException;
-import com.lichi.increaselimit.sys.dao.RoleDao;
-import com.lichi.increaselimit.sys.entity.Role;
-import com.lichi.increaselimit.sys.service.RoleService;
+import com.lichi.increaselimit.sys.dao.SysRoleDao;
+import com.lichi.increaselimit.sys.dao.SysRoleResourceDao;
+import com.lichi.increaselimit.sys.entity.SysRole;
+import com.lichi.increaselimit.sys.entity.SysRoleResource;
+import com.lichi.increaselimit.sys.service.SysRoleService;
 
 @Service
-public class RoleServiceImpl implements RoleService{
+public class SysRoleServiceImpl implements SysRoleService{
 	@Autowired
-	private RoleDao roleDao;
+	private SysRoleDao roleDao;
+	@Autowired
+	private SysRoleResourceDao sysRoleResourceDao;
 
 	@Override
-	public PageInfo<Role> selectAll(Integer page, Integer size) {
+	public PageInfo<SysRole> selectAll(Integer page, Integer size) {
 		PageHelper.startPage(page, size);
 		PageHelper.orderBy("create_time desc");
-		List<Role> list = roleDao.selectAll();
-		PageInfo<Role> info = new PageInfo<>(list);
+		List<SysRole> list = roleDao.selectAll();
+		PageInfo<SysRole> info = new PageInfo<>(list);
 		return info;
 	}
 
 	@Override
-	public Role selectOne(Integer id) {
+	public SysRole selectOne(Integer id) {
 		return roleDao.selectByPrimaryKey(id);
 	}
 
 	@Override
-	public void insertOne(Role Role) {
-		Role Roleresult = roleDao.selectByName(Role.getRoleName());
+	public void insertOne(SysRole Role) {
+		SysRole Roleresult = roleDao.selectByName(Role.getRoleName());
 		if(Roleresult != null) {
 			throw new BusinessException(ResultEnum.ROLE_EXIST);
 		}
@@ -50,17 +54,22 @@ public class RoleServiceImpl implements RoleService{
 	}
 
 	@Override
-	public void update(Role Role) {
+	public void update(SysRole Role) {
 		Role.setUpdateTime(new Date());
 		roleDao.updateByPrimaryKeySelective(Role);
 		
 	}
 
 	@Override
-	public List<Role> selectList() {
+	public List<SysRole> selectList() {
 		PageHelper.orderBy("create_time desc");
-		List<Role> list = roleDao.selectAll();
+		List<SysRole> list = roleDao.selectAll();
 		return list;
+	}
+
+	@Override
+	public void addResource(List<SysRoleResource> resultlist) {
+		sysRoleResourceDao.insertList(resultlist);
 	}
 
 }

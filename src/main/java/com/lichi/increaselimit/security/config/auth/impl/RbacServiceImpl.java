@@ -55,7 +55,7 @@ public class RbacServiceImpl implements RbacService {
 				break;
 			}
 		}
-		return true;
+		return hasPermission;
 	}
 
 }

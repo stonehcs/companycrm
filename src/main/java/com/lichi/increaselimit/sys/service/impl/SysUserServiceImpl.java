@@ -18,8 +18,8 @@ import com.lichi.increaselimit.common.exception.BusinessException;
 import com.lichi.increaselimit.common.utils.HuanXinUtils;
 import com.lichi.increaselimit.common.utils.UserIdUtils;
 import com.lichi.increaselimit.sys.controller.dto.SysUserRoleDto;
-import com.lichi.increaselimit.sys.dao.SysUserMapper;
-import com.lichi.increaselimit.sys.dao.SysUserRoleMapper;
+import com.lichi.increaselimit.sys.dao.SysUserDao;
+import com.lichi.increaselimit.sys.dao.SysUserRoleDao;
 import com.lichi.increaselimit.sys.entity.SysUser;
 import com.lichi.increaselimit.sys.entity.SysUserRole;
 import com.lichi.increaselimit.sys.service.SysUserService;
@@ -30,9 +30,9 @@ import tk.mybatis.mapper.entity.Example;
 public class SysUserServiceImpl implements SysUserService {
 
 	@Autowired
-	private SysUserMapper sysUserMapper;
+	private SysUserDao sysUserMapper;
 	@Autowired
-	private SysUserRoleMapper sysUserRoleMapper;
+	private SysUserRoleDao sysUserRoleMapper;
 
 	@Autowired
 	private RestTemplate restTemplate;
