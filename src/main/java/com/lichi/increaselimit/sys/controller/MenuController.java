@@ -36,29 +36,29 @@ public class MenuController {
 
 	@Autowired
 	private SysMenuService menuService;
-	
+
 	private JSONArray treeMenuList(List<SysMenu> menuList, int parentId) {
-        JSONArray childMenu = new JSONArray();  
-           for (SysMenu object : menuList) {  
-               JSONObject jsonMenu = (JSONObject) JSON.toJSON(object);
-               int menuId = (int) jsonMenu.get("id");  
-               int pid = (int) jsonMenu.get("pid");  
-               if (parentId == pid) {  
-                   JSONArray childs = treeMenuList(menuList, menuId);  
-                   jsonMenu.put("childs", childs);
-                   childMenu.add(jsonMenu);  
-               }  
-           }  
-           return childMenu;  
-   }
+		JSONArray childMenu = new JSONArray();
+		for (SysMenu object : menuList) {
+			JSONObject jsonMenu = (JSONObject) JSON.toJSON(object);
+			int menuId = (int) jsonMenu.get("id");
+			int pid = (int) jsonMenu.get("pid");
+			if (parentId == pid) {
+				JSONArray childs = treeMenuList(menuList, menuId);
+				jsonMenu.put("childs", childs);
+				childMenu.add(jsonMenu);
+			}
+		}
+		return childMenu;
+	}
 
 	@GetMapping("/tree")
 	@ApiOperation("查询菜单树")
 	public Object getAll() {
 		List<SysMenu> list = menuService.selectList();
-		
+
 		JSONArray jsonArray = this.treeMenuList(list, -1);
-		
+
 		return ResultVoUtil.success(jsonArray);
 	}
 

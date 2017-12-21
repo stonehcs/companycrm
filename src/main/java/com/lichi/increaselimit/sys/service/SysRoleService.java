@@ -23,5 +23,11 @@ public interface SysRoleService {
 	void addResource(List<SysRoleResource> resultlist);
 
 	List<SysRoleResource> selectResource(Integer id);
+	
+	
+	/**
+	 * 通过id获取用户角色信息
+	 */
+	List<SysRole> getUserRole(String id);
 
 }

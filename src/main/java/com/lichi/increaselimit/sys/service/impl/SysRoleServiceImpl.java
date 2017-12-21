@@ -82,4 +82,9 @@ public class SysRoleServiceImpl implements SysRoleService{
 		return list;
 	}
 
+	@Override
+	public List<SysRole> getUserRole(String id) {
+		return roleDao.getUserRole(id);
+	}
+
 }

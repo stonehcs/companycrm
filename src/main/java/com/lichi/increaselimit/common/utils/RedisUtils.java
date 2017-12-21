@@ -1,6 +1,7 @@
 package com.lichi.increaselimit.common.utils;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Map;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,6 +71,25 @@ public class RedisUtils {
 					connection.expire(string.getBytes(), liveTime);
 				}
 				return 1L;
+			}
+		});
+	}
+	public void putMap(final String string,Map map) {
+		redisTemplate.execute(new RedisCallback() {
+			@Override
+			public Long doInRedis(RedisConnection connection) throws DataAccessException {
+				connection.hMSet(string.getBytes(), map);
+				return 1L;
+			}
+		});
+	}
+	
+	public Map getMap(final String string) {
+		return (Map) redisTemplate.execute(new RedisCallback() {
+			@Override
+			public Map<byte[], byte[]> doInRedis(RedisConnection connection) throws DataAccessException {
+				Map<byte[], byte[]> map = connection.hGetAll(string.getBytes());
+				return map;
 			}
 		});
 	}

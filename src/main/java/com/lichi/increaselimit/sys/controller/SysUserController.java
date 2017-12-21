@@ -35,7 +35,9 @@ import com.lichi.increaselimit.sys.controller.dto.SysUserDeptDto;
 import com.lichi.increaselimit.sys.controller.dto.SysUserDto;
 import com.lichi.increaselimit.sys.controller.dto.SysUserRoleDto;
 import com.lichi.increaselimit.sys.controller.dto.SysUserUpdateDto;
+import com.lichi.increaselimit.sys.entity.SysRole;
 import com.lichi.increaselimit.sys.entity.SysUser;
+import com.lichi.increaselimit.sys.service.SysRoleService;
 import com.lichi.increaselimit.sys.service.SysUserService;
 
 import io.swagger.annotations.Api;
@@ -58,6 +60,9 @@ public class SysUserController {
 
 	@Autowired
 	private SysUserService sysUserService;
+	
+	@Autowired
+	private SysRoleService sysRoleService;
 
 	@PostMapping("/regiter")
 	@ApiOperation("注册，调用此接口请先调用发送验证码的接口")
@@ -154,6 +159,13 @@ public class SysUserController {
 		}
 		sysUserService.updateRole(list);
 		return ResultVoUtil.success();
+	}
+	
+	@GetMapping("/role/{id}")
+	@ApiOperation("获取用户对应的角色")
+	public ResultVo<List<SysRole>> getUserRole(@PathVariable String id) {
+		List<SysRole> userRole = sysRoleService.getUserRole(id);
+		return ResultVoUtil.success(userRole);
 	}
 
 	/**
