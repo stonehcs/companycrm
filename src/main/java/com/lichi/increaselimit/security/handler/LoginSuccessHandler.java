@@ -12,9 +12,9 @@ import org.springframework.security.web.authentication.SavedRequestAwareAuthenti
 import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSONObject;
+import com.lichi.increaselimit.common.utils.IdUtils;
 import com.lichi.increaselimit.common.utils.RedisUtils;
 import com.lichi.increaselimit.common.utils.ResultVoUtil;
-import com.lichi.increaselimit.security.UserUtils;
 import com.lichi.increaselimit.sys.entity.SysUser;
 
 import lombok.extern.slf4j.Slf4j;
@@ -37,13 +37,15 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
 			Authentication authentication) throws ServletException, IOException {
 		log.info("登录成功");
 
-		String username = ((SysUser) authentication.getPrincipal()).getUsername();
+		SysUser sysUser = (SysUser) authentication.getPrincipal();
+		
+		String token = IdUtils.getUUID();
 		
 		//将用户信息放入redis
-		redisUtils.set("login_user:" + username,JSONObject.toJSONString(UserUtils.getUserInfo()),7200);
+		redisUtils.set("login_sys_user:" + token,JSONObject.toJSONString(sysUser),7200);
 		
 		response.setContentType("application/json;charset=UTF-8");
-		response.getWriter().write(JSONObject.toJSONString(ResultVoUtil.success(UserUtils.getUserInfo())));
+		response.getWriter().write(JSONObject.toJSONString(ResultVoUtil.success(token)));
 	}
 
 }

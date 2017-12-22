@@ -63,7 +63,7 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
 			.authorizeRequests()
 				.requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
 				.and()
-			.csrf().disable();
+			.sessionManagement().disable().csrf().disable();
 		
 		http.exceptionHandling().accessDeniedHandler(accessDeniedHandler);
 		

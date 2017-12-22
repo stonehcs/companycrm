@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -176,9 +177,9 @@ public class SysUserController {
 //	@ApiImplicitParams({
 //			@ApiImplicitParam(name = "token", value = "认证token", required = true, 
 //					dataType = "string", paramType = "header", defaultValue = "username") })
-	public ResultVo<SysUser> getCurrentUser(HttpServletRequest request) {
+	public ResultVo<SysUser> getCurrentUser(@RequestHeader("token") String token) {
 
-		String strJson = redisUtils.get("login_user:" + request.getHeader("token"));
+		String strJson = redisUtils.get("login_sys_user:" + token);
 
 		SysUser user = JSONObject.parseObject(strJson, SysUser.class);
 

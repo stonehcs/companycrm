@@ -16,7 +16,7 @@ import com.github.pagehelper.PageInfo;
 import com.lichi.increaselimit.common.enums.ResultEnum;
 import com.lichi.increaselimit.common.exception.BusinessException;
 import com.lichi.increaselimit.common.utils.HuanXinUtils;
-import com.lichi.increaselimit.common.utils.UserIdUtils;
+import com.lichi.increaselimit.common.utils.IdUtils;
 import com.lichi.increaselimit.sys.controller.dto.SysUserRoleDto;
 import com.lichi.increaselimit.sys.dao.SysUserDao;
 import com.lichi.increaselimit.sys.dao.SysUserRoleDao;
@@ -58,7 +58,7 @@ public class SysUserServiceImpl implements SysUserService {
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public void insertUser(SysUser sysUser) {
-		String userId = UserIdUtils.getUserId();
+		String userId = IdUtils.getUserId();
 		sysUser.setId(userId);
 		sysUser.setCreateTime(new Date());
 		sysUser.setUpdateTime(new Date());

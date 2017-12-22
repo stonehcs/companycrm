@@ -36,7 +36,7 @@ public class RbacServiceImpl implements RbacService {
 		if (!StringUtils.isBlank(token)) {
 			log.info("用户名：" + token);
 
-			boolean exists = redisUtils.exists("login_user:" + token);
+			boolean exists = redisUtils.exists("login_sys_user:" + token);
 			if (exists) {
 				redisUtils.expire("login_user:" + token, 7200);
 				hasPermission = true;
@@ -46,14 +46,14 @@ public class RbacServiceImpl implements RbacService {
 		//从缓存中获取权限
 		String string = redisUtils.get("resource:" + token);
 
-		if (StringUtils.isNoneBlank(string)) {
+		if (StringUtils.isNotBlank(string)) {
 
 			JSONArray parseArray = JSON.parseArray(string);
 
 			for (Object resource : parseArray) {
 				ResourceVo resourceVo = (ResourceVo) resource;
 				if (antPathMatcher.match(resourceVo.getUrl(), request.getRequestURI())
-						&& antPathMatcher.match(resourceVo.getMethod(), request.getMethod())) {
+						&& StringUtils.equalsIgnoreCase(resourceVo.getMethod(), request.getMethod())) {
 					hasPermission = true;
 					break;
 				}

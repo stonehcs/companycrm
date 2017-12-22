@@ -1,12 +1,14 @@
 package com.lichi.increaselimit.common.utils;
 
+import java.util.UUID;
+
 /**
  * 生成用户id
  * 
  * @author majie
  *
  */
-public class UserIdUtils {
+public class IdUtils {
 
 	public static SnowflakeIdWorker SNOWFLAKEIDWORKER = new SnowflakeIdWorker(0, 0);
 
@@ -17,6 +19,14 @@ public class UserIdUtils {
 	 */
 	public static String getUserId() {
 		return SNOWFLAKEIDWORKER.nextId() + "";
+	}
+	
+	/**
+	 * 获取uuid
+	 * @return
+	 */
+	public static String getUUID() {
+		return UUID.randomUUID().toString().replaceAll("-", "");
 	}
 
 	public static void main(String[] args) {
