@@ -31,7 +31,7 @@ public class RbacServiceImpl implements RbacService {
 		
 		String token = request.getHeader("token");
 		
-		log.info("用户资源权限校验,请求资源:{},token:{}" + request.getRequestURI(),token);
+		log.info("用户资源权限校验,请求资源:{},token:{}",request.getRequestURI(),token);
 
 		boolean hasPermission = false;
 
