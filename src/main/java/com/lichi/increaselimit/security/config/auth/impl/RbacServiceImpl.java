@@ -40,6 +40,10 @@ public class RbacServiceImpl implements RbacService {
 
 		String token = request.getHeader("token");
 
+		if(request.getRequestURI().startsWith("/websocket")) {
+			token = request.getParameter("token");
+		}
+		
 		log.info("用户资源权限校验,请求资源:{},token:{}", request.getRequestURI(), token);
 
 		boolean hasPermission = false;
@@ -49,6 +53,8 @@ public class RbacServiceImpl implements RbacService {
 			boolean exists = redisUtils.exists(Constants.LOGIN_SYS_USER + token);
 			if (exists) {
 				redisUtils.expire(Constants.LOGIN_SYS_USER + token, 7200);
+			}else {
+				return hasPermission;
 			}
 		} else {
 			return hasPermission;
