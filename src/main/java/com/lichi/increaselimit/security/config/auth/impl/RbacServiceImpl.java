@@ -62,8 +62,9 @@ public class RbacServiceImpl implements RbacService {
 				}
 			}
 		}else {
-//			hasPermission = false;     这里暂时注释掉
+//			hasPermission = false;     这里暂时注释掉  TODO:
 		}
+		hasPermission = true;   //暂时先放过带有token的请求
 		return hasPermission;
 	}
 
