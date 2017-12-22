@@ -27,6 +27,7 @@ import com.lichi.increaselimit.community.service.ArticleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author by majie on 2017/11/15.
@@ -34,6 +35,7 @@ import io.swagger.annotations.ApiParam;
 @RestController
 @Api(description = "帖子")
 @RequestMapping("/circle/article")
+@Slf4j
 public class ArticleController {
 
 	@Autowired
@@ -44,8 +46,10 @@ public class ArticleController {
 	public ResultVo<Article> postArticle(@Valid @RequestBody ArticleDto articledto, BindingResult result) {
 		if (result.hasErrors()) {
 			String errors = result.getFieldError().getDefaultMessage();
+			log.error("发帖参数错误：" + errors);
 			return ResultVoUtil.error(1, errors);
 		}
+		log.info("发帖,帖子标题:{}",articledto.getTitle());
 		Article article = new Article();
 		BeanUtils.copyProperties(articledto, article);
 		articleService.add(article);
@@ -57,8 +61,10 @@ public class ArticleController {
 	public ResultVo<Article> update(@Valid @RequestBody ArticleUpdateDto articledto, BindingResult result) {
 		if (result.hasErrors()) {
 			String errors = result.getFieldError().getDefaultMessage();
+			log.error("修改帖子参数错误：" + errors);
 			return ResultVoUtil.error(1, errors);
 		}
+		log.info("更新帖子,帖子id:{}",articledto.getId());
 		Article article = new Article();
 		BeanUtils.copyProperties(articledto, article);
 		articleService.update(article);
@@ -69,6 +75,7 @@ public class ArticleController {
 	@DeleteMapping("/{id}")
 	@ApiOperation(value = "根据id删除帖子")
 	public ResultVo<Article> deleteArticle(@PathVariable Integer id) {
+		log.info("删除帖子,帖子id:{}",id);
 		articleService.delete(id);
 		return ResultVoUtil.success();
 	}
@@ -79,6 +86,7 @@ public class ArticleController {
 			@ApiParam(value = "页码", required = false) @RequestParam(defaultValue = "1", required = false) Integer page,
 			@ApiParam(value = "条数", required = false) @RequestParam(defaultValue = "20", required = false) Integer size,
 			@ApiParam(value = "圈子id", required = true) @RequestParam Integer circleId) {
+		log.info("分页查询对应圈子下帖子列表,圈子id:{}",circleId);
 		PageInfo<ArticleVo> articles = articleService.getByPage(page, size, circleId);
 		return ResultVoUtil.success(articles);
 
@@ -89,6 +97,7 @@ public class ArticleController {
 	public ResultVo<PageInfo<ArticleVo>> getHotArticle(
 			@ApiParam(value = "页码", required = false) @RequestParam(defaultValue = "1", required = false) Integer page,
 			@ApiParam(value = "条数", required = false) @RequestParam(defaultValue = "20", required = false) Integer size) {
+		log.info("查询热门帖子");
 		PageInfo<ArticleVo> articles = articleService.getHotByPage(page, size);
 		return ResultVoUtil.success(articles);
 
@@ -97,6 +106,7 @@ public class ArticleController {
 	@GetMapping("/{id}")
 	@ApiOperation(value = "根据id查询帖子")
 	public ResultVo<ArticleVo> getArticle(@PathVariable Integer id) {
+		log.info("查询id:{}对应的帖子信息",id);
 		ArticleVo article = articleService.get(id);
 		return ResultVoUtil.success(article);
 
@@ -109,6 +119,7 @@ public class ArticleController {
 			@ApiParam(value = "条数", required = false) @RequestParam(defaultValue = "20", required = false) Integer size,
 			@PathVariable String name,
 			@PathVariable Integer circleId) {
+		log.info("模糊查询帖子信息,圈子id:{},关键字{}",circleId,name);
 		PageInfo<ArticleVo> circle = articleService.seleteByLike(page, size, name,circleId);
 		return ResultVoUtil.success(circle);
 	}

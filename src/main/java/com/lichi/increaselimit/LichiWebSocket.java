@@ -1,6 +1,7 @@
 package com.lichi.increaselimit;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -14,9 +15,9 @@ import javax.websocket.server.ServerEndpoint;
 
 import org.springframework.stereotype.Component;
 
+import com.lichi.increaselimit.common.Constants;
 import com.lichi.increaselimit.common.utils.ApplicationContextRegister;
-import com.lichi.increaselimit.user.entity.LoginUser;
-import com.lichi.increaselimit.user.service.LoginUserService;
+import com.lichi.increaselimit.common.utils.RedisUtils;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -50,11 +51,9 @@ public class LichiWebSocket {
 		addOnlineCount(); // 在线数加1
 		log.info("id:{}用户加入！当前在线人数为" + getOnlineCount(),id);
 
-		LoginUser login = new LoginUser();
-		login.setId(id);
-		LoginUserService loginUserService = ApplicationContextRegister.getApplicationContext()
-				.getBean(LoginUserService.class);
-		loginUserService.addLoginUser(login);
+		RedisUtils redisUtils = ApplicationContextRegister.getApplicationContext()
+				.getBean(RedisUtils.class);
+		redisUtils.set(Constants.LOGIN_KEFU + id,LocalDateTime.now().toString());
 		// try {
 		// sendMessage(CommonConstant.CURRENT_WANGING_NUMBER.toString());
 		// } catch (IOException e) {
@@ -72,9 +71,9 @@ public class LichiWebSocket {
 		log.info("id:{}用户连接关闭！当前在线人数为" + getOnlineCount(),id);
 		
 		
-		LoginUserService loginUserService = ApplicationContextRegister.getApplicationContext()
-				.getBean(LoginUserService.class);
-		loginUserService.deleteLoginUser(id);
+		RedisUtils redisUtils = ApplicationContextRegister.getApplicationContext()
+				.getBean(RedisUtils.class);
+		redisUtils.del(Constants.LOGIN_KEFU + id);
 	}
 
 	/**
@@ -107,9 +106,9 @@ public class LichiWebSocket {
 	public void onError(@PathParam("id") String id,Throwable error) {
 		log.info("id:{}的用户websocket异常",id);
 		webSocketSet.remove(this); 
-		LoginUserService loginUserService = ApplicationContextRegister.getApplicationContext()
-				.getBean(LoginUserService.class);
-		loginUserService.deleteLoginUser(id);
+		RedisUtils redisUtils = ApplicationContextRegister.getApplicationContext()
+				.getBean(RedisUtils.class);
+		redisUtils.del(Constants.LOGIN_KEFU + id);
 	}
 
 	/**

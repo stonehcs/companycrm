@@ -44,6 +44,7 @@ import com.lichi.increaselimit.sys.service.SysUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 系统用户信息controller
@@ -54,6 +55,7 @@ import io.swagger.annotations.ApiParam;
 @Api(description = "系统用户信息")
 @RestController
 @RequestMapping("/sysuser")
+@Slf4j
 public class SysUserController {
 
 	@Autowired
@@ -71,6 +73,7 @@ public class SysUserController {
 			HttpServletRequest request, HttpServletResponse response) throws IOException {
 		if (result.hasErrors()) {
 			String errors = result.getFieldError().getDefaultMessage();
+			log.error("用户注册参数错误:{}",errors);
 			return ResultVoUtil.error(1, errors);
 		}
 		if (!StringUtil.ValidateMobile(sysUserDto.getMobile())) {
@@ -89,6 +92,8 @@ public class SysUserController {
 
 		SysUser sysUser = new SysUser();
 		BeanUtils.copyProperties(sysUserDto, sysUser);
+		
+		log.info("用户注册,手机号码:{}",sysUser.getMobile());
 
 		// 注册的时候用户名默认为手机号码
 		sysUser.setUsername(sysUser.getMobile());
@@ -103,6 +108,7 @@ public class SysUserController {
 	public ResultVo<PageInfo<SysUser>> getAll(
 			@ApiParam(value = "页码", required = false) @RequestParam(defaultValue = "1", required = false) Integer page,
 			@ApiParam(value = "条数", required = false) @RequestParam(defaultValue = "20", required = false) Integer size) {
+		log.info("分页查询所有用户");
 		PageInfo<SysUser> list = sysUserService.selectAll(page, size);
 		return ResultVoUtil.success(list);
 	}
@@ -110,6 +116,7 @@ public class SysUserController {
 	@DeleteMapping("/{id}")
 	@ApiOperation("根据系统用户id删除用户信息")
 	public ResultVo<SysUser> deleteSysUser(@PathVariable String id) {
+		log.info("删除系统用户信息,id:{}",id);
 		sysUserService.deleteSysUser(id);
 		return ResultVoUtil.success();
 	}
@@ -119,6 +126,7 @@ public class SysUserController {
 	public ResultVo<SysUser> updateSysUser(@Valid @RequestBody SysUserUpdateDto sysUserDto, BindingResult result) {
 		if (result.hasErrors()) {
 			String errors = result.getFieldError().getDefaultMessage();
+			log.error("用户修改密码参数错误:{}",errors);
 			return ResultVoUtil.error(1, errors);
 		}
 		if (!StringUtil.ValidateMobile(sysUserDto.getMobile())) {
@@ -132,6 +140,7 @@ public class SysUserController {
 		if (!sysUserDto.getCode().equals(code.getCode())) {
 			throw new BusinessException(ResultEnum.VALIDATECODE_ERROR);
 		}
+		log.info("修改用户密码,用户手机哈:{}",sysUserDto.getMobile());
 		SysUser sysUser = new SysUser();
 		BeanUtils.copyProperties(sysUserDto, sysUser);
 		sysUserService.updatePassword(sysUser);
@@ -143,8 +152,10 @@ public class SysUserController {
 	public ResultVo<SysUser> updateSysUserDept(@Valid @RequestBody SysUserDeptDto sysUserDto, BindingResult result) {
 		if (result.hasErrors()) {
 			String errors = result.getFieldError().getDefaultMessage();
+			log.error("修改用户部门参数错误:{}",errors);
 			return ResultVoUtil.error(1, errors);
 		}
+		log.error("修改用户部门,用户id:{},部门id:{}",sysUserDto.getId(),sysUserDto.getDeptId());
 		SysUser sysUser = new SysUser();
 		BeanUtils.copyProperties(sysUserDto, sysUser);
 		sysUserService.updateSysUserDept(sysUser);
@@ -156,6 +167,7 @@ public class SysUserController {
 	public ResultVo<SysUser> updateSysUserDept(@Valid @RequestBody List<SysUserRoleDto> list, BindingResult result) {
 		if (result.hasErrors()) {
 			String errors = result.getFieldError().getDefaultMessage();
+			log.error("添加用户角色参数错误:{}",errors);
 			return ResultVoUtil.error(1, errors);
 		}
 		sysUserService.updateRole(list);
@@ -165,6 +177,7 @@ public class SysUserController {
 	@GetMapping("/role/{id}")
 	@ApiOperation("获取用户对应的角色")
 	public ResultVo<List<SysRole>> getUserRole(@PathVariable String id) {
+		log.error("获取用户对应的角色,用户id:{},部门id:{}",id);
 		List<SysRole> userRole = sysRoleService.getUserRole(id);
 		return ResultVoUtil.success(userRole);
 	}
@@ -179,7 +192,9 @@ public class SysUserController {
 //					dataType = "string", paramType = "header", defaultValue = "username") })
 	public ResultVo<SysUser> getCurrentUser(@RequestHeader("token") String token) {
 
-		String strJson = redisUtils.get("login_sys_user:" + token);
+		log.error("获取当前用户信息,用户token:{}",token);
+		
+		String strJson = redisUtils.get(Constants.LOGIN_SYS_USER + token);
 
 		SysUser user = JSONObject.parseObject(strJson, SysUser.class);
 

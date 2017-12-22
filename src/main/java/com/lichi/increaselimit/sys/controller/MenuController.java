@@ -28,10 +28,12 @@ import com.lichi.increaselimit.sys.service.SysMenuService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 
 @Api(description = "菜单信息")
 @RestController
 @RequestMapping("/menu")
+@Slf4j
 public class MenuController {
 
 	@Autowired
@@ -55,6 +57,8 @@ public class MenuController {
 	@GetMapping("/tree")
 	@ApiOperation("查询菜单树")
 	public Object getAll() {
+		
+		log.info("查询菜单树");
 		List<SysMenu> list = menuService.selectList();
 
 		JSONArray jsonArray = this.treeMenuList(list, -1);
@@ -64,33 +68,38 @@ public class MenuController {
 
 	@PostMapping
 	@ApiOperation("添加菜单信息")
-	public ResultVo<SysMenu> add(@Valid @RequestBody SysMenuDto MenuDto, BindingResult result) {
+	public ResultVo<SysMenu> add(@Valid @RequestBody SysMenuDto menuDto, BindingResult result) {
 		if (result.hasErrors()) {
 			String errors = result.getFieldError().getDefaultMessage();
+			log.error("添加菜单信息参数错误:{}",errors);
 			return ResultVoUtil.error(1, errors);
 		}
-		SysMenu Menu = new SysMenu();
-		BeanUtils.copyProperties(MenuDto, Menu);
-		menuService.insertOne(Menu);
+		log.info("添加菜单信息,菜单名称:{}",menuDto.getMenuName());
+		SysMenu menu = new SysMenu();
+		BeanUtils.copyProperties(menuDto, menu);
+		menuService.insertOne(menu);
 		return ResultVoUtil.success();
 	}
 
 	@PutMapping
 	@ApiOperation("修改菜单信息")
-	public ResultVo<SysMenu> update(@Valid @RequestBody SysMenuUpdateDto MenuDto, BindingResult result) {
+	public ResultVo<SysMenu> update(@Valid @RequestBody SysMenuUpdateDto menuDto, BindingResult result) {
 		if (result.hasErrors()) {
 			String errors = result.getFieldError().getDefaultMessage();
+			log.error("修改菜单信息参数错误:{}",errors);
 			return ResultVoUtil.error(1, errors);
 		}
-		SysMenu Menu = new SysMenu();
-		BeanUtils.copyProperties(MenuDto, Menu);
-		menuService.update(Menu);
+		log.info("修改菜单信息,菜单名称:{}",menuDto.getMenuName());
+		SysMenu menu = new SysMenu();
+		BeanUtils.copyProperties(menuDto, menu);
+		menuService.update(menu);
 		return ResultVoUtil.success();
 	}
 
 	@DeleteMapping("/{id}")
 	@ApiOperation("根据id删除菜单信息")
 	public ResultVo<SysMenu> delete(@PathVariable Integer id) {
+		log.info("删除菜单信息,菜单id:{}",id);
 		menuService.deleteOne(id);
 		return ResultVoUtil.success();
 	}
@@ -98,6 +107,7 @@ public class MenuController {
 	@GetMapping("/{id}")
 	@ApiOperation("根据id查询菜单信息")
 	public ResultVo<SysMenu> get(@PathVariable Integer id) {
+		log.info("查询菜单信息,菜单id:{}",id);
 		SysMenu list = menuService.selectOne(id);
 		return ResultVoUtil.success(list);
 	}

@@ -29,6 +29,7 @@ import com.lichi.increaselimit.course.service.TeacherService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 讲师controller
@@ -39,6 +40,7 @@ import io.swagger.annotations.ApiParam;
 @RestController
 @RequestMapping("/teacher")
 @Api(description = "讲师")
+@Slf4j
 public class TeacherController {
 
 	@Autowired
@@ -49,12 +51,14 @@ public class TeacherController {
 	public ResultVo<PageInfo<Teacher>> getTeacherList(
 			@ApiParam(value = "页码", required = false) @RequestParam(defaultValue = "1", required = false) Integer page,
 			@ApiParam(value = "条数", required = false) @RequestParam(defaultValue = "20", required = false) Integer size) {
+		log.info("分页查询查看讲师列表");
 		PageInfo<Teacher> list = teacherService.getTeacherList(page, size);
 		return ResultVoUtil.success(list);
 	}
 	@GetMapping
 	@ApiOperation(value = "查询所有老师")
 	public ResultVo<List<TeacherVo>> getAll() {
+		log.info("查询所有老师");
 		List<TeacherVo> list = teacherService.getAll();
 		return ResultVoUtil.success(list);
 	}
@@ -62,6 +66,7 @@ public class TeacherController {
 	@GetMapping("/{id}")
 	@ApiOperation(value = "查看讲师详情")
 	public ResultVo<Teacher> getTeacher(@PathVariable Integer id) {
+		log.info("查看讲师详情,讲师id:{}",id);
 		Teacher teacher = teacherService.getTeacher(id);
 		return ResultVoUtil.success(teacher);
 	}
@@ -71,8 +76,10 @@ public class TeacherController {
 	public ResultVo<Teacher> addTeacher(@Valid @RequestBody TeacherDto teacherDto, BindingResult result) {
 		if (result.hasErrors()) {
 			String errors = result.getFieldError().getDefaultMessage();
+			log.error("添加讲师参数错误:{}" + errors);
 			return ResultVoUtil.error(1, errors);
 		}
+		log.info("添加讲师,讲师姓名:{}",teacherDto.getTeachername());
 		Teacher teacher = new Teacher();
 		BeanUtils.copyProperties(teacherDto, teacher);
 		teacherService.addTeacher(teacher);
@@ -82,6 +89,7 @@ public class TeacherController {
 	@DeleteMapping("/{id}")
 	@ApiOperation(value = "删除讲师")
 	public ResultVo<Teacher> deleteTeacher(@PathVariable Integer id) {
+		log.info("删除讲师,讲师id:{}",id);
 		teacherService.deleteTeacher(id);
 		return ResultVoUtil.success();
 	}
@@ -91,8 +99,10 @@ public class TeacherController {
 	public ResultVo<Teacher> updateTeacher(@Valid @RequestBody TeacherUpdateDto teacherDto, BindingResult result) {
 		if (result.hasErrors()) {
 			String errors = result.getFieldError().getDefaultMessage();
+			log.error("修改讲师参数错误:{}" + errors);
 			return ResultVoUtil.error(1, errors);
 		}
+		log.info("删除讲师,讲师id:{}",teacherDto.getId());
 		Teacher teacher = new Teacher();
 		BeanUtils.copyProperties(teacherDto, teacher);
 		teacherService.updateTeacher(teacher);

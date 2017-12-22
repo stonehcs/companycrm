@@ -33,10 +33,12 @@ import com.lichi.increaselimit.sys.service.SysRoleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import lombok.extern.slf4j.Slf4j;
 
 @Api(description = "角色信息")
 @RestController
 @RequestMapping("/role")
+@Slf4j
 public class RoleController {
 
 	@Autowired
@@ -47,45 +49,52 @@ public class RoleController {
 	public ResultVo<PageInfo<SysRole>> getAll(
 			@ApiParam(value = "页码", required = false) @RequestParam(defaultValue = "1", required = false) Integer page,
 			@ApiParam(value = "条数", required = false) @RequestParam(defaultValue = "20", required = false) Integer size) {
+		log.info("分页查询所有角色");
 		PageInfo<SysRole> list = roleService.selectAll(page, size);
 		return ResultVoUtil.success(list);
 	}
 	@GetMapping("/list")
 	@ApiOperation("查询所有角色")
 	public ResultVo<List<SysRole>> getAll() {
+		log.info("查询所有角色");
 		List<SysRole> list = roleService.selectList();
 		return ResultVoUtil.success(list);
 	}
 
 	@PostMapping
 	@ApiOperation("添加角色信息")
-	public ResultVo<SysRole> add(@Valid @RequestBody SysRoleDto RoleDto, BindingResult result) {
+	public ResultVo<SysRole> add(@Valid @RequestBody SysRoleDto roleDto, BindingResult result) {
 		if (result.hasErrors()) {
 			String errors = result.getFieldError().getDefaultMessage();
+			log.error("添加角色信息参数错误:{}",errors);
 			return ResultVoUtil.error(1, errors);
 		}
-		SysRole Role = new SysRole();
-		BeanUtils.copyProperties(RoleDto, Role);
-		roleService.insertOne(Role);
+		log.info("添加角色,角色名称:{}",roleDto.getRoleName());
+		SysRole role = new SysRole();
+		BeanUtils.copyProperties(roleDto, role);
+		roleService.insertOne(role);
 		return ResultVoUtil.success();
 	}
 
 	@PutMapping
 	@ApiOperation("修改角色信息")
-	public ResultVo<SysRole> update(@Valid @RequestBody SysRoleUpdateDto RoleDto, BindingResult result) {
+	public ResultVo<SysRole> update(@Valid @RequestBody SysRoleUpdateDto roleDto, BindingResult result) {
 		if (result.hasErrors()) {
 			String errors = result.getFieldError().getDefaultMessage();
+			log.error("修改角色信息参数错误:{}",errors);
 			return ResultVoUtil.error(1, errors);
 		}
-		SysRole Role = new SysRole();
-		BeanUtils.copyProperties(RoleDto, Role);
-		roleService.update(Role);
+		log.info("修改角色信息,角色名称:{}",roleDto.getRoleName());
+		SysRole role = new SysRole();
+		BeanUtils.copyProperties(roleDto, role);
+		roleService.update(role);
 		return ResultVoUtil.success();
 	}
 
 	@DeleteMapping("/{id}")
 	@ApiOperation("根据id删除角色信息")
 	public ResultVo<SysRole> delete(@PathVariable Integer id) {
+		log.info("删除角色信息,角色id:{}",id);
 		roleService.deleteOne(id);
 		return ResultVoUtil.success();
 	}
@@ -93,6 +102,7 @@ public class RoleController {
 	@GetMapping("/{id}")
 	@ApiOperation("根据id查询角色信息")
 	public ResultVo<SysRole> get(@PathVariable Integer id) {
+		log.info("查询角色信息,角色id:{}",id);
 		SysRole list = roleService.selectOne(id);
 		return ResultVoUtil.success(list);
 	}
@@ -102,6 +112,7 @@ public class RoleController {
 	public ResultVo<SysRole> addResource(@Valid @RequestBody List<SysRoleResourceDto> list, BindingResult result) {
 		if (result.hasErrors()) {
 			String errors = result.getFieldError().getDefaultMessage();
+			log.error("添加角色资源参数错误:{}",errors);
 			return ResultVoUtil.error(1, errors);
 		}
 		List<SysRoleResource> resultlist = new ArrayList<>();
@@ -120,6 +131,7 @@ public class RoleController {
 	@GetMapping("/resource/{id}")
 	@ApiOperation("查询角色资源")
 	public ResultVo<List<SysRoleResource>> selectResource(@PathVariable Integer id) {
+		log.info("查询角色资源,角色id:{}",id);
 		List<SysRoleResource> list = roleService.selectResource(id);
 		return ResultVoUtil.success(list);
 	}

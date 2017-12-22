@@ -10,6 +10,7 @@ import org.springframework.social.security.SocialUserDetailsService;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSONObject;
+import com.lichi.increaselimit.common.Constants;
 import com.lichi.increaselimit.common.utils.RedisUtils;
 import com.lichi.increaselimit.sys.entity.ResourceVo;
 import com.lichi.increaselimit.sys.entity.SysButton;
@@ -84,6 +85,6 @@ public class LichiUserDetailsServiceImpl implements UserDetailsService,SocialUse
 				
 			});
 		});
-		redisUtils.set("resource:" + userId, JSONObject.toJSONString(list), 7200);
+		redisUtils.set(Constants.RESOURCE + userId, JSONObject.toJSONString(list), 7200);
 	}
 }

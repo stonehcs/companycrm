@@ -10,6 +10,7 @@ import org.springframework.util.AntPathMatcher;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.lichi.increaselimit.common.Constants;
 import com.lichi.increaselimit.common.utils.RedisUtils;
 import com.lichi.increaselimit.security.config.auth.RbacService;
 import com.lichi.increaselimit.sys.entity.ResourceVo;
@@ -36,15 +37,15 @@ public class RbacServiceImpl implements RbacService {
 		if (!StringUtils.isBlank(token)) {
 			log.info("用户名：" + token);
 
-			boolean exists = redisUtils.exists("login_sys_user:" + token);
+			boolean exists = redisUtils.exists(Constants.LOGIN_SYS_USER + token);
 			if (exists) {
-				redisUtils.expire("login_user:" + token, 7200);
+				redisUtils.expire(Constants.LOGIN_SYS_USER + token, 7200);
 				hasPermission = true;
 			}
 		}
 		
 		//从缓存中获取权限
-		String string = redisUtils.get("resource:" + token);
+		String string = redisUtils.get(Constants.RESOURCE + token);
 
 		if (StringUtils.isNotBlank(string)) {
 
