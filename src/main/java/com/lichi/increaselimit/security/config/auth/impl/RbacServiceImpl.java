@@ -28,14 +28,15 @@ public class RbacServiceImpl implements RbacService {
 
 	@Override
 	public boolean hasPermission(HttpServletRequest request, Authentication authentication) {
-		log.info("用户权限校验：" + request.getRequestURI());
+		
+		String token = request.getHeader("token");
+		
+		log.info("用户资源权限校验,请求资源:{},token:{}" + request.getRequestURI(),token);
 
 		boolean hasPermission = false;
 
-		String token = request.getHeader("token");
 
 		if (!StringUtils.isBlank(token)) {
-			log.info("用户名：" + token);
 
 			boolean exists = redisUtils.exists(Constants.LOGIN_SYS_USER + token);
 			if (exists) {
@@ -60,7 +61,7 @@ public class RbacServiceImpl implements RbacService {
 				}
 			}
 		}
-		return true;
+		return hasPermission;
 	}
 
 }
