@@ -32,9 +32,8 @@ import com.lichi.increaselimit.common.utils.ResultVoUtil;
 import com.lichi.increaselimit.common.utils.StringUtil;
 import com.lichi.increaselimit.common.vo.ResultVo;
 import com.lichi.increaselimit.security.validate.code.ValidateCode;
-import com.lichi.increaselimit.sys.controller.dto.SysUserDeptDto;
+import com.lichi.increaselimit.sys.controller.dto.SysUpdateDto;
 import com.lichi.increaselimit.sys.controller.dto.SysUserDto;
-import com.lichi.increaselimit.sys.controller.dto.SysUserRoleDto;
 import com.lichi.increaselimit.sys.controller.dto.SysUserUpdateDto;
 import com.lichi.increaselimit.sys.entity.SysRole;
 import com.lichi.increaselimit.sys.entity.SysUser;
@@ -149,30 +148,20 @@ public class SysUserController {
 		return ResultVoUtil.success();
 	}
 	
-	@PutMapping("/dept")
-	@ApiOperation("修改用户对应的部门")
-	public ResultVo<SysUser> updateSysUserDept(@Valid @RequestBody SysUserDeptDto sysUserDto, BindingResult result) {
+	@PutMapping("/info")
+	@ApiOperation("修改用户信息")
+	public ResultVo<SysUser> updateSysUserDept(@Valid @RequestBody SysUpdateDto sysUserDto, BindingResult result) {
 		if (result.hasErrors()) {
 			String errors = result.getFieldError().getDefaultMessage();
-			log.error("修改用户部门参数错误:{}",errors);
+			log.error("修改用户信息参数错误:{}",errors);
 			return ResultVoUtil.error(1, errors);
 		}
-		log.error("修改用户部门,用户id:{},部门id:{}",sysUserDto.getId(),sysUserDto.getDeptId());
+		log.error("修改用户信息,用户id:{}",sysUserDto.getId());
 		SysUser sysUser = new SysUser();
 		BeanUtils.copyProperties(sysUserDto, sysUser);
-		sysUserService.updateSysUserDept(sysUser);
-		return ResultVoUtil.success();
-	}
-	
-	@PutMapping("/role")
-	@ApiOperation("给用户添加对应的角色")
-	public ResultVo<SysUser> updateSysUserDept(@Valid @RequestBody List<SysUserRoleDto> list, BindingResult result) {
-		if (result.hasErrors()) {
-			String errors = result.getFieldError().getDefaultMessage();
-			log.error("添加用户角色参数错误:{}",errors);
-			return ResultVoUtil.error(1, errors);
-		}
-		sysUserService.updateRole(list);
+		
+		sysUserService.updateSysUserInfo(sysUser,sysUserDto.getRoleIds());
+		
 		return ResultVoUtil.success();
 	}
 	

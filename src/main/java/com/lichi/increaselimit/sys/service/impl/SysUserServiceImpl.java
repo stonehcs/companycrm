@@ -2,7 +2,9 @@ package com.lichi.increaselimit.sys.service.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +19,6 @@ import com.lichi.increaselimit.common.enums.ResultEnum;
 import com.lichi.increaselimit.common.exception.BusinessException;
 import com.lichi.increaselimit.common.utils.HuanXinUtils;
 import com.lichi.increaselimit.common.utils.IdUtils;
-import com.lichi.increaselimit.sys.controller.dto.SysUserRoleDto;
 import com.lichi.increaselimit.sys.dao.SysUserDao;
 import com.lichi.increaselimit.sys.dao.SysUserRoleDao;
 import com.lichi.increaselimit.sys.entity.SysUser;
@@ -79,10 +80,13 @@ public class SysUserServiceImpl implements SysUserService {
 	}
 
 	@Override
-	public PageInfo<SysUserVo> selectAll(Integer page, Integer size,String key) {
-		PageHelper.startPage(page, size);
+	public PageInfo<SysUserVo> selectAll(Integer page, Integer size, String key) {
 		PageHelper.orderBy("a.create_time desc");
-		List<SysUserVo> list = sysUserMapper.selectAllUser(key);
+		Map<String, Object> map = new HashMap<>();
+		map.put("page", page);
+		map.put("size", size);
+		map.put("keys", key);
+		List<SysUserVo> list = sysUserMapper.selectAllUser(map);
 		PageInfo<SysUserVo> pageInfo = new PageInfo<SysUserVo>(list);
 		return pageInfo;
 	}
@@ -95,7 +99,7 @@ public class SysUserServiceImpl implements SysUserService {
 	@Override
 	public void updatePassword(SysUser sysUser) {
 		SysUser user = sysUserMapper.loadUserInfoByMobile(sysUser.getMobile());
-		if(user == null) {
+		if (user == null) {
 			throw new BusinessException(ResultEnum.MOBILE_NUM_EMPTY);
 		}
 		user.setUpdateTime(new Date());
@@ -123,21 +127,23 @@ public class SysUserServiceImpl implements SysUserService {
 	}
 
 	@Override
-	public void updateSysUserDept(SysUser sysUser) {
+	@Transactional(rollbackFor = Exception.class)
+	public void updateSysUserInfo(SysUser sysUser, List<Integer> roleIds) {
 		sysUser.setUpdateTime(new Date());
 		sysUserMapper.updateByPrimaryKeySelective(sysUser);
-	}
-
-	@Override
-	public void updateRole(List<SysUserRoleDto> list) {
-		List<SysUserRole> resultlist = new ArrayList<>();
-		list.stream().forEach( e -> {
-			SysUserRole sysUserRole = new SysUserRole();
-			sysUserRole.setUserId(e.getId());
-			sysUserRole.setRoleId(e.getRoleId());
-			resultlist.add(sysUserRole);
-		});
-		sysUserRoleMapper.insertList(resultlist);
+		
+		if(roleIds != null && roleIds.size() > 0) {
+			
+			List<SysUserRole> list = new ArrayList<>();
+			roleIds.forEach( e -> {
+				SysUserRole record = new SysUserRole();
+				record.setUserId(sysUser.getId());
+				record.setRoleId(e);
+				list.add(record);
+			});
+			
+			sysUserRoleMapper.insertList(list);
+		}
 	}
 
 }
