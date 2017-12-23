@@ -11,11 +11,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.pagehelper.PageInfo;
+import com.lichi.increaselimit.common.utils.IdUtils;
+import com.lichi.increaselimit.common.utils.RedisUtils;
 import com.lichi.increaselimit.common.utils.ResultVoUtil;
 import com.lichi.increaselimit.common.vo.ResultVo;
 import com.lichi.increaselimit.community.controller.dto.ArticleDto;
@@ -40,10 +43,14 @@ public class ArticleController {
 
 	@Autowired
 	private ArticleService articleService;
+	
+	@Autowired 
+	private RedisUtils redisUtils;
 
 	@PostMapping
 	@ApiOperation(value = "发帖")
-	public ResultVo<Article> postArticle(@Valid @RequestBody ArticleDto articledto, BindingResult result) {
+	public ResultVo<Article> postArticle(@Valid @RequestBody ArticleDto articledto, BindingResult result,
+			@RequestHeader(value = "token") String token) {
 		if (result.hasErrors()) {
 			String errors = result.getFieldError().getDefaultMessage();
 			log.error("发帖参数错误：" + errors);
@@ -52,6 +59,7 @@ public class ArticleController {
 		log.info("发帖,帖子标题:{}",articledto.getTitle());
 		Article article = new Article();
 		BeanUtils.copyProperties(articledto, article);
+		article.setCreateUserId(IdUtils.getUserId(redisUtils, token));
 		articleService.add(article);
 		return ResultVoUtil.success();
 	}

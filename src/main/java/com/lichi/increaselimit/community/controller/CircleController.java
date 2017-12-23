@@ -13,11 +13,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.pagehelper.PageInfo;
+import com.lichi.increaselimit.common.utils.IdUtils;
+import com.lichi.increaselimit.common.utils.RedisUtils;
 import com.lichi.increaselimit.common.utils.ResultVoUtil;
 import com.lichi.increaselimit.common.vo.ResultVo;
 import com.lichi.increaselimit.community.controller.dto.CircleDto;
@@ -42,10 +45,14 @@ public class CircleController {
 
     @Autowired
     private CircleService circleService;
+    
+    @Autowired
+    private RedisUtils redisUtils;
 
     @PostMapping
     @ApiOperation(value = "新建圈子")
-    public ResultVo<Circle> postArticle(@Valid @RequestBody CircleDto circledto, BindingResult result) throws IOException{
+    public ResultVo<Circle> postArticle(@Valid @RequestBody CircleDto circledto, BindingResult result,
+    		@RequestHeader(value = "token") String token) throws IOException{
     	log.info("新建圈子,圈子名字：{}" , circledto.getName());
         if(result.hasErrors()){
             String errors = result.getFieldError().getDefaultMessage();
@@ -54,6 +61,7 @@ public class CircleController {
         }
         Circle circle = new Circle();
         BeanUtils.copyProperties(circledto, circle);
+        circle.setCreateUserId(IdUtils.getUserId(redisUtils, token));
 		circleService.add(circle);
         return ResultVoUtil.success();
     }
