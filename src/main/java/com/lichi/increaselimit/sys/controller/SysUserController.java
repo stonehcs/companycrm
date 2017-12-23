@@ -114,11 +114,14 @@ public class SysUserController {
 		return ResultVoUtil.success(list);
 	}
 
-	@DeleteMapping("/{id}")
-	@ApiOperation("根据系统用户id删除用户信息")
-	public ResultVo<SysUser> deleteSysUser(@PathVariable String id) {
-		log.info("删除系统用户信息,id:{}",id);
-		sysUserService.deleteSysUser(id);
+	@DeleteMapping
+	@ApiOperation("删除系统用户")
+	public ResultVo<SysUser> deleteSysUser(@RequestBody List<String> ids) { 
+		log.info("删除系统用户信息,ids:{}",ids);
+		if(null == ids || ids.size() <=0) {
+			throw new BusinessException(ResultEnum.NO_USER_ID);
+		}
+		sysUserService.deleteSysUser(ids);
 		return ResultVoUtil.success();
 	}
 

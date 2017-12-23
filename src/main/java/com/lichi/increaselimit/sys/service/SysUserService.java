@@ -51,9 +51,9 @@ public interface SysUserService {
 
 	/**
 	 * 根据id删除用户信息
-	 * @param id
+	 * @param ids
 	 */
-	void deleteSysUser(String id);
+	void deleteSysUser(List<String> ids);
 
 	/**
 	 * 更新用户信息密码

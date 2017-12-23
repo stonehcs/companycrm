@@ -67,6 +67,8 @@ public enum ResultEnum {
     HAVE_CHILD_MENU(25, "该菜单下有子菜单,不能删除"),
     
     HAVE_BUTTON(25, "该菜单下有按钮,不能删除"), 
+    
+    NO_USER_ID(25, "请输入用户id"), 
     ;
 
     private Integer code;
