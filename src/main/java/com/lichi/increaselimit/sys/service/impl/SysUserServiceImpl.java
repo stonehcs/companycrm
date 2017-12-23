@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
-import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.lichi.increaselimit.common.enums.ResultEnum;
 import com.lichi.increaselimit.common.exception.BusinessException;
@@ -79,15 +78,18 @@ public class SysUserServiceImpl implements SysUserService {
 
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public PageInfo<SysUserVo> selectAll(Integer page, Integer size, String key) {
-		PageHelper.orderBy("a.create_time desc");
 		Map<String, Object> map = new HashMap<>();
-		map.put("page", page);
+		map.put("page", page - 1);
 		map.put("size", size);
 		map.put("keys", key);
 		List<SysUserVo> list = sysUserMapper.selectAllUser(map);
-		PageInfo<SysUserVo> pageInfo = new PageInfo<SysUserVo>(list);
+		Integer countAll = sysUserMapper.countAll();
+		PageInfo<SysUserVo> pageInfo = new PageInfo<SysUserVo>(list,countAll/size);
+		pageInfo.setLastPage(countAll/size + 1);
+		pageInfo.setTotal(countAll);
 		return pageInfo;
 	}
 

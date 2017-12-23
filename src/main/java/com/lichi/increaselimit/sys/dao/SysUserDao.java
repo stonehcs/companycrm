@@ -30,4 +30,6 @@ public interface SysUserDao extends BaseMapper<SysUser> {
 	
 	List<SysUserVo> selectAllUser(Map<String, Object> map);
 
+	@Select("select count(1) from t_sys_user")
+	Integer countAll();
 }
