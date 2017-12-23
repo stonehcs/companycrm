@@ -19,6 +19,7 @@
 
 	<select id="selectAllUser" resultMap="BaseResultMap" parameterType="java.util.Map">
 		select a.*,b.dept_name,d.id as roleId,d.role_name
+		from t_sys_user a 
 		left join t_sys_dept b on a.dept_id = b.id
 		left join t_sys_user_role c on a.id = c.user_id
 		left join t_sys_role d on d.id = c.role_id
