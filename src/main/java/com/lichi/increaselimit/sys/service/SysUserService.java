@@ -48,7 +48,7 @@ public interface SysUserService {
 	 * @param page 
 	 * @return
 	 */
-	PageInfo<SysUserVo> selectAll(Integer page, Integer size);
+	PageInfo<SysUserVo> selectAll(Integer page, Integer size,String key);
 
 	/**
 	 * 根据id删除用户信息

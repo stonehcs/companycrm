@@ -18,10 +18,8 @@ import com.lichi.increaselimit.common.exception.BusinessException;
 import com.lichi.increaselimit.common.utils.HuanXinUtils;
 import com.lichi.increaselimit.common.utils.IdUtils;
 import com.lichi.increaselimit.sys.controller.dto.SysUserRoleDto;
-import com.lichi.increaselimit.sys.dao.SysRoleDao;
 import com.lichi.increaselimit.sys.dao.SysUserDao;
 import com.lichi.increaselimit.sys.dao.SysUserRoleDao;
-import com.lichi.increaselimit.sys.entity.SysRole;
 import com.lichi.increaselimit.sys.entity.SysUser;
 import com.lichi.increaselimit.sys.entity.SysUserRole;
 import com.lichi.increaselimit.sys.entity.SysUserVo;
@@ -36,10 +34,7 @@ public class SysUserServiceImpl implements SysUserService {
 	private SysUserDao sysUserMapper;
 	@Autowired
 	private SysUserRoleDao sysUserRoleMapper;
-	@Autowired
-	private SysRoleDao sysRoleDao;
 
-	
 	@Autowired
 	private RestTemplate restTemplate;
 
@@ -84,14 +79,10 @@ public class SysUserServiceImpl implements SysUserService {
 	}
 
 	@Override
-	public PageInfo<SysUserVo> selectAll(Integer page, Integer size) {
+	public PageInfo<SysUserVo> selectAll(Integer page, Integer size,String key) {
 		PageHelper.startPage(page, size);
-		PageHelper.orderBy("create_time desc");
-		List<SysUserVo> list = sysUserMapper.selectAllUser();
-		list.forEach(e -> {
-			List<SysRole> userRole = sysRoleDao.getUserRole(e.getId());
-			e.setRoles(userRole);
-		});
+		PageHelper.orderBy("a.create_time desc");
+		List<SysUserVo> list = sysUserMapper.selectAllUser(key);
 		PageInfo<SysUserVo> pageInfo = new PageInfo<SysUserVo>(list);
 		return pageInfo;
 	}
@@ -148,6 +139,5 @@ public class SysUserServiceImpl implements SysUserService {
 		});
 		sysUserRoleMapper.insertList(resultlist);
 	}
-	
 
 }

@@ -108,9 +108,10 @@ public class SysUserController {
 	@ApiOperation("分页查询所有用户")
 	public ResultVo<PageInfo<SysUserVo>> getAll(
 			@ApiParam(value = "页码", required = false) @RequestParam(defaultValue = "1", required = false) Integer page,
-			@ApiParam(value = "条数", required = false) @RequestParam(defaultValue = "20", required = false) Integer size) {
+			@ApiParam(value = "条数", required = false) @RequestParam(defaultValue = "20", required = false) Integer size,
+			@ApiParam(value = "模糊查询条件", required = false) @RequestParam(required = false) String key) {
 		log.info("分页查询所有用户");
-		PageInfo<SysUserVo> list = sysUserService.selectAll(page, size);
+		PageInfo<SysUserVo> list = sysUserService.selectAll(page, size,key);
 		return ResultVoUtil.success(list);
 	}
 
@@ -182,6 +183,7 @@ public class SysUserController {
 		List<SysRole> userRole = sysRoleService.getUserRole(id);
 		return ResultVoUtil.success(userRole);
 	}
+	
 
 	/**
 	 * 获取当前用户信息 解析jwt的token
