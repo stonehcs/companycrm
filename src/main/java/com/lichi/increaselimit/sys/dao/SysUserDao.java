@@ -1,5 +1,7 @@
 package com.lichi.increaselimit.sys.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -24,5 +26,8 @@ public interface SysUserDao extends BaseMapper<SysUser> {
 	 */
 	@Select("select a.*,b.dept_name from t_sys_user a left join t_sys_dept b on a.dept_id = b.id where mobile=#{mobile}")
 	SysUserVo loadUserInfoByMobile(String mobile);
+
+	@Select("select a.*,b.dept_name from t_sys_user a left join t_sys_dept b on a.dept_id = b.id")
+	List<SysUserVo> selectAllUser();
 
 }

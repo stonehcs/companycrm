@@ -5,6 +5,7 @@ import java.util.List;
 import com.github.pagehelper.PageInfo;
 import com.lichi.increaselimit.sys.controller.dto.SysUserRoleDto;
 import com.lichi.increaselimit.sys.entity.SysUser;
+import com.lichi.increaselimit.sys.entity.SysUserVo;
 
 /**
  * 系统用户service
@@ -47,7 +48,7 @@ public interface SysUserService {
 	 * @param page 
 	 * @return
 	 */
-	PageInfo<SysUser> selectAll(Integer page, Integer size);
+	PageInfo<SysUserVo> selectAll(Integer page, Integer size);
 
 	/**
 	 * 根据id删除用户信息

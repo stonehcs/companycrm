@@ -38,6 +38,7 @@ import com.lichi.increaselimit.sys.controller.dto.SysUserRoleDto;
 import com.lichi.increaselimit.sys.controller.dto.SysUserUpdateDto;
 import com.lichi.increaselimit.sys.entity.SysRole;
 import com.lichi.increaselimit.sys.entity.SysUser;
+import com.lichi.increaselimit.sys.entity.SysUserVo;
 import com.lichi.increaselimit.sys.service.SysRoleService;
 import com.lichi.increaselimit.sys.service.SysUserService;
 
@@ -105,11 +106,11 @@ public class SysUserController {
 
 	@GetMapping("/all")
 	@ApiOperation("分页查询所有用户")
-	public ResultVo<PageInfo<SysUser>> getAll(
+	public ResultVo<PageInfo<SysUserVo>> getAll(
 			@ApiParam(value = "页码", required = false) @RequestParam(defaultValue = "1", required = false) Integer page,
 			@ApiParam(value = "条数", required = false) @RequestParam(defaultValue = "20", required = false) Integer size) {
 		log.info("分页查询所有用户");
-		PageInfo<SysUser> list = sysUserService.selectAll(page, size);
+		PageInfo<SysUserVo> list = sysUserService.selectAll(page, size);
 		return ResultVoUtil.success(list);
 	}
 
