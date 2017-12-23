@@ -24,7 +24,6 @@ import com.lichi.increaselimit.sys.entity.SysUser;
 import com.lichi.increaselimit.sys.entity.SysUserRole;
 import com.lichi.increaselimit.sys.entity.SysUserVo;
 import com.lichi.increaselimit.sys.service.SysUserService;
-import com.lichi.increaselimit.user.dao.UserMapper;
 
 import tk.mybatis.mapper.entity.Example;
 
@@ -96,7 +95,7 @@ public class SysUserServiceImpl implements SysUserService {
 
 	@Override
 	public void deleteSysUser(List<String> ids) {
-		Example example = new Example(UserMapper.class);
+		Example example = new Example(SysUser.class);
 		example.createCriteria().andIn("id", ids);
 		sysUserMapper.deleteByExample(example);
 	}
