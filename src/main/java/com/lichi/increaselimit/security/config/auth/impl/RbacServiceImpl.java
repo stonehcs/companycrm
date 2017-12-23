@@ -40,6 +40,7 @@ public class RbacServiceImpl implements RbacService {
 
 		String token = request.getHeader("token");
 
+		//websocket的token
 		if(request.getRequestURI().startsWith("/websocket")) {
 			token = request.getParameter("token");
 		}
