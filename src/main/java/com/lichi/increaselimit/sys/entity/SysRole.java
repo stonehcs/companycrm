@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import lombok.Data;
 
@@ -22,6 +23,7 @@ public class SysRole {
 	
 	private Date updateTime;
 	
+	@Transient
 	List<SysRoleResource> resources = new ArrayList<>();
 	
 }
