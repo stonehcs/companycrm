@@ -3,6 +3,7 @@ package com.lichi.increaselimit.sys.service.impl;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,10 +27,15 @@ public class SysRoleServiceImpl implements SysRoleService{
 	private SysRoleResourceDao sysRoleResourceDao;
 
 	@Override
-	public PageInfo<SysRole> selectAll(Integer page, Integer size) {
+	public PageInfo<SysRole> selectAll(Integer page, Integer size,String name) {
 		PageHelper.startPage(page, size);
 		PageHelper.orderBy("create_time desc");
-		List<SysRole> list = roleDao.selectAll();
+		List<SysRole> list = null;
+		if(!StringUtils.isBlank(name)) {
+			list = roleDao.selectByLike(name);
+		}else{
+			list = roleDao.selectAll();
+		}
 		PageInfo<SysRole> info = new PageInfo<>(list);
 		return info;
 	}
@@ -85,15 +91,6 @@ public class SysRoleServiceImpl implements SysRoleService{
 	@Override
 	public List<SysRole> getUserRole(String id) {
 		return roleDao.getUserRole(id);
-	}
-
-	@Override
-	public PageInfo<SysRole> selectLike(String name,Integer page,Integer size) {
-		PageHelper.startPage(page, size);
-		PageHelper.orderBy("create_time desc");
-		List<SysRole> list = roleDao.selectByLike(name);
-		PageInfo<SysRole> info = new PageInfo<>(list);
-		return info;
 	}
 
 }

@@ -8,7 +8,7 @@ import com.lichi.increaselimit.sys.entity.SysRoleResource;
 
 public interface SysRoleService {
 
-	PageInfo<SysRole> selectAll(Integer page, Integer size);
+	PageInfo<SysRole> selectAll(Integer page, Integer size, String name);
 
 	List<SysRole> selectList();
 
@@ -29,15 +29,6 @@ public interface SysRoleService {
 	 * 通过id获取用户角色信息
 	 */
 	List<SysRole> getUserRole(String id);
-
-	/**
-	 * 模糊查询
-	 * @param name
-	 * @param size 
-	 * @param page 
-	 * @return
-	 */
-	PageInfo<SysRole> selectLike(String name, Integer page, Integer size);
 
 
 }

@@ -48,9 +48,10 @@ public class RoleController {
 	@ApiOperation("分页查询所有角色")
 	public ResultVo<PageInfo<SysRole>> getAll(
 			@ApiParam(value = "页码", required = false) @RequestParam(defaultValue = "1", required = false) Integer page,
-			@ApiParam(value = "条数", required = false) @RequestParam(defaultValue = "20", required = false) Integer size) {
+			@ApiParam(value = "条数", required = false) @RequestParam(defaultValue = "20", required = false) Integer size,
+			@ApiParam(value = "关键字", required = false) @RequestParam(required = false) String name) {
 		log.info("分页查询所有角色");
-		PageInfo<SysRole> list = roleService.selectAll(page, size);
+		PageInfo<SysRole> list = roleService.selectAll(page, size ,name);
 		return ResultVoUtil.success(list);
 	}
 	@GetMapping("/list")
@@ -104,16 +105,6 @@ public class RoleController {
 	public ResultVo<SysRole> get(@PathVariable Integer id) {
 		log.info("查询角色信息,角色id:{}",id);
 		SysRole list = roleService.selectOne(id);
-		return ResultVoUtil.success(list);
-	}
-	
-	@GetMapping("/like/{name}")
-	@ApiOperation("根据角色名称模糊查询角色信息")
-	public ResultVo<PageInfo<SysRole>> getLike(@PathVariable String name,
-			@ApiParam(value = "页码", required = false) @RequestParam(defaultValue = "1", required = false) Integer page,
-			@ApiParam(value = "条数", required = false) @RequestParam(defaultValue = "20", required = false) Integer size) {
-		log.info("模糊查询角色信息,关键字:{}",name);
-		PageInfo<SysRole> list = roleService.selectLike(name,page,size);
 		return ResultVoUtil.success(list);
 	}
 	
