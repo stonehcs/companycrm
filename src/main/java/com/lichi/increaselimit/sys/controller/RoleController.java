@@ -107,6 +107,16 @@ public class RoleController {
 		return ResultVoUtil.success(list);
 	}
 	
+	@GetMapping("/like/{name}")
+	@ApiOperation("根据角色名称模糊查询角色信息")
+	public ResultVo<PageInfo<SysRole>> getLike(@PathVariable String name,
+			@ApiParam(value = "页码", required = false) @RequestParam(defaultValue = "1", required = false) Integer page,
+			@ApiParam(value = "条数", required = false) @RequestParam(defaultValue = "20", required = false) Integer size) {
+		log.info("模糊查询角色信息,关键字:{}",name);
+		PageInfo<SysRole> list = roleService.selectLike(name,page,size);
+		return ResultVoUtil.success(list);
+	}
+	
 	@PostMapping("/resource")
 	@ApiOperation("添加角色资源")
 	public ResultVo<SysRole> addResource(@Valid @RequestBody List<SysRoleResourceDto> list, BindingResult result) {

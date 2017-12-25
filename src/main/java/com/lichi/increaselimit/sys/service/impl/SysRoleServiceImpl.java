@@ -87,4 +87,13 @@ public class SysRoleServiceImpl implements SysRoleService{
 		return roleDao.getUserRole(id);
 	}
 
+	@Override
+	public PageInfo<SysRole> selectLike(String name,Integer page,Integer size) {
+		PageHelper.startPage(page, size);
+		PageHelper.orderBy("create_time desc");
+		List<SysRole> list = roleDao.selectByLike(name);
+		PageInfo<SysRole> info = new PageInfo<>(list);
+		return info;
+	}
+
 }

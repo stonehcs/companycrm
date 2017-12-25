@@ -30,5 +30,14 @@ public interface SysRoleService {
 	 */
 	List<SysRole> getUserRole(String id);
 
+	/**
+	 * 模糊查询
+	 * @param name
+	 * @param size 
+	 * @param page 
+	 * @return
+	 */
+	PageInfo<SysRole> selectLike(String name, Integer page, Integer size);
+
 
 }
