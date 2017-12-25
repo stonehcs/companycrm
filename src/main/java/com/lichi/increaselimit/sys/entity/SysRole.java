@@ -1,6 +1,8 @@
 package com.lichi.increaselimit.sys.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -19,5 +21,7 @@ public class SysRole {
 	private Date createTime;
 	
 	private Date updateTime;
+	
+	List<SysRoleResource> resources = new ArrayList<>();
 	
 }
