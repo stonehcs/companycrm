@@ -13,11 +13,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
+import com.lichi.increaselimit.common.Constants;
 import com.lichi.increaselimit.common.enums.ResultEnum;
 import com.lichi.increaselimit.common.exception.BusinessException;
 import com.lichi.increaselimit.common.utils.HuanXinUtils;
 import com.lichi.increaselimit.common.utils.IdUtils;
+import com.lichi.increaselimit.common.utils.RedisUtils;
 import com.lichi.increaselimit.sys.dao.SysUserDao;
 import com.lichi.increaselimit.sys.dao.SysUserRoleDao;
 import com.lichi.increaselimit.sys.entity.SysUser;
@@ -40,6 +43,8 @@ public class SysUserServiceImpl implements SysUserService {
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	@Autowired
+	private RedisUtils redisUtils;
 
 	@Override
 	public SysUser loadUserInfoByMobile(String mobile) {
@@ -82,11 +87,14 @@ public class SysUserServiceImpl implements SysUserService {
 	@Override
 	public PageInfo<SysUserVo> selectAll(Integer page, Integer size, String key) {
 		Map<String, Object> map = new HashMap<>();
-		map.put("page", page - 1);
-		map.put("size", size);
+		Integer countAll = sysUserMapper.countAll();
+		page = page <= 0 ? 1 : page;
+		page = page > countAll/size + 1 ? countAll/size + 1 : page;
+		
+		map.put("start", (page-1)*size);
+		map.put("end", page*size - (page-1)*size);
 		map.put("keys", key);
 		List<SysUserVo> list = sysUserMapper.selectAllUser(map);
-		Integer countAll = sysUserMapper.countAll();
 		PageInfo<SysUserVo> pageInfo = new PageInfo<SysUserVo>(list,countAll/size);
 		pageInfo.setLastPage(countAll/size + 1);
 		pageInfo.setTotal(countAll);
@@ -132,10 +140,12 @@ public class SysUserServiceImpl implements SysUserService {
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public void updateSysUserInfo(SysUser sysUser, List<Integer> roleIds) {
+	public void updateSysUserInfo(SysUser sysUser, List<Integer> roleIds, String token) {
 		sysUser.setUpdateTime(new Date());
 		sysUserMapper.updateByPrimaryKeySelective(sysUser);
-		
+		sysUserMapper.selectByPrimaryKey(sysUser.getId());
+		redisUtils.del(Constants.LOGIN_SYS_USER+token);
+		redisUtils.set(Constants.LOGIN_SYS_USER+token, JSONObject.toJSONString(sysUser), 7200);
 		Example example = new Example(SysUserRole.class);
 		example.createCriteria().andEqualTo("userId",sysUser.getId());
 		sysUserRoleMapper.deleteByExample(example);
