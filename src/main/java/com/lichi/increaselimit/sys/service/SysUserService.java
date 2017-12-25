@@ -65,7 +65,8 @@ public interface SysUserService {
 	 * 更新用户信息
 	 * @param sysUser
 	 * @param roleIds 
+	 * @param token 
 	 */
-	void updateSysUserInfo(SysUser sysUser, List<Integer> roleIds);
+	void updateSysUserInfo(SysUser sysUser, List<Integer> roleIds, String token);
 	
 }

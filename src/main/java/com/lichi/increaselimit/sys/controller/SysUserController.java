@@ -153,7 +153,7 @@ public class SysUserController {
 	
 	@PutMapping("/info")
 	@ApiOperation("修改用户信息")
-	public ResultVo<SysUser> updateSysUserDept(@Valid @RequestBody SysUpdateDto sysUserDto, BindingResult result) {
+	public ResultVo<SysUser> updateSysUserDept(@Valid @RequestBody SysUpdateDto sysUserDto, BindingResult result,@RequestHeader String token) {
 		if (result.hasErrors()) {
 			String errors = result.getFieldError().getDefaultMessage();
 			log.error("修改用户信息参数错误:{}",errors);
@@ -163,7 +163,7 @@ public class SysUserController {
 		SysUser sysUser = new SysUser();
 		BeanUtils.copyProperties(sysUserDto, sysUser);
 		
-		sysUserService.updateSysUserInfo(sysUser,sysUserDto.getRoleIds());
+		sysUserService.updateSysUserInfo(sysUser,sysUserDto.getRoleIds(),token);
 		
 		return ResultVoUtil.success();
 	}
