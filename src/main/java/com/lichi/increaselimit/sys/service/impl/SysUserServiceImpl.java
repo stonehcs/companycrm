@@ -139,7 +139,7 @@ public class SysUserServiceImpl implements SysUserService {
 		if(roleIds != null && roleIds.size() > 0) {
 			
 			Example example = new Example(SysUserRole.class);
-			example.createCriteria().andEqualTo("userId",sysUser.getUserId());
+			example.createCriteria().andEqualTo("userId",sysUser.getId());
 			sysUserRoleMapper.deleteByExample(example);
 			
 			List<SysUserRole> list = new ArrayList<>();
