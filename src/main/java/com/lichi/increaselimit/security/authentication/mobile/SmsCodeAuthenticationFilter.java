@@ -10,6 +10,8 @@ import org.springframework.security.web.authentication.AbstractAuthenticationPro
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.util.Assert;
 
+import com.lichi.increaselimit.common.enums.ResultEnum;
+import com.lichi.increaselimit.common.exception.BusinessException;
 import com.lichi.increaselimit.security.properties.SecurityConstants;
 
 /**
@@ -44,7 +46,7 @@ public class SmsCodeAuthenticationFilter extends AbstractAuthenticationProcessin
 		String mobile = obtainMobile(request);
 
 		if (mobile == null) {
-			mobile = "";
+			throw new BusinessException(ResultEnum.MOBILE_NUM_EMPTY);
 		}
 
 		mobile = mobile.trim();

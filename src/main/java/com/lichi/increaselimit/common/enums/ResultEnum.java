@@ -69,6 +69,7 @@ public enum ResultEnum {
     HAVE_BUTTON(25, "该菜单下有按钮,不能删除"), 
     
     NO_USER_ID(25, "请输入用户id"), 
+    NO_ROLE_ID(25, "请输入角色id"), 
     ;
 
     private Integer code;

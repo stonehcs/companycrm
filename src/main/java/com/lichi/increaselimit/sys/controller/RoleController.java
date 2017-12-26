@@ -92,13 +92,17 @@ public class RoleController {
 		return ResultVoUtil.success();
 	}
 
-	@DeleteMapping("/{id}")
+	@DeleteMapping
 	@ApiOperation("根据id删除角色信息")
-	public ResultVo<SysRole> delete(@PathVariable Integer id) {
-		log.info("删除角色信息,角色id:{}",id);
-		roleService.deleteOne(id);
+	public ResultVo<SysRole> delete(@RequestBody List<Integer> ids) {
+		log.info("删除角色信息,角色id:{}",ids);
+		if(null == ids || ids.size() <=0) {
+			throw new BusinessException(ResultEnum.NO_ROLE_ID);
+		}
+		roleService.delete(ids);
 		return ResultVoUtil.success();
 	}
+	
 
 	@GetMapping("/{id}")
 	@ApiOperation("根据id查询角色信息")

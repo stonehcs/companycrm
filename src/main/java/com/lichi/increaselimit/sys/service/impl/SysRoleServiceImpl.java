@@ -57,8 +57,10 @@ public class SysRoleServiceImpl implements SysRoleService{
 	}
 
 	@Override
-	public void deleteOne(Integer id) {
-		roleDao.deleteByPrimaryKey(id);
+	public void delete(List<Integer> ids) {
+		Example example = new Example(SysRole.class);
+		example.createCriteria().andIn("id", ids);
+		roleDao.deleteByExample(example);
 	}
 
 	@Override

@@ -18,7 +18,7 @@ public interface SysRoleService {
 
 	SysRole selectOne(Integer id);
 
-	void deleteOne(Integer id);
+	void delete(List<Integer> ids);
 
 	void addResource(List<SysRoleResource> resultlist);
 
