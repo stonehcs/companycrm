@@ -23,9 +23,15 @@ import com.lichi.increaselimit.common.utils.IdUtils;
 import com.lichi.increaselimit.common.utils.RedisUtils;
 import com.lichi.increaselimit.sys.dao.SysUserDao;
 import com.lichi.increaselimit.sys.dao.SysUserRoleDao;
+import com.lichi.increaselimit.sys.entity.ResourceVo;
+import com.lichi.increaselimit.sys.entity.SysButton;
+import com.lichi.increaselimit.sys.entity.SysRole;
+import com.lichi.increaselimit.sys.entity.SysRoleResource;
 import com.lichi.increaselimit.sys.entity.SysUser;
 import com.lichi.increaselimit.sys.entity.SysUserRole;
 import com.lichi.increaselimit.sys.entity.SysUserVo;
+import com.lichi.increaselimit.sys.service.SysButtonService;
+import com.lichi.increaselimit.sys.service.SysRoleService;
 import com.lichi.increaselimit.sys.service.SysUserService;
 
 import tk.mybatis.mapper.entity.Example;
@@ -45,6 +51,11 @@ public class SysUserServiceImpl implements SysUserService {
 	private PasswordEncoder passwordEncoder;
 	@Autowired
 	private RedisUtils redisUtils;
+	@Autowired
+	private SysRoleService sysRoleService;
+	
+	@Autowired
+	private SysButtonService sysButtonService;
 
 	@Override
 	public SysUser loadUserInfoByMobile(String mobile) {
@@ -164,4 +175,40 @@ public class SysUserServiceImpl implements SysUserService {
 		}
 	}
 
+	@Override
+	public List<ResourceVo> getUserResource(String userId) {
+		List<SysRole> userRoles = sysRoleService.getUserRole(userId);
+		List<ResourceVo> cacheResource = cacheResource(userId, userRoles);
+		return cacheResource;
+	}
+
+	
+	/**
+	 * 缓存资源信息
+	 * @param userId
+	 * @param userRole
+	 */
+	private List<ResourceVo> cacheResource(String userId, List<SysRole> userRole) {
+		List<ResourceVo> list = new ArrayList<>();
+		
+		/**
+		 * 登录时候取出用户资源放入缓存
+		 */
+		userRole.forEach(e ->{
+			List<SysRoleResource> resources = sysRoleService.selectResource(e.getId());
+			resources.forEach(a -> {
+				Integer type = a.getType();
+				if(type == 1) {
+					Integer buttonId = a.getButtonId();
+					SysButton button = sysButtonService.selectOne(buttonId);
+					ResourceVo resourceVo = new ResourceVo(button.getUrl(), button.getMethod());
+					list.add(resourceVo);
+				}
+				
+			});
+		});
+		redisUtils.set(Constants.RESOURCE + userId, JSONObject.toJSONString(list), 7200);
+		
+		return list;
+	}
 }

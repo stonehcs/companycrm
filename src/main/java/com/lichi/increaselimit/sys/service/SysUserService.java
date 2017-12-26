@@ -3,6 +3,7 @@ package com.lichi.increaselimit.sys.service;
 import java.util.List;
 
 import com.github.pagehelper.PageInfo;
+import com.lichi.increaselimit.sys.entity.ResourceVo;
 import com.lichi.increaselimit.sys.entity.SysUser;
 import com.lichi.increaselimit.sys.entity.SysUserVo;
 
@@ -69,4 +70,8 @@ public interface SysUserService {
 	 */
 	void updateSysUserInfo(SysUser sysUser, List<Integer> roleIds, String token);
 	
+	/**
+	 * 获取当前用户对应的resource
+	 */
+	List<ResourceVo> getUserResource(String userId);
 }

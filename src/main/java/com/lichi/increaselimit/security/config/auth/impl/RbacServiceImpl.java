@@ -20,6 +20,7 @@ import com.lichi.increaselimit.sys.entity.ResourceVo;
 import com.lichi.increaselimit.sys.entity.SysRole;
 import com.lichi.increaselimit.sys.entity.SysUser;
 import com.lichi.increaselimit.sys.service.SysRoleService;
+import com.lichi.increaselimit.sys.service.SysUserService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -32,6 +33,8 @@ public class RbacServiceImpl implements RbacService {
 
 	@Autowired
 	private SysRoleService sysRoleService;
+	@Autowired
+	private SysUserService sysUserService;
 
 	private AntPathMatcher antPathMatcher = new AntPathMatcher();
 
@@ -71,11 +74,11 @@ public class RbacServiceImpl implements RbacService {
 			return true;
 		}
 		
-		// 从缓存中获取权限
+		// 从缓存中获取权限,缓存为空就去数据库获取然后更新到缓存
 		String resourceStr = redisUtils.get(Constants.RESOURCE + token);
 
 		if (StringUtils.isNotBlank(resourceStr)) {
-
+			
 			JSONArray parseArray = JSON.parseArray(resourceStr);
 //			ResourceVo resources = new ResourceVo("/button/{id}", "delete");
 //			parseArray.add(resources);
@@ -88,7 +91,16 @@ public class RbacServiceImpl implements RbacService {
 				}
 			}
 		} else {
-			 hasPermission = false;  //这里暂时注释掉 TODO:
+			//从数据库获取
+			List<ResourceVo> userResource = sysUserService.getUserResource(sysUser.getId());
+			for (ResourceVo resource : userResource) {
+				if (antPathMatcher.match(resource.getUrl(), request.getRequestURI())
+						&& StringUtils.equalsIgnoreCase(resource.getMethod(), request.getMethod())) {
+					hasPermission = true;
+					break;
+				}
+			}
+			redisUtils.set(Constants.RESOURCE + sysUser.getId(), JSONObject.toJSONString(userResource), 7200);
 		}
 		hasPermission = true; // 暂时先放过带有token的请求
 		return hasPermission;
