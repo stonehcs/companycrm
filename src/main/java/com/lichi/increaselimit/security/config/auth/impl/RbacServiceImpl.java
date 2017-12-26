@@ -64,7 +64,7 @@ public class RbacServiceImpl implements RbacService {
 		//管理员有所有权限
 		String userStr = redisUtils.get(Constants.LOGIN_SYS_USER + token);
 		SysUser sysUser = JSONObject.parseObject(userStr, SysUser.class);
-		List<SysRole> userRole = sysRoleService.getUserRole(sysUser.getUserId());
+		List<SysRole> userRole = sysRoleService.getUserRole(sysUser.getId());
 		boolean filter = userRole.stream().anyMatch(e -> StringUtils.equalsIgnoreCase("admin", e.getRoleName()));
 
 		if(filter) {
@@ -77,7 +77,8 @@ public class RbacServiceImpl implements RbacService {
 		if (StringUtils.isNotBlank(resourceStr)) {
 
 			JSONArray parseArray = JSON.parseArray(resourceStr);
-
+//			ResourceVo resources = new ResourceVo("/button/{id}", "delete");
+//			parseArray.add(resources);
 			for (Object resource : parseArray) {
 				ResourceVo resourceVo = (ResourceVo) resource;
 				if (antPathMatcher.match(resourceVo.getUrl(), request.getRequestURI())
@@ -87,7 +88,7 @@ public class RbacServiceImpl implements RbacService {
 				}
 			}
 		} else {
-			// hasPermission = false; 这里暂时注释掉 TODO:
+			 hasPermission = false;  //这里暂时注释掉 TODO:
 		}
 		hasPermission = true; // 暂时先放过带有token的请求
 		return hasPermission;
