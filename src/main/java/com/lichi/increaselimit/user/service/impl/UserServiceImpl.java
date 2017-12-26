@@ -3,7 +3,7 @@ package com.lichi.increaselimit.user.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.lichi.increaselimit.user.dao.UserMapper;
+import com.lichi.increaselimit.user.dao.UserDao;
 import com.lichi.increaselimit.user.entity.User;
 import com.lichi.increaselimit.user.service.UserService;
 
@@ -11,7 +11,7 @@ import com.lichi.increaselimit.user.service.UserService;
 public class UserServiceImpl implements UserService{
 	
 	@Autowired
-	private UserMapper userMapper;
+	private UserDao userMapper;
 
 	@Override
 	public User loadUserInfoByMobile(String mobile) {

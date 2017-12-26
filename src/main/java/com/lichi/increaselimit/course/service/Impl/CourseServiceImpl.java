@@ -11,7 +11,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.lichi.increaselimit.common.enums.ResultEnum;
 import com.lichi.increaselimit.common.exception.BusinessException;
-import com.lichi.increaselimit.course.dao.CourseMapper;
+import com.lichi.increaselimit.course.dao.CourseDao;
 import com.lichi.increaselimit.course.entity.Course;
 import com.lichi.increaselimit.course.entity.CourseVo;
 import com.lichi.increaselimit.course.service.CourseService;
@@ -21,7 +21,7 @@ import com.lichi.increaselimit.course.service.CourseService;
 public class CourseServiceImpl implements CourseService {
 
 	@Autowired
-	private CourseMapper courseMapper;
+	private CourseDao courseMapper;
 
 	@Override
 	public PageInfo<CourseVo> getCourseList(Integer page, Integer size, Integer locationId) {

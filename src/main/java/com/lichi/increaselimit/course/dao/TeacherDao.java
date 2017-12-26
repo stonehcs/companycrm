@@ -16,7 +16,7 @@ import com.lichi.increaselimit.course.entity.TeacherVo;
  *
  */
 @Mapper
-public interface TeacherMapper extends BaseMapper<Teacher> {
+public interface TeacherDao extends BaseMapper<Teacher> {
 
 	@Select("select t.id,t.teachername from t_teacher t")
 	List<TeacherVo> selectAllTeacher();

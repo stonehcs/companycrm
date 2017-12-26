@@ -1,6 +1,5 @@
 package com.lichi.increaselimit.sys.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -24,8 +23,7 @@ import com.lichi.increaselimit.common.exception.BusinessException;
 import com.lichi.increaselimit.common.utils.ResultVoUtil;
 import com.lichi.increaselimit.common.vo.ResultVo;
 import com.lichi.increaselimit.sys.controller.dto.SysRoleDto;
-import com.lichi.increaselimit.sys.controller.dto.SysRoleUpdateDto;
-import com.lichi.increaselimit.sys.controller.dto.SysRoleResourceDto;
+import com.lichi.increaselimit.sys.controller.dto.SysRoleResourceVo;
 import com.lichi.increaselimit.sys.entity.SysRole;
 import com.lichi.increaselimit.sys.entity.SysRoleResource;
 import com.lichi.increaselimit.sys.service.SysRoleService;
@@ -62,24 +60,9 @@ public class RoleController {
 		return ResultVoUtil.success(list);
 	}
 
-	@PostMapping
-	@ApiOperation("添加角色信息")
-	public ResultVo<SysRole> add(@Valid @RequestBody SysRoleDto roleDto, BindingResult result) {
-		if (result.hasErrors()) {
-			String errors = result.getFieldError().getDefaultMessage();
-			log.error("添加角色信息参数错误:{}",errors);
-			return ResultVoUtil.error(1, errors);
-		}
-		log.info("添加角色,角色名称:{}",roleDto.getRoleName());
-		SysRole role = new SysRole();
-		BeanUtils.copyProperties(roleDto, role);
-		roleService.insertOne(role);
-		return ResultVoUtil.success();
-	}
-
 	@PutMapping
 	@ApiOperation("修改角色信息")
-	public ResultVo<SysRole> update(@Valid @RequestBody SysRoleUpdateDto roleDto, BindingResult result) {
+	public ResultVo<SysRole> update(@Valid @RequestBody SysRoleDto roleDto, BindingResult result) {
 		if (result.hasErrors()) {
 			String errors = result.getFieldError().getDefaultMessage();
 			log.error("修改角色信息参数错误:{}",errors);
@@ -88,7 +71,7 @@ public class RoleController {
 		log.info("修改角色信息,角色名称:{}",roleDto.getRoleName());
 		SysRole role = new SysRole();
 		BeanUtils.copyProperties(roleDto, role);
-		roleService.update(role);
+		roleService.insertOrUpdate(role);
 		return ResultVoUtil.success();
 	}
 
@@ -113,23 +96,14 @@ public class RoleController {
 	}
 	
 	@PostMapping("/resource")
-	@ApiOperation("添加角色资源")
-	public ResultVo<SysRole> addResource(@Valid @RequestBody List<SysRoleResourceDto> list, BindingResult result) {
+	@ApiOperation("添加或者修改角色资源")
+	public ResultVo<SysRole> addResource(@Valid @RequestBody SysRoleResourceVo vo, BindingResult result) {
 		if (result.hasErrors()) {
 			String errors = result.getFieldError().getDefaultMessage();
 			log.error("添加角色资源参数错误:{}",errors);
 			return ResultVoUtil.error(1, errors);
 		}
-		List<SysRoleResource> resultlist = new ArrayList<>();
-		list.stream().forEach(e ->{
-			if(-1 == e.getButtonId() && -1 == e.getMenuId()) {
-				throw new BusinessException(ResultEnum.MUNE_BOTTUN_BOTH_NULL);
-			}
-			SysRoleResource sysRoleResource = new SysRoleResource();
-			BeanUtils.copyProperties(e, sysRoleResource);
-			resultlist.add(sysRoleResource);
-		});
-		roleService.addResource(resultlist);
+		roleService.addOrUpdate(vo);
 		return ResultVoUtil.success();
 	}
 	

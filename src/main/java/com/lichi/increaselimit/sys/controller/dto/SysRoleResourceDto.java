@@ -8,10 +8,6 @@ import lombok.Data;
 @Data
 public class SysRoleResourceDto {
 	
-	@ApiModelProperty("角色id")
-	@NotNull(message = "角色id不能为空")
-	private Integer roleId;
-	
 	@ApiModelProperty("菜单id")
 	private Integer menuId = -1;
 	

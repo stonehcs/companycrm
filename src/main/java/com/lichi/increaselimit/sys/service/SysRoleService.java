@@ -3,6 +3,7 @@ package com.lichi.increaselimit.sys.service;
 import java.util.List;
 
 import com.github.pagehelper.PageInfo;
+import com.lichi.increaselimit.sys.controller.dto.SysRoleResourceVo;
 import com.lichi.increaselimit.sys.entity.SysRole;
 import com.lichi.increaselimit.sys.entity.SysRoleResource;
 
@@ -14,13 +15,13 @@ public interface SysRoleService {
 
 	void insertOne(SysRole Role);
 
-	void update(SysRole Role);
+	void insertOrUpdate(SysRole Role);
 
 	SysRole selectOne(Integer id);
 
 	void delete(List<Integer> ids);
 
-	void addResource(List<SysRoleResource> resultlist);
+	void addOrUpdate(SysRoleResourceVo vo);
 
 	List<SysRoleResource> selectResource(Integer id);
 	

@@ -1,16 +1,21 @@
 package com.lichi.increaselimit.sys.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.lichi.increaselimit.common.enums.ResultEnum;
 import com.lichi.increaselimit.common.exception.BusinessException;
+import com.lichi.increaselimit.sys.controller.dto.SysRoleResourceDto;
+import com.lichi.increaselimit.sys.controller.dto.SysRoleResourceVo;
 import com.lichi.increaselimit.sys.dao.SysRoleDao;
 import com.lichi.increaselimit.sys.dao.SysRoleResourceDao;
 import com.lichi.increaselimit.sys.entity.SysRole;
@@ -46,14 +51,14 @@ public class SysRoleServiceImpl implements SysRoleService{
 	}
 
 	@Override
-	public void insertOne(SysRole Role) {
-		SysRole Roleresult = roleDao.selectByName(Role.getRoleName());
+	public void insertOne(SysRole role) {
+		SysRole Roleresult = roleDao.selectByName(role.getRoleName());
 		if(Roleresult != null) {
 			throw new BusinessException(ResultEnum.ROLE_EXIST);
 		}
-		Role.setUpdateTime(new Date());
-		Role.setCreateTime(new Date());
-		roleDao.insertSelective(Role);
+		role.setUpdateTime(new Date());
+		role.setCreateTime(new Date());
+		roleDao.insertSelective(role);
 	}
 
 	@Override
@@ -64,9 +69,15 @@ public class SysRoleServiceImpl implements SysRoleService{
 	}
 
 	@Override
-	public void update(SysRole Role) {
-		Role.setUpdateTime(new Date());
-		roleDao.updateByPrimaryKeySelective(Role);
+	public void insertOrUpdate(SysRole role) {
+		//id为空是新增,不为空是更新
+		role.setUpdateTime(new Date());
+		if(null == role.getId()) {
+			role.setCreateTime(new Date());
+			roleDao.insertSelective(role);
+		}else {
+			roleDao.updateByPrimaryKeySelective(role);
+		}
 		
 	}
 
@@ -78,8 +89,52 @@ public class SysRoleServiceImpl implements SysRoleService{
 	}
 
 	@Override
-	public void addResource(List<SysRoleResource> resultlist) {
+	@Transactional(rollbackFor = Exception.class)
+	public void addOrUpdate(SysRoleResourceVo vo) {
+		List<SysRoleResource> resultlist = new ArrayList<>();
+		
+		//先更新或插入角色信息
+		Integer roleId = insertOrUpdate(vo.getRoleId(),vo.getRoleName());
+		
+		List<SysRoleResourceDto> list = vo.getList();
+		
+		//删除原来的角色资源
+		deleteRoleResource(roleId);
+		
+		//添加资源
+		list.stream().forEach(e ->{
+			if(-1 == e.getButtonId() && -1 == e.getMenuId()) {
+				throw new BusinessException(ResultEnum.MUNE_BOTTUN_BOTH_NULL);
+			}
+			SysRoleResource sysRoleResource = new SysRoleResource();
+			BeanUtils.copyProperties(e, sysRoleResource);
+			sysRoleResource.setRoleId(roleId);
+			resultlist.add(sysRoleResource);
+		});
 		sysRoleResourceDao.insertList(resultlist);
+	}
+
+	public Integer insertOrUpdate(Integer roleId,String roleName) {
+		if(null == roleId) {
+			SysRole record = new SysRole();
+			record.setRoleName(roleName);
+			record.setUpdateTime(new Date());
+			record.setCreateTime(new Date());
+			roleDao.insert(record);
+			SysRole sysRole = roleDao.selectByName(roleName);
+			roleId = sysRole.getId();
+		}else {
+			SysRole record = new SysRole();
+			record.setId(roleId);
+			record.setRoleName(roleName);
+			record.setUpdateTime(new Date());
+			SysRole sysRole = roleDao.selectByName(roleName);
+			if(sysRole != null) {
+				throw new BusinessException(ResultEnum.ROLE_EXIST);
+			}
+			roleDao.updateByPrimaryKey(record);
+		}
+		return roleId;
 	}
 
 	@Override
@@ -95,4 +150,9 @@ public class SysRoleServiceImpl implements SysRoleService{
 		return roleDao.getUserRole(id);
 	}
 
+	public void deleteRoleResource(Integer roleId) {
+		Example example = new Example(SysRoleResource.class);
+		example.createCriteria().andEqualTo("roleId", roleId);
+		sysRoleResourceDao.deleteByExample(example);
+	}
 }
