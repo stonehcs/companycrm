@@ -84,9 +84,9 @@ public class RbacServiceImpl implements RbacService {
 //			ResourceVo resources = new ResourceVo("/button/{id}", "delete");
 //			parseArray.add(resources);
 			for (Object resource : parseArray) {
-				ResourceVo resourceVo = (ResourceVo) resource;
-				if (antPathMatcher.match(resourceVo.getUrl(), request.getRequestURI())
-						&& StringUtils.equalsIgnoreCase(resourceVo.getMethod(), request.getMethod())) {
+				JSONObject json = (JSONObject) resource;
+				if (antPathMatcher.match(json.getString("url"), request.getRequestURI())
+						&& StringUtils.equalsIgnoreCase(json.getString("method"), request.getMethod())) {
 					hasPermission = true;
 					break;
 				}
