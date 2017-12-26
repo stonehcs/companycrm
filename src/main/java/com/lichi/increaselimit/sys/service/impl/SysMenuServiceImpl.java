@@ -65,4 +65,10 @@ public class SysMenuServiceImpl implements SysMenuService{
 		return list;
 	}
 
+	@Override
+	public List<SysMenu> selectByUserId(String userId) {
+		List<SysMenu> list = menuDao.selectByUserId(userId);
+		return list;
+	}
+
 }

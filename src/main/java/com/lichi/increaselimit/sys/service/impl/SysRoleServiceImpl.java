@@ -103,8 +103,8 @@ public class SysRoleServiceImpl implements SysRoleService{
 		
 		//添加资源
 		list.stream().forEach(e ->{
-			if(-1 == e.getButtonId() && -1 == e.getMenuId()) {
-				throw new BusinessException(ResultEnum.MUNE_BOTTUN_BOTH_NULL);
+			if(null == e.getMenuId()) {
+				throw new BusinessException(ResultEnum.MENU_ID_NOT_EXIST);
 			}
 			SysRoleResource sysRoleResource = new SysRoleResource();
 			BeanUtils.copyProperties(e, sysRoleResource);
@@ -138,9 +138,13 @@ public class SysRoleServiceImpl implements SysRoleService{
 	}
 
 	@Override
-	public List<SysRoleResource> selectResource(Integer id) {
+	public List<SysRoleResource> selectResource(Integer id,Integer menuId) {
 		Example example = new Example(SysRoleResource.class);
-		example.createCriteria().andEqualTo("roleId",id);
+		if(null == menuId) {
+			example.createCriteria().andEqualTo("roleId",id);
+		}else {
+			example.createCriteria().andEqualTo("roleId",id).andEqualTo("menuId",menuId);
+		}
 		List<SysRoleResource> list = sysRoleResourceDao.selectByExample(example);
 		return list;
 	}

@@ -52,11 +52,14 @@ public class RbacServiceImpl implements RbacService {
 
 		boolean hasPermission = false;
 
+		String userId = null;
+		
 		if (StringUtils.isNotBlank(token)) {
-
-			boolean exists = redisUtils.exists(Constants.LOGIN_SYS_USER + token);
-			if (exists) {
+			String userStr = redisUtils.get(Constants.LOGIN_SYS_USER + token);
+			if (StringUtils.isNotBlank(userStr)) {
+				SysUser sysUser = JSONObject.parseObject(userStr, SysUser.class);
 				redisUtils.expire(Constants.LOGIN_SYS_USER + token, 7200);
+				userId = sysUser.getId();
 			}else {
 				return hasPermission;
 			}
@@ -65,9 +68,7 @@ public class RbacServiceImpl implements RbacService {
 		}
 		
 		//管理员有所有权限
-		String userStr = redisUtils.get(Constants.LOGIN_SYS_USER + token);
-		SysUser sysUser = JSONObject.parseObject(userStr, SysUser.class);
-		List<SysRole> userRole = sysRoleService.getUserRole(sysUser.getId());
+		List<SysRole> userRole = sysRoleService.getUserRole(userId);
 		boolean filter = userRole.stream().anyMatch(e -> StringUtils.equalsIgnoreCase("admin", e.getRoleName()));
 
 		if(filter) {
@@ -75,7 +76,7 @@ public class RbacServiceImpl implements RbacService {
 		}
 		
 		// 从缓存中获取权限,缓存为空就去数据库获取然后更新到缓存
-		String resourceStr = redisUtils.get(Constants.RESOURCE + token);
+		String resourceStr = redisUtils.get(Constants.RESOURCE + userId);
 
 		if (StringUtils.isNotBlank(resourceStr)) {
 			
@@ -92,7 +93,7 @@ public class RbacServiceImpl implements RbacService {
 			}
 		} else {
 			//从数据库获取
-			List<ResourceVo> userResource = sysUserService.getUserResource(sysUser.getId());
+			List<ResourceVo> userResource = sysUserService.getUserResource(userId);
 			for (ResourceVo resource : userResource) {
 				if (antPathMatcher.match(resource.getUrl(), request.getRequestURI())
 						&& StringUtils.equalsIgnoreCase(resource.getMethod(), request.getMethod())) {
@@ -100,7 +101,7 @@ public class RbacServiceImpl implements RbacService {
 					break;
 				}
 			}
-			redisUtils.set(Constants.RESOURCE + sysUser.getId(), JSONObject.toJSONString(userResource), 7200);
+			redisUtils.set(Constants.RESOURCE + userId, JSONObject.toJSONString(userResource), 7200);
 		}
 		hasPermission = true; // 暂时先放过带有token的请求
 		return hasPermission;

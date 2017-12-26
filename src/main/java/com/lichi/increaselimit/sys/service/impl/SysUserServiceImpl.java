@@ -195,7 +195,7 @@ public class SysUserServiceImpl implements SysUserService {
 		 * 登录时候取出用户资源放入缓存
 		 */
 		userRole.forEach(e ->{
-			List<SysRoleResource> resources = sysRoleService.selectResource(e.getId());
+			List<SysRoleResource> resources = sysRoleService.selectResource(e.getId(), null);
 			resources.forEach(a -> {
 				Integer type = a.getType();
 				if(type == 1) {

@@ -22,11 +22,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
 import com.lichi.increaselimit.common.Constants;
 import com.lichi.increaselimit.common.enums.ResultEnum;
 import com.lichi.increaselimit.common.exception.BusinessException;
+import com.lichi.increaselimit.common.utils.MenuTreeUtils;
 import com.lichi.increaselimit.common.utils.RedisUtils;
 import com.lichi.increaselimit.common.utils.ResultVoUtil;
 import com.lichi.increaselimit.common.utils.StringUtil;
@@ -35,9 +37,11 @@ import com.lichi.increaselimit.security.validate.code.ValidateCode;
 import com.lichi.increaselimit.sys.controller.dto.SysUpdateDto;
 import com.lichi.increaselimit.sys.controller.dto.SysUserDto;
 import com.lichi.increaselimit.sys.controller.dto.SysUserUpdateDto;
+import com.lichi.increaselimit.sys.entity.SysMenu;
 import com.lichi.increaselimit.sys.entity.SysRole;
 import com.lichi.increaselimit.sys.entity.SysUser;
 import com.lichi.increaselimit.sys.entity.SysUserVo;
+import com.lichi.increaselimit.sys.service.SysMenuService;
 import com.lichi.increaselimit.sys.service.SysRoleService;
 import com.lichi.increaselimit.sys.service.SysUserService;
 
@@ -63,9 +67,11 @@ public class SysUserController {
 
 	@Autowired
 	private SysUserService sysUserService;
-	
+
 	@Autowired
 	private SysRoleService sysRoleService;
+	@Autowired
+	private SysMenuService sysMenuService;
 
 	@PostMapping("/regiter")
 	@ApiOperation("注册，调用此接口请先调用发送验证码的接口")
@@ -73,7 +79,7 @@ public class SysUserController {
 			HttpServletRequest request, HttpServletResponse response) throws IOException {
 		if (result.hasErrors()) {
 			String errors = result.getFieldError().getDefaultMessage();
-			log.error("用户注册参数错误:{}",errors);
+			log.error("用户注册参数错误:{}", errors);
 			return ResultVoUtil.error(1, errors);
 		}
 		if (!StringUtil.ValidateMobile(sysUserDto.getMobile())) {
@@ -92,8 +98,8 @@ public class SysUserController {
 
 		SysUser sysUser = new SysUser();
 		BeanUtils.copyProperties(sysUserDto, sysUser);
-		
-		log.info("用户注册,手机号码:{}",sysUser.getMobile());
+
+		log.info("用户注册,手机号码:{}", sysUser.getMobile());
 
 		// 注册的时候用户名默认为手机号码
 		sysUser.setUsername(sysUser.getMobile());
@@ -110,15 +116,15 @@ public class SysUserController {
 			@ApiParam(value = "条数", required = false) @RequestParam(defaultValue = "20", required = false) Integer size,
 			@ApiParam(value = "模糊查询条件", required = false) @RequestParam(required = false) String key) {
 		log.info("分页查询所有用户");
-		PageInfo<SysUserVo> list = sysUserService.selectAll(page, size,key);
+		PageInfo<SysUserVo> list = sysUserService.selectAll(page, size, key);
 		return ResultVoUtil.success(list);
 	}
 
 	@DeleteMapping
 	@ApiOperation("删除系统用户")
-	public ResultVo<SysUser> deleteSysUser(@RequestBody List<String> ids) { 
-		log.info("删除系统用户信息,ids:{}",ids);
-		if(null == ids || ids.size() <=0) {
+	public ResultVo<SysUser> deleteSysUser(@RequestBody List<String> ids) {
+		log.info("删除系统用户信息,ids:{}", ids);
+		if (null == ids || ids.size() <= 0) {
 			throw new BusinessException(ResultEnum.NO_USER_ID);
 		}
 		sysUserService.deleteSysUser(ids);
@@ -130,7 +136,7 @@ public class SysUserController {
 	public ResultVo<SysUser> updateSysUser(@Valid @RequestBody SysUserUpdateDto sysUserDto, BindingResult result) {
 		if (result.hasErrors()) {
 			String errors = result.getFieldError().getDefaultMessage();
-			log.error("用户修改密码参数错误:{}",errors);
+			log.error("用户修改密码参数错误:{}", errors);
 			return ResultVoUtil.error(1, errors);
 		}
 		if (!StringUtil.ValidateMobile(sysUserDto.getMobile())) {
@@ -144,51 +150,51 @@ public class SysUserController {
 		if (!sysUserDto.getCode().equals(code.getCode())) {
 			throw new BusinessException(ResultEnum.VALIDATECODE_ERROR);
 		}
-		log.info("修改用户密码,用户手机哈:{}",sysUserDto.getMobile());
+		log.info("修改用户密码,用户手机哈:{}", sysUserDto.getMobile());
 		SysUser sysUser = new SysUser();
 		BeanUtils.copyProperties(sysUserDto, sysUser);
 		sysUserService.updatePassword(sysUser);
 		return ResultVoUtil.success();
 	}
-	
+
 	@PutMapping("/info")
 	@ApiOperation("修改用户信息")
-	public ResultVo<SysUser> updateSysUserDept(@Valid @RequestBody SysUpdateDto sysUserDto, BindingResult result,@RequestHeader String token) {
+	public ResultVo<SysUser> updateSysUserDept(@Valid @RequestBody SysUpdateDto sysUserDto, BindingResult result,
+			@RequestHeader String token) {
 		if (result.hasErrors()) {
 			String errors = result.getFieldError().getDefaultMessage();
-			log.error("修改用户信息参数错误:{}",errors);
+			log.error("修改用户信息参数错误:{}", errors);
 			return ResultVoUtil.error(1, errors);
 		}
-		log.error("修改用户信息,用户id:{}",sysUserDto.getId());
+		log.error("修改用户信息,用户id:{}", sysUserDto.getId());
 		SysUser sysUser = new SysUser();
 		BeanUtils.copyProperties(sysUserDto, sysUser);
-		
-		sysUserService.updateSysUserInfo(sysUser,sysUserDto.getRoleIds(),token);
-		
+
+		sysUserService.updateSysUserInfo(sysUser, sysUserDto.getRoleIds(), token);
+
 		return ResultVoUtil.success();
 	}
-	
+
 	@GetMapping("/role/{id}")
 	@ApiOperation("获取用户对应的角色")
 	public ResultVo<List<SysRole>> getUserRole(@PathVariable String id) {
-		log.error("获取用户对应的角色,用户id:{},部门id:{}",id);
+		log.error("获取用户对应的角色,用户id:{},部门id:{}", id);
 		List<SysRole> userRole = sysRoleService.getUserRole(id);
 		return ResultVoUtil.success(userRole);
 	}
-	
 
 	/**
 	 * 获取当前用户信息 解析jwt的token
 	 */
 	@GetMapping
 	@ApiOperation("获取当前用户信息")
-//	@ApiImplicitParams({
-//			@ApiImplicitParam(name = "token", value = "认证token", required = true, 
-//					dataType = "string", paramType = "header", defaultValue = "username") })
+	// @ApiImplicitParams({
+	// @ApiImplicitParam(name = "token", value = "认证token", required = true,
+	// dataType = "string", paramType = "header", defaultValue = "username") })
 	public ResultVo<SysUser> getCurrentUser(@RequestHeader("token") String token) {
 
-		log.error("获取当前用户信息,用户token:{}",token);
-		
+		log.error("获取当前用户信息,用户token:{}", token);
+
 		String strJson = redisUtils.get(Constants.LOGIN_SYS_USER + token);
 
 		SysUser user = JSONObject.parseObject(strJson, SysUser.class);
@@ -197,4 +203,21 @@ public class SysUserController {
 
 	}
 
+	@GetMapping("/menutree")
+	@ApiOperation("获取当前用户的菜单树")
+	public ResultVo<JSONArray> getUserMenuTree(@RequestHeader("token") String token) {
+
+		log.error("获取当前用户菜单树,用户token:{}", token);
+
+		String strJson = redisUtils.get(Constants.LOGIN_SYS_USER + token);
+
+		SysUser user = JSONObject.parseObject(strJson, SysUser.class);
+
+		String userId = user.getId();
+		
+		List<SysMenu> list = sysMenuService.selectByUserId(userId);
+		
+		JSONArray treeMenuList = MenuTreeUtils.treeMenuList(list, -1);
+		return ResultVoUtil.success(treeMenuList);
+	}
 }

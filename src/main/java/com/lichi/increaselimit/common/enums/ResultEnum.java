@@ -62,6 +62,8 @@ public enum ResultEnum {
     
     MENU_EXIST(25, "菜单已存在"),
     
+    MENU_ID_NOT_EXIST(25, "菜单id已存在"),
+    
     MENU_NOT_EXIST(25, "菜单不存在"),
     
     HAVE_CHILD_MENU(25, "该菜单下有子菜单,不能删除"),

@@ -37,4 +37,8 @@ public interface SysMenuService {
 	 */
 	List<SysMenu> selectList();
 
+	/**
+	 * 通过用户id查询该用户拥有的菜单
+	 */
+	List<SysMenu> selectByUserId(String userId);
 }

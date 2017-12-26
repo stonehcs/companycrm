@@ -39,6 +39,13 @@ public interface SysMenuDao extends BaseMapper<SysMenu>{
 	 */
 	@Select("select * from t_sys_menu where pid = -1")
 	SysMenu selectRoot();
+
+	@Select("select a.* from t_sys_menu a,t_sys_user b,t_sys_role c,t_sys_user_role d,t_sys_role_resource e " + 
+			"where b.id = d.user_id " + 
+			"and d.role_id = c.id " + 
+			"and c.id = e.role_id " + 
+			"and e.menu_id = a.id and b.id = #{userId}")
+	List<SysMenu> selectByUserId(String userId);
 	
 
 }

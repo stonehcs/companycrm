@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -60,7 +59,7 @@ public class RoleController {
 		return ResultVoUtil.success(list);
 	}
 
-	@PutMapping
+	@PostMapping
 	@ApiOperation("修改角色信息")
 	public ResultVo<SysRole> update(@Valid @RequestBody SysRoleDto roleDto, BindingResult result) {
 		if (result.hasErrors()) {
@@ -107,11 +106,11 @@ public class RoleController {
 		return ResultVoUtil.success();
 	}
 	
-	@GetMapping("/resource/{id}")
+	@GetMapping("/resource/{roleId}/{menuId}")
 	@ApiOperation("查询角色资源")
-	public ResultVo<List<SysRoleResource>> selectResource(@PathVariable Integer id) {
-		log.info("查询角色资源,角色id:{}",id);
-		List<SysRoleResource> list = roleService.selectResource(id);
+	public ResultVo<List<SysRoleResource>> selectResource(@PathVariable Integer roleId,@PathVariable Integer menuId) {
+		log.info("查询角色资源,角色id:{},菜单id:{}",roleId,menuId);
+		List<SysRoleResource> list = roleService.selectResource(roleId,menuId);
 		return ResultVoUtil.success(list);
 	}
 

@@ -23,7 +23,7 @@ public interface SysRoleService {
 
 	void addOrUpdate(SysRoleResourceVo vo);
 
-	List<SysRoleResource> selectResource(Integer id);
+	List<SysRoleResource> selectResource(Integer id, Integer menuId);
 	
 	
 	/**

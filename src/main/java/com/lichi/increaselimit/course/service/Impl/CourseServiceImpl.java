@@ -11,6 +11,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.lichi.increaselimit.common.enums.ResultEnum;
 import com.lichi.increaselimit.common.exception.BusinessException;
+import com.lichi.increaselimit.common.utils.JpushClientUtil;
 import com.lichi.increaselimit.course.dao.CourseDao;
 import com.lichi.increaselimit.course.entity.Course;
 import com.lichi.increaselimit.course.entity.CourseVo;
@@ -53,6 +54,9 @@ public class CourseServiceImpl implements CourseService {
 		return courseVo;
 	}
 
+	/**
+	 * 添加课程以后发送通知
+	 */
 	@Override
 	public void addCourse(Course course) {
 		course.setCreateTime(new Date());
@@ -61,6 +65,8 @@ public class CourseServiceImpl implements CourseService {
 			throw new BusinessException(ResultEnum.ENDTIME_BIGGER_THEN_STARTTIME);
 		}
 		courseMapper.insertSelective(course);
+		
+		
 	}
 
 	@Override
