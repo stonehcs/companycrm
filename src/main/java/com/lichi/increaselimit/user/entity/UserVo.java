@@ -63,6 +63,14 @@ public class UserVo extends User{
 	public void setLevelMoney(Double levelMoney) {
 		this.levelMoney = levelMoney;
 	}
+
+	public String getLevelName() {
+		return levelName;
+	}
+
+	public void setLevelName(String levelName) {
+		this.levelName = levelName;
+	}
 	
 
 	

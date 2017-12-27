@@ -35,7 +35,8 @@ public interface UserDao extends BaseMapper<User>{
 	 * @param pid
 	 * @return
 	 */
-	@Select("select a.*,b.nickname as invitationtor from t_user a left join t_user b on a.pid = b.id where a.id = #{pid}")
+	@Select("select a.*,b.nickname as invitationtor,c.* from t_user a left join t_user b on a.pid = b.id "
+			+ "left join t_vip_level c on a.vip_level = c.level where a.id = #{pid}")
 	UserVo selectByPid(String pid);
 
 	/**
