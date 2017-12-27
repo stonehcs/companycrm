@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,7 +20,6 @@ import com.lichi.increaselimit.common.enums.ResultEnum;
 import com.lichi.increaselimit.common.exception.BusinessException;
 import com.lichi.increaselimit.common.utils.ResultVoUtil;
 import com.lichi.increaselimit.common.vo.ResultVo;
-import com.lichi.increaselimit.sys.controller.dto.SysRoleDto;
 import com.lichi.increaselimit.sys.controller.dto.SysRoleResourceVo;
 import com.lichi.increaselimit.sys.entity.SysRole;
 import com.lichi.increaselimit.sys.entity.SysRoleResource;
@@ -57,21 +55,6 @@ public class RoleController {
 		log.info("查询所有角色");
 		List<SysRole> list = roleService.selectList();
 		return ResultVoUtil.success(list);
-	}
-
-	@PostMapping
-	@ApiOperation("修改角色信息")
-	public ResultVo<SysRole> update(@Valid @RequestBody SysRoleDto roleDto, BindingResult result) {
-		if (result.hasErrors()) {
-			String errors = result.getFieldError().getDefaultMessage();
-			log.error("修改角色信息参数错误:{}",errors);
-			return ResultVoUtil.error(1, errors);
-		}
-		log.info("修改角色信息,角色名称:{}",roleDto.getRoleName());
-		SysRole role = new SysRole();
-		BeanUtils.copyProperties(roleDto, role);
-		roleService.insertOrUpdate(role);
-		return ResultVoUtil.success();
 	}
 
 	@DeleteMapping

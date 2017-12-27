@@ -15,8 +15,6 @@ public interface SysRoleService {
 
 	void insertOne(SysRole Role);
 
-	void insertOrUpdate(SysRole Role);
-
 	SysRole selectOne(Integer id);
 
 	void delete(List<Integer> ids);

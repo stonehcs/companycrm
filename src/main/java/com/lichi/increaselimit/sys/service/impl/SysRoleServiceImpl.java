@@ -69,19 +69,6 @@ public class SysRoleServiceImpl implements SysRoleService{
 	}
 
 	@Override
-	public void insertOrUpdate(SysRole role) {
-		//id为空是新增,不为空是更新
-		role.setUpdateTime(new Date());
-		if(null == role.getId()) {
-			role.setCreateTime(new Date());
-			roleDao.insertSelective(role);
-		}else {
-			roleDao.updateByPrimaryKeySelective(role);
-		}
-		
-	}
-
-	@Override
 	public List<SysRole> selectList() {
 		PageHelper.orderBy("create_time desc");
 		List<SysRole> list = roleDao.selectAll();
@@ -132,9 +119,12 @@ public class SysRoleServiceImpl implements SysRoleService{
 			record.setId(roleId);
 			record.setRoleName(roleName);
 			record.setUpdateTime(new Date());
-			SysRole sysRole = roleDao.selectByName(roleName);
-			if(sysRole != null) {
-				throw new BusinessException(ResultEnum.ROLE_EXIST);
+			SysRole sysRole = roleDao.selectByPrimaryKey(roleId);
+			if(!roleName.equals(sysRole.getRoleName())) {
+				SysRole role = roleDao.selectByName(roleName);
+				if(null == role) {
+					throw new BusinessException(ResultEnum.ROLE_EXIST);
+				}
 			}
 			roleDao.updateByPrimaryKey(record);
 		}

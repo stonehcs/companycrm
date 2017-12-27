@@ -26,6 +26,9 @@ public class UserVo extends User{
 	
 	@ApiModelProperty("邀请总人数")
 	private Integer count;
+	
+	@ApiModelProperty("等级id")
+	private Integer levelId;
 
 	public String getInvitationtor() {
 		return invitationtor;
