@@ -24,4 +24,6 @@ public interface SysRoleDao extends BaseMapper<SysRole>{
 
 	@Select("select * from t_sys_role where role_name LIKE concat('%', #{name}, '%')")
 	List<SysRole> selectByLike(String name);
+
+	List<SysRole> selectAllResource();
 }

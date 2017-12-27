@@ -39,7 +39,7 @@ public class SysRoleServiceImpl implements SysRoleService{
 		if(!StringUtils.isBlank(name)) {
 			list = roleDao.selectByLike(name);
 		}else{
-			list = roleDao.selectAll();
+			list = roleDao.selectAllResource();
 		}
 		PageInfo<SysRole> info = new PageInfo<>(list);
 		return info;
@@ -71,7 +71,7 @@ public class SysRoleServiceImpl implements SysRoleService{
 	@Override
 	public List<SysRole> selectList() {
 		PageHelper.orderBy("create_time desc");
-		List<SysRole> list = roleDao.selectAll();
+		List<SysRole> list = roleDao.selectAllResource();
 		return list;
 	}
 
@@ -81,10 +81,13 @@ public class SysRoleServiceImpl implements SysRoleService{
 		List<SysRoleResource> resultlist = new ArrayList<>();
 		
 		//先更新或插入角色信息
-		Integer roleId = insertOrUpdate(vo.getRoleId(),vo.getRoleName());
+		Integer roleId = insertOrUpdate(vo.getId(),vo.getRoleName());
 		
 		List<SysRoleResourceDto> list = vo.getList();
 		
+		if(null == list || list.size() == 0) {
+			return;
+		}
 		//删除原来的角色资源
 		deleteRoleResource(roleId);
 		

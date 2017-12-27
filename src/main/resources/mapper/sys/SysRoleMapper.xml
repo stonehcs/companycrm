@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lichi.increaselimit.sys.dao.SysRoleDao">
+	<resultMap id="BaseResultMap" type="com.lichi.increaselimit.sys.entity.SysRole">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="role_name" jdbcType="VARCHAR" property="roleName" />
+		<result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+
+		<association  property="resources" javaType="com.lichi.increaselimit.sys.entity.SysRoleResource">
+			<result column="role_id" jdbcType="INTEGER" property="roleId" />
+			<result column="menu_id" jdbcType="INTEGER" property="menuId" />
+			<result column="button_id" jdbcType="INTEGER" property="buttonId" />
+			<result column="type" jdbcType="INTEGER" property="type" />
+		</association>
+	</resultMap>
+
+	<select id="selectAllResource" resultMap="BaseResultMap">
+		select a.*,b.*
+		from t_sys_role a
+		left join t_sys_role_resource b on a.id = b.role_id
+	</select>
+
+
+</mapper>

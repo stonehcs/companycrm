@@ -13,7 +13,7 @@ public class SysRoleResourceVo {
 	private String roleName;
 	
 	@ApiModelProperty("角色id")
-	private Integer roleId;
+	private Integer id;
 	
 	private List<SysRoleResourceDto> list ;
 
@@ -33,14 +33,14 @@ public class SysRoleResourceVo {
 		this.list = list;
 	}
 
-	public Integer getRoleId() {
-		return roleId;
+	public Integer getId() {
+		return id;
 	}
 
-	public void setRoleId(Integer roleId) {
-		this.roleId = roleId;
+	public void setId(Integer id) {
+		this.id = id;
 	}
-	
+
 	
 	
 }

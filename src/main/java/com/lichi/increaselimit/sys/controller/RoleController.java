@@ -12,10 +12,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.github.pagehelper.PageInfo;
 import com.lichi.increaselimit.common.enums.ResultEnum;
 import com.lichi.increaselimit.common.exception.BusinessException;
 import com.lichi.increaselimit.common.utils.ResultVoUtil;
@@ -27,7 +25,6 @@ import com.lichi.increaselimit.sys.service.SysRoleService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 
 @Api(description = "角色信息")
@@ -39,16 +36,17 @@ public class RoleController {
 	@Autowired
 	private SysRoleService roleService;
 
-	@GetMapping
-	@ApiOperation("分页查询所有角色")
-	public ResultVo<PageInfo<SysRole>> getAll(
-			@ApiParam(value = "页码", required = false) @RequestParam(defaultValue = "1", required = false) Integer page,
-			@ApiParam(value = "条数", required = false) @RequestParam(defaultValue = "20", required = false) Integer size,
-			@ApiParam(value = "关键字", required = false) @RequestParam(required = false) String name) {
-		log.info("分页查询所有角色");
-		PageInfo<SysRole> list = roleService.selectAll(page, size ,name);
-		return ResultVoUtil.success(list);
-	}
+//	@GetMapping
+//	@ApiOperation("分页查询所有角色")
+//	public ResultVo<PageInfo<SysRole>> getAll(
+//			@ApiParam(value = "页码", required = false) @RequestParam(defaultValue = "1", required = false) Integer page,
+//			@ApiParam(value = "条数", required = false) @RequestParam(defaultValue = "20", required = false) Integer size,
+//			@ApiParam(value = "关键字", required = false) @RequestParam(required = false) String name) {
+//		log.info("分页查询所有角色");
+//		PageInfo<SysRole> list = roleService.selectAll(page, size ,name);
+//		return ResultVoUtil.success(list);
+//	}
+	
 	@GetMapping("/list")
 	@ApiOperation("查询所有角色")
 	public ResultVo<List<SysRole>> getAll() {
