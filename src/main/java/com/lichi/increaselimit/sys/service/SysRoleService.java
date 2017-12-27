@@ -11,7 +11,7 @@ public interface SysRoleService {
 
 	PageInfo<SysRole> selectAll(Integer page, Integer size, String name);
 
-	List<SysRole> selectList();
+	List<SysRole> selectList(String name);
 
 	void insertOne(SysRole Role);
 

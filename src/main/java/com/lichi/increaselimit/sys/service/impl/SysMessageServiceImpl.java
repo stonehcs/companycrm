@@ -38,7 +38,6 @@ public class SysMessageServiceImpl implements SysMessageService{
 	public void insertOne(SysMessage message) {
 		message.setUpdateTime(new Date());
 		message.setCreateTime(new Date());
-		message.setLevel(1);
 		messageDao.insertSelective(message);
 		
 		JpushClientUtil.pushToAll(message.getDescription(), message.getContent());

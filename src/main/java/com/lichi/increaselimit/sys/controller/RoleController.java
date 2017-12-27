@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lichi.increaselimit.common.enums.ResultEnum;
@@ -25,6 +26,7 @@ import com.lichi.increaselimit.sys.service.SysRoleService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 
 @Api(description = "角色信息")
@@ -49,9 +51,9 @@ public class RoleController {
 	
 	@GetMapping("/list")
 	@ApiOperation("查询所有角色")
-	public ResultVo<List<SysRole>> getAll() {
+	public ResultVo<List<SysRole>> getAll(@ApiParam(value = "关键字", required = false) @RequestParam(required = false) String name) {
 		log.info("查询所有角色");
-		List<SysRole> list = roleService.selectList();
+		List<SysRole> list = roleService.selectList(name);
 		return ResultVoUtil.success(list);
 	}
 

@@ -3,6 +3,7 @@ package com.lichi.increaselimit.sys.dao;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import com.lichi.increaselimit.common.mapper.BaseMapper;
@@ -25,5 +26,5 @@ public interface SysRoleDao extends BaseMapper<SysRole>{
 	@Select("select * from t_sys_role where role_name LIKE concat('%', #{name}, '%')")
 	List<SysRole> selectByLike(String name);
 
-	List<SysRole> selectAllResource();
+	List<SysRole> selectAllResource(@Param(value = "name") String name);
 }

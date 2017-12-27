@@ -17,12 +17,15 @@
 		</association>
 	</resultMap>
 
-	<select id="selectAllResource" resultMap="BaseResultMap">
+	<select id="selectAllResource" resultMap="BaseResultMap" parameterType="string">
 		select a.*,b.*,c.button_name,d.menu_name
 		from t_sys_role a
 		left join t_sys_role_resource b on a.id = b.role_id
 		LEFT JOIN t_sys_button c on b.button_id = c.id
 		left join t_sys_menu d on b.menu_id = d.id
+		<if test="name != null and name != ''">
+			where role_name LIKE concat('%', #{name}, '%')
+		</if>
 	</select>
 
 

@@ -74,6 +74,7 @@ public class CourseServiceImpl implements CourseService {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		message.setContent( "课程标题:" + course.getTitle() + ",开课时间:" + sdf.format(course.getStartTime()));
 		message.setDescription("有新的课程开课了");
+		message.setLevel(1);
 		sysMessageService.insertOne(message);
 		
 	}
