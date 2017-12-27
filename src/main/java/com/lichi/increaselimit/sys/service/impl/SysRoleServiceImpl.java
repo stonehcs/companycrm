@@ -82,12 +82,12 @@ public class SysRoleServiceImpl implements SysRoleService {
 
 		List<SysRoleResourceDto> list = vo.getList();
 
-		if (null == list || list.size() == 0) {
-			return;
-		}
 		// 删除原来的角色资源
 		deleteRoleResource(roleId);
 
+		if (null == list || list.size() == 0) {
+			return;
+		}
 		// 添加资源
 		list.stream().forEach(e -> {
 			if (null == e.getMenuId()) {
