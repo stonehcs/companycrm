@@ -120,8 +120,12 @@ public class SysRoleServiceImpl implements SysRoleService{
 			record.setRoleName(roleName);
 			record.setUpdateTime(new Date());
 			record.setCreateTime(new Date());
-			roleDao.insert(record);
 			SysRole sysRole = roleDao.selectByName(roleName);
+			if(null != sysRole) {
+				throw new BusinessException(ResultEnum.ROLE_EXIST);
+			}
+			roleDao.insert(record);
+			sysRole = roleDao.selectByName(roleName);
 			roleId = sysRole.getId();
 		}else {
 			SysRole record = new SysRole();
