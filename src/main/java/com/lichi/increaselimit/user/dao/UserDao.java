@@ -27,7 +27,7 @@ public interface UserDao extends BaseMapper<User>{
 	User loadUserInfoByMobile(String mobile);
 
 	@Select("select a.*,b.nickname as invitationtor,c.* from t_user a left join t_user b on a.pid = b.id "
-			+ "left join t_vip_level c on a.vip_level = c.level")
+			+ "left join t_vip_level c on a.vip_level = c.id")
 	List<UserVo> selectAllUser();
 
 	/**
@@ -36,7 +36,7 @@ public interface UserDao extends BaseMapper<User>{
 	 * @return
 	 */
 	@Select("select a.*,b.nickname as invitationtor,c.* from t_user a left join t_user b on a.pid = b.id "
-			+ "left join t_vip_level c on a.vip_level = c.level where a.id = #{pid}")
+			+ "left join t_vip_level c on a.vip_level = c.id where a.id = #{pid}")
 	UserVo selectByPid(String pid);
 
 	/**

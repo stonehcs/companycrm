@@ -101,9 +101,9 @@ public class CustomerController {
 	
 	@PutMapping
 	@ApiOperation("修改客户等级")
-	public Object update(@RequestParam(required = true) String userId,@RequestParam(required = true) Integer level) {
-		log.info("修改客户等级,用户id:{},修改的等级:{}",userId,level);
-		userService.updateUserInfo(userId,level);
+	public Object update(@RequestParam(required = true) String userId,@RequestParam(required = true) Integer levelId) {
+		log.info("修改客户等级,用户id:{},修改的等级id:{}",userId,levelId);
+		userService.updateUserInfo(userId,levelId);
 		return ResultVoUtil.success();
 	}
 }
