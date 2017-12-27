@@ -1,6 +1,7 @@
 package com.lichi.increaselimit.sys.entity;
 
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import lombok.Data;
 
@@ -15,5 +16,8 @@ public class SysRoleResource {
 	private Integer buttonId;
 	
 	private Integer type;
+
+	@Transient
+	private String buttonName;
 	
 }
