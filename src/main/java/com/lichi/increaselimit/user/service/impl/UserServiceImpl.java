@@ -84,7 +84,6 @@ public class UserServiceImpl implements UserService{
 		user.setNickname(mobile);
 		user.setMobile(mobile);
 		user.setCreateTime(new Date());
-		user.setUpdateTime(new Date());
 		user.setVipLevel(1);
 		user.setPid(pid);
 		userMapper.insertSelective(user);
