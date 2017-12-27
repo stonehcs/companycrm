@@ -28,9 +28,6 @@ public class JpushClientUtil {
 
 	private final static String masterSecret = "9c6749875003d85209c8426d";
 
-
-	private static JPushClient jpushClient = new JPushClient(masterSecret, appKey, null, ClientConfig.getInstance());
-
 	/**
 	 * 发送给别名用户
 	 * @param alias
@@ -44,20 +41,33 @@ public class JpushClientUtil {
                 .build();
     }
     
-    /**
-     * 发送给所有安卓用户
-     * @param alert
-     * @param title
-     * @return
-     */
-    public static PushPayload buildPushObject_android_tag_alertWithTitle(String alert,String title,String tag) {
-        return PushPayload.newBuilder()
+   /**
+    * 推送给所有用户
+    * @param alert
+    * @param title
+    * @param tag
+    * @return
+    */
+    public static void pushToAllAndroid(String alert,String title) {
+    	ClientConfig instance = ClientConfig.getInstance();
+    	instance.setApnsProduction(false);
+    	JPushClient jpushClient = new JPushClient(masterSecret, appKey, null, instance);
+
+        PushPayload build = PushPayload.newBuilder()
                 .setPlatform(Platform.android())
-                .setAudience(Audience.tag(tag))
-                .setNotification(Notification.android(alert, title, null))
+                .setAudience(Audience.all())
+                .setNotification(Notification.alert(alert))
+                .setMessage(Message.content(title))
                 .build();
+        try {
+			jpushClient.sendPush(build);
+		} catch (APIConnectionException | APIRequestException e) {
+			e.printStackTrace();
+			log.error("推送给所有人异常:{}",e.getMessage());
+		}
     }
 	
+    
     /**
      * 推送给所有的ios用户
      * @param alert
@@ -65,10 +75,15 @@ public class JpushClientUtil {
      * @param tag
      * @return
      */
-    public static PushPayload buildPushObject_ios_tagAnd_alertWithExtrasAndMessage(String alert,String title,String tag) {
-        return PushPayload.newBuilder()
+    public static void pushToAllIOS(String alert,String title) {
+    	
+    	ClientConfig instance = ClientConfig.getInstance();
+    	instance.setApnsProduction(false);
+    	JPushClient jpushClient = new JPushClient(masterSecret, appKey, null, instance);
+    	
+        PushPayload build = PushPayload.newBuilder()
                 .setPlatform(Platform.ios())
-                .setAudience(Audience.tag_and(tag, "tag_all"))
+                .setAudience(Audience.all())
                 .setNotification(Notification.newBuilder()
                         .addPlatformNotification(IosNotification.newBuilder()
                                 .setAlert(alert)
@@ -82,8 +97,18 @@ public class JpushClientUtil {
                          .setApnsProduction(true)
                          .build())
                  .build();
+        try {
+			PushResult sendPush = jpushClient.sendPush(build);
+			System.out.println(sendPush);
+		} catch (APIConnectionException | APIRequestException e) {
+			e.printStackTrace();
+		}
     }
     
+    public static void pushToAll(String alert,String title) {
+		pushToAllAndroid(alert, title);
+		pushToAllIOS(alert, title);
+    }
     
     public static PushPayload buildPushObject_ios_audienceMore_messageWithExtras() {
         return PushPayload.newBuilder()
@@ -100,11 +125,7 @@ public class JpushClientUtil {
     }
     
 	public static void main(String[] args) {
-		PushPayload buildPushObject_all_alias_alert = buildPushObject_all_alias_alert("", null);
-		try {
-			PushResult result = jpushClient.sendPush(buildPushObject_all_alias_alert);
-		} catch (APIConnectionException | APIRequestException e) {
-			e.printStackTrace();
-		}
+		pushToAllAndroid("我是description", "我是content");
+//		pushToAllIOS("fdsfds", "fdsf");
 	}
 }

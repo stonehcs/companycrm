@@ -1,5 +1,6 @@
 package com.lichi.increaselimit.course.service.Impl;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -11,11 +12,12 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.lichi.increaselimit.common.enums.ResultEnum;
 import com.lichi.increaselimit.common.exception.BusinessException;
-import com.lichi.increaselimit.common.utils.JpushClientUtil;
 import com.lichi.increaselimit.course.dao.CourseDao;
 import com.lichi.increaselimit.course.entity.Course;
 import com.lichi.increaselimit.course.entity.CourseVo;
 import com.lichi.increaselimit.course.service.CourseService;
+import com.lichi.increaselimit.sys.entity.SysMessage;
+import com.lichi.increaselimit.sys.service.SysMessageService;
 
 @Service
 @Transactional(rollbackFor = Exception.class)
@@ -23,6 +25,8 @@ public class CourseServiceImpl implements CourseService {
 
 	@Autowired
 	private CourseDao courseMapper;
+	@Autowired
+	private SysMessageService sysMessageService;
 
 	@Override
 	public PageInfo<CourseVo> getCourseList(Integer page, Integer size, Integer locationId) {
@@ -66,6 +70,11 @@ public class CourseServiceImpl implements CourseService {
 		}
 		courseMapper.insertSelective(course);
 		
+		SysMessage message = new SysMessage();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		message.setContent( "课程标题:" + course.getTitle() + ",开课时间:" + sdf.format(course.getStartTime()));
+		message.setDescription("有新的课程开课了");
+		sysMessageService.insertOne(message);
 		
 	}
 
