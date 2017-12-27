@@ -122,7 +122,7 @@ public class SysRoleServiceImpl implements SysRoleService {
 			SysRole sysRole = roleDao.selectByPrimaryKey(roleId);
 			if (!roleName.equals(sysRole.getRoleName())) {
 				SysRole role = roleDao.selectByName(roleName);
-				if (null == role) {
+				if (null != role) {
 					throw new BusinessException(ResultEnum.ROLE_EXIST);
 				}
 			}
