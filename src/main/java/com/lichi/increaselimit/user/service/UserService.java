@@ -31,10 +31,11 @@ public interface UserService {
 	/**
 	 * 分页查询所有用户根据时间倒序
 	 * @param page
+	 * @param key 
 	 * @param sizeInteger
 	 * @return
 	 */
-	PageInfo<UserVo> selectAll(Integer page, Integer size);
+	PageInfo<UserVo> selectAll(Integer page, Integer size, String key);
 
 	/**
 	 * 查询上层关系
@@ -63,6 +64,15 @@ public interface UserService {
 	 * @return
 	 */
 	List<VipLevel> selectLevel();
+
+	/**
+	 * 获取分享的所有用户
+	 * @param page
+	 * @param size
+	 * @param userId
+	 * @return
+	 */
+	PageInfo<UserVo> getAllShare(Integer page, Integer size, String userId);
 	
 	
 }

@@ -3,6 +3,7 @@ package com.lichi.increaselimit.user.service.impl;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,34 +45,25 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public PageInfo<UserVo> selectAll(Integer page, Integer size) {
+	public PageInfo<UserVo> selectAll(Integer page, Integer size,String key) {
 		PageHelper.startPage(page,size);
 		PageHelper.orderBy("create_time desc");
-		List<UserVo> list = userMapper.selectAllUser();
-		list.forEach(e ->{
-			String id = e.getId();
-			List<SocialUserInfo> selectByUserId = socialUserDao.selectByUserId(id);
-			selectByUserId.forEach(a ->{
-				String providerId = a.getProviderId();
-				String displayName = a.getDisplayName();
-				if("weixin".equals(providerId)) {
-					e.setWeixin(displayName);
-				}
-				if("qq".equals(providerId)) {
-					e.setQq(displayName);
-				}
-				if("weibo".equals(providerId)) {
-					e.setWeibo(displayName);
-				}
-			});
-		});
-		PageInfo<UserVo> pageInfo = new PageInfo<UserVo>(list);
+		List<UserVo> list = null;
+		if(StringUtils.isBlank(key)) {
+			list = userMapper.selectAllUser();
+		}else {
+			list = userMapper.selectAllLike(key);
+		}
+		PageInfo<UserVo> pageInfo = getThirdInfo(list);
 		return pageInfo;
 	}
 
 	@Override
 	public UserVo selectByPid(String pid) {
-		return userMapper.selectByPid(pid);
+		UserVo vo = userMapper.selectByPid(pid);
+		Integer count = userMapper.selectShareCount(pid);
+		vo.setCount(count);
+		return vo;
 	}
 
 	@Override
@@ -107,5 +99,38 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public List<VipLevel> selectLevel() {
 		return vipLevelDao.selectAll();
+	}
+
+	@Override
+	public PageInfo<UserVo> getAllShare(Integer page, Integer size, String userId) {
+		PageHelper.startPage(page,size);
+		PageHelper.orderBy("create_time desc");
+		List<UserVo> list = userMapper.getAllShare(userId);
+		PageInfo<UserVo> pageInfo = getThirdInfo(list);
+		return pageInfo;
+	}
+
+	private PageInfo<UserVo> getThirdInfo(List<UserVo> list) {
+		list.forEach(e ->{
+			String id = e.getId();
+			Integer count = userMapper.selectShareCount(id);
+			e.setCount(count);
+			List<SocialUserInfo> selectByUserId = socialUserDao.selectByUserId(id);
+			selectByUserId.forEach(a ->{
+				String providerId = a.getProviderId();
+				String displayName = a.getDisplayName();
+				if("weixin".equals(providerId)) {
+					e.setWeixin(displayName);
+				}
+				if("qq".equals(providerId)) {
+					e.setQq(displayName);
+				}
+				if("weibo".equals(providerId)) {
+					e.setWeibo(displayName);
+				}
+			});
+		});
+		PageInfo<UserVo> pageInfo = new PageInfo<UserVo>(list);
+		return pageInfo;
 	}
 }

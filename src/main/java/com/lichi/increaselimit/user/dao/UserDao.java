@@ -27,9 +27,24 @@ public interface UserDao extends BaseMapper<User>{
 	User loadUserInfoByMobile(String mobile);
 
 	@Select("select a.*,b.nickname as invitationtor,c.* from t_user a left join t_user b on a.pid = b.id "
-			+ "left join t_vip_level c on a.vip_level = c.id")
+			+ "left join t_vip_level c on a.vip_level = c.id ")
 	List<UserVo> selectAllUser();
+	
+	@Select("select a.*,b.nickname as invitationtor,c.* from t_user a left join t_user b on a.pid = b.id "
+			+ "left join t_vip_level c on a.vip_level = c.id "
+			+ "where a.nickname LIKE concat('%', #{key}, '%') "
+			+ "or a.mobile LIKE concat('%', #{key}, '%')")
+	List<UserVo> selectAllLike(String key);
 
+	/**
+	 * 根据pid查询下级用户
+	 * @param pid
+	 * @return
+	 */
+	@Select("select a.*,b.nickname as invitationtor,c.* from t_user a left join t_user b on a.pid = b.id "
+			+ "left join t_vip_level c on a.vip_level = c.id where a.pid = #{userId}")
+	List<UserVo> getAllShare(String userId);
+	
 	/**
 	 * 根据pid查询
 	 * @param pid
@@ -45,4 +60,9 @@ public interface UserDao extends BaseMapper<User>{
 	 */
 	@Update("update t_user set rank = rank + 1 where id = #{pid}")
 	void updatePidRank(String pid);
+
+	
+	@Select("select count(a.id) from t_user a left join t_user b on a.pid = b.id "
+			+ "left join t_vip_level c on a.vip_level = c.id where a.pid = #{userId}")
+	Integer selectShareCount(String userId);
 }

@@ -52,9 +52,20 @@ public class CustomerController {
 	@ApiOperation("分页查询所有客户")
 	public ResultVo<PageInfo<UserVo>> getAll(
 			@ApiParam(value = "页码", required = false) @RequestParam(defaultValue = "1", required = false) Integer page,
-			@ApiParam(value = "条数", required = false) @RequestParam(defaultValue = "20", required = false) Integer size) {
+			@ApiParam(value = "条数", required = false) @RequestParam(defaultValue = "20", required = false) Integer size,
+			@RequestParam(required = false) String key) {
 		log.info("分页查询所有客户");
-		PageInfo<UserVo> list = userService.selectAll(page, size);
+		PageInfo<UserVo> list = userService.selectAll(page, size ,key);
+		return ResultVoUtil.success(list);
+	}
+	@GetMapping("/share/{userId}")
+	@ApiOperation("获取用户所有分享用户")
+	public ResultVo<PageInfo<UserVo>> getAllShare(
+			@ApiParam(value = "页码", required = false) @RequestParam(defaultValue = "1", required = false) Integer page,
+			@ApiParam(value = "条数", required = false) @RequestParam(defaultValue = "20", required = false) Integer size,
+			@PathVariable String userId) {
+		log.info("获取用户所有分享,用户id:{}",userId);
+		PageInfo<UserVo> list = userService.getAllShare(page, size,userId);
 		return ResultVoUtil.success(list);
 	}
 	

@@ -23,6 +23,9 @@ public class UserVo extends User{
 	
 	@ApiModelProperty("客服等级")
 	private String levelName;
+	
+	@ApiModelProperty("邀请总人数")
+	private Integer count;
 
 	public String getInvitationtor() {
 		return invitationtor;
@@ -70,6 +73,14 @@ public class UserVo extends User{
 
 	public void setLevelName(String levelName) {
 		this.levelName = levelName;
+	}
+
+	public Integer getCount() {
+		return count;
+	}
+
+	public void setCount(Integer count) {
+		this.count = count;
 	}
 	
 
