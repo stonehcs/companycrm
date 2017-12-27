@@ -1,12 +1,17 @@
 package com.lichi.increaselimit.user.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.lichi.increaselimit.common.enums.ResultEnum;
+import com.lichi.increaselimit.common.exception.BusinessException;
+import com.lichi.increaselimit.common.utils.IdUtils;
 import com.lichi.increaselimit.user.dao.SocialUserDao;
 import com.lichi.increaselimit.user.dao.UserDao;
 import com.lichi.increaselimit.user.entity.SocialUserInfo;
@@ -65,4 +70,25 @@ public class UserServiceImpl implements UserService{
 		return userMapper.selectByPid(pid);
 	}
 
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public User insertCustomer(String mobile,String pid) {
+		User byMobile = userMapper.loadUserInfoByMobile(mobile);
+		if(byMobile != null) {
+			throw new BusinessException(ResultEnum.MOBILE_EXIST);
+		}
+		String userId = IdUtils.getUserId();
+		User user = new User();
+		user.setId(userId);
+		user.setUsername(mobile);
+		user.setNickname(mobile);
+		user.setMobile(mobile);
+		user.setCreateTime(new Date());
+		user.setUpdateTime(new Date());
+		user.setVipLevel(1);
+		user.setPid(pid);
+		userMapper.insertSelective(user);
+		userMapper.updatePidInvitaion(pid);
+		return user;
+	}
 }

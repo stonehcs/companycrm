@@ -39,4 +39,12 @@ public interface UserService {
 	 * @return
 	 */
 	UserVo selectByPid(String pid);
+	
+	/**
+	 * 插入一个顾客
+	 * @param string 
+	 * @param socialUserInfo
+	 * @return 
+	 */
+	User insertCustomer(String mobile, String string);
 }

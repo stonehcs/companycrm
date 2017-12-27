@@ -55,4 +55,9 @@ public class User implements Serializable{
 	
 	private Date updateTime;
 	private Date createTime;
+	
+	private String pid;
+	
+	private Integer invitation;
+	
 }

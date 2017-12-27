@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import com.lichi.increaselimit.common.mapper.BaseMapper;
 import com.lichi.increaselimit.user.entity.User;
@@ -36,4 +37,11 @@ public interface UserDao extends BaseMapper<User>{
 	 */
 	@Select("select a.*,b.nickname as invitationtor from t_user a left join t_user b on a.pid = b.id where a.id = #{pid}")
 	UserVo selectByPid(String pid);
+
+	/**
+	 * 更新上级用户邀请人数
+	 * @param pid
+	 */
+	@Update("update t_user set rank = rank + 1 where id = #{pid}")
+	void updatePidInvitaion(String pid);
 }

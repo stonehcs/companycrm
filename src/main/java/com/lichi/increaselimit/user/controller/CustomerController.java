@@ -1,15 +1,29 @@
 package com.lichi.increaselimit.user.controller;
 
+import javax.validation.Valid;
+
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
+import com.lichi.increaselimit.common.Constants;
+import com.lichi.increaselimit.common.enums.ResultEnum;
+import com.lichi.increaselimit.common.exception.BusinessException;
+import com.lichi.increaselimit.common.utils.RedisUtils;
 import com.lichi.increaselimit.common.utils.ResultVoUtil;
+import com.lichi.increaselimit.common.utils.StringUtil;
 import com.lichi.increaselimit.common.vo.ResultVo;
+import com.lichi.increaselimit.security.validate.code.ValidateCode;
+import com.lichi.increaselimit.user.controller.dto.RegistrDto;
 import com.lichi.increaselimit.user.entity.UserVo;
 import com.lichi.increaselimit.user.service.UserService;
 
@@ -26,6 +40,9 @@ public class CustomerController {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private RedisUtils redisUtils;
 
 	@GetMapping
 	@ApiOperation("分页查询所有客户")
@@ -35,6 +52,31 @@ public class CustomerController {
 		log.info("分页查询所有客户");
 		PageInfo<UserVo> list = userService.selectAll(page, size);
 		return ResultVoUtil.success(list);
+	}
+	
+	@PostMapping
+	@ApiOperation("客户注册")
+	public ResultVo<Object> register(@Valid @RequestBody RegistrDto registrDto,BindingResult result) {
+		if (result.hasErrors()) {
+			String errors = result.getFieldError().getDefaultMessage();
+			log.error("客户注册参数错误:{}" + errors);
+			return ResultVoUtil.error(1, errors);
+		}
+		String mobile = registrDto.getMobile();
+		log.info("客户注册,手机号:{}",mobile);
+		if(!StringUtil.ValidateMobile(mobile)) {
+			throw new BusinessException(ResultEnum.MOBILE_ERROR);
+		}
+		String codejson = redisUtils.get(Constants.MOBILE_REDIS_KEY + mobile);
+		if(StringUtils.isBlank(codejson)) {
+			throw new BusinessException(ResultEnum.VALIDATECODE_TIMEOUT);
+		}
+		ValidateCode validateCode = JSONObject.parseObject(codejson, ValidateCode.class);
+		if(!registrDto.getCode().equals(validateCode.getCode())) {
+			throw new BusinessException(ResultEnum.VALIDATECODE_ERROR);
+		}
+		userService.insertCustomer(mobile,registrDto.getPid());
+		return ResultVoUtil.success();
 	}
 	
 	@GetMapping("/up/{pid}")
