@@ -19,5 +19,7 @@ public class SysRoleResource {
 
 	@Transient
 	private String buttonName;
+	@Transient
+	private String menuName;
 	
 }

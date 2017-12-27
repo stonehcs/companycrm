@@ -13,14 +13,16 @@
 			<result column="button_id" jdbcType="INTEGER" property="buttonId" />
 			<result column="type" jdbcType="INTEGER" property="type" />
 			<result column="button_name" jdbcType="VARCHAR" property="buttonName" />
+			<result column="menu_name" jdbcType="VARCHAR" property="menuName" />
 		</association>
 	</resultMap>
 
 	<select id="selectAllResource" resultMap="BaseResultMap">
-		select a.*,b.*,c.button_name
+		select a.*,b.*,c.button_name,d.menu_name
 		from t_sys_role a
 		left join t_sys_role_resource b on a.id = b.role_id
 		LEFT JOIN t_sys_button c on b.button_id = c.id
+		left join t_sys_menu d on b.menu_id = d.id
 	</select>
 
 

@@ -16,6 +16,7 @@ import com.lichi.increaselimit.common.enums.ResultEnum;
 import com.lichi.increaselimit.common.exception.BusinessException;
 import com.lichi.increaselimit.sys.controller.dto.SysRoleResourceDto;
 import com.lichi.increaselimit.sys.controller.dto.SysRoleResourceVo;
+import com.lichi.increaselimit.sys.dao.SysMenuDao;
 import com.lichi.increaselimit.sys.dao.SysRoleDao;
 import com.lichi.increaselimit.sys.dao.SysRoleResourceDao;
 import com.lichi.increaselimit.sys.entity.SysRole;
@@ -30,6 +31,9 @@ public class SysRoleServiceImpl implements SysRoleService{
 	private SysRoleDao roleDao;
 	@Autowired
 	private SysRoleResourceDao sysRoleResourceDao;
+	@Autowired
+	private SysMenuDao sysMenuDao;
+	
 
 	@Override
 	public PageInfo<SysRole> selectAll(Integer page, Integer size,String name) {
@@ -72,6 +76,21 @@ public class SysRoleServiceImpl implements SysRoleService{
 	public List<SysRole> selectList() {
 		PageHelper.orderBy("create_time desc");
 		List<SysRole> list = roleDao.selectAllResource();
+//		if(null != list && list.size() > 0) {
+//			list.forEach(e ->{
+//				List<SysRoleResource> resources = e.getResources();
+//				if(null != resources && resources.size() > 0) {
+//					resources.forEach(r -> {
+//						Integer buttonId = r.getButtonId();
+//						Integer menuId = r.getMenuId();
+//						if(buttonId == -1) {
+//							SysMenu menu = sysMenuDao.selectByPrimaryKey(menuId);
+//							r.setMenuName(menu.getMenuName());
+//						}
+//					});
+//				}
+//			});
+//		}
 		return list;
 	}
 
