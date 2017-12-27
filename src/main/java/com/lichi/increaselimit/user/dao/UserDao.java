@@ -43,5 +43,5 @@ public interface UserDao extends BaseMapper<User>{
 	 * @param pid
 	 */
 	@Update("update t_user set rank = rank + 1 where id = #{pid}")
-	void updatePidInvitaion(String pid);
+	void updatePidRank(String pid);
 }

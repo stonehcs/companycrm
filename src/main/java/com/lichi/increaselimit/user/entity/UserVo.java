@@ -1,18 +1,28 @@
 package com.lichi.increaselimit.user.entity;
 
+import io.swagger.annotations.ApiModelProperty;
+
 public class UserVo extends User{
 
 	private static final long serialVersionUID = 7544781771954429469L;
 
+	@ApiModelProperty("邀请人")
 	private String invitationtor;
 
+	@ApiModelProperty("qq")
 	private String qq;
 	
+	@ApiModelProperty("微信")
 	private String weixin;
 	
+	@ApiModelProperty("微博")
 	private String weibo;
 	
+	@ApiModelProperty("等级对应的金额")
 	private Double levelMoney;
+	
+	@ApiModelProperty("客服等级")
+	private String levelName;
 
 	public String getInvitationtor() {
 		return invitationtor;

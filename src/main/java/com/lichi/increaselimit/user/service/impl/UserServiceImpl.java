@@ -87,7 +87,7 @@ public class UserServiceImpl implements UserService{
 		user.setVipLevel(1);
 		user.setPid(pid);
 		userMapper.insertSelective(user);
-		userMapper.updatePidInvitaion(pid);
+		userMapper.updatePidRank(pid);
 		return user;
 	}
 }
