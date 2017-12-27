@@ -14,9 +14,11 @@ import com.lichi.increaselimit.common.exception.BusinessException;
 import com.lichi.increaselimit.common.utils.IdUtils;
 import com.lichi.increaselimit.user.dao.SocialUserDao;
 import com.lichi.increaselimit.user.dao.UserDao;
+import com.lichi.increaselimit.user.dao.VipLevelDao;
 import com.lichi.increaselimit.user.entity.SocialUserInfo;
 import com.lichi.increaselimit.user.entity.User;
 import com.lichi.increaselimit.user.entity.UserVo;
+import com.lichi.increaselimit.user.entity.VipLevel;
 import com.lichi.increaselimit.user.service.UserService;
 
 @Service
@@ -26,6 +28,8 @@ public class UserServiceImpl implements UserService{
 	private UserDao userMapper;
 	@Autowired
 	private SocialUserDao socialUserDao;
+	@Autowired
+	private VipLevelDao vipLevelDao;
 
 	@Override
 	public User loadUserInfoByMobile(String mobile) {
@@ -89,5 +93,19 @@ public class UserServiceImpl implements UserService{
 		userMapper.insertSelective(user);
 		userMapper.updatePidRank(pid);
 		return user;
+	}
+
+	@Override
+	public void updateUserInfo(String userId, Integer level) {
+		User record = new User();
+		record.setId(userId);
+		record.setVipLevel(level);
+		record.setUpdateTime(new Date());
+		userMapper.updateByPrimaryKeySelective(record);
+	}
+
+	@Override
+	public List<VipLevel> selectLevel() {
+		return vipLevelDao.selectAll();
 	}
 }

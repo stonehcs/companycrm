@@ -1,8 +1,11 @@
 package com.lichi.increaselimit.user.service;
 
+import java.util.List;
+
 import com.github.pagehelper.PageInfo;
 import com.lichi.increaselimit.user.entity.User;
 import com.lichi.increaselimit.user.entity.UserVo;
+import com.lichi.increaselimit.user.entity.VipLevel;
 
 /**
  * 用户service
@@ -47,4 +50,19 @@ public interface UserService {
 	 * @return 
 	 */
 	User insertCustomer(String mobile, String string);
+
+	/**
+	 * 修改用户等级信息
+	 * @param userId
+	 * @param level
+	 */
+	void updateUserInfo(String userId, Integer level);
+
+	/**
+	 * 查询等级列表
+	 * @return
+	 */
+	List<VipLevel> selectLevel();
+	
+	
 }
