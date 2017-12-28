@@ -46,14 +46,28 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public PageInfo<UserVo> selectAll(Integer page, Integer size,String key) {
+	public PageInfo<UserVo> selectAll(Integer page, Integer size,String key,String userId) {
 		PageHelper.startPage(page,size);
 		PageHelper.orderBy("create_time desc");
 		List<UserVo> list = null;
-		if(StringUtils.isBlank(key)) {
-			list = userMapper.selectAllUser();
+		if(StringUtils.isBlank(userId)) {
+			if(StringUtils.isBlank(key)) {
+				list = userMapper.selectAllUser();
+			}else {
+				list = userMapper.selectAllLike(key);
+			}
 		}else {
-			list = userMapper.selectAllLike(key);
+			if(StringUtils.isBlank(key)) {
+				list = userMapper.getAllShare(userId);
+			}else {
+				list = userMapper.getAllShareLike(userId,key);
+			}
+		}
+		if(null != list && list.size() > 0 ) {
+			list.forEach(e -> {
+				List<UserShare> shares = userMapper.selectShareUser(e.getId());
+				e.setShares(shares);
+			});
 		}
 		PageInfo<UserVo> pageInfo = getThirdInfo(list);
 		return pageInfo;
@@ -102,19 +116,6 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public List<VipLevel> selectLevel() {
 		return vipLevelDao.selectAll();
-	}
-
-	@Override
-	public PageInfo<UserVo> getAllShare(Integer page, Integer size, String userId) {
-		PageHelper.startPage(page,size);
-		PageHelper.orderBy("create_time desc");
-		List<UserVo> list = userMapper.getAllShare(userId);
-		list.forEach(e -> {
-			List<UserShare> shares = userMapper.selectShareUser(e.getId());
-			e.setShares(shares);
-		});
-		PageInfo<UserVo> pageInfo = getThirdInfo(list);
-		return pageInfo;
 	}
 
 	private PageInfo<UserVo> getThirdInfo(List<UserVo> list) {

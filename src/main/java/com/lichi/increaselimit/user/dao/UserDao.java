@@ -3,6 +3,7 @@ package com.lichi.increaselimit.user.dao;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
@@ -70,4 +71,9 @@ public interface UserDao extends BaseMapper<User>{
 	@Select("select a.id,a.head_img,a.nickname from t_user a left join t_user b on a.pid = b.id "
 			+ "left join t_vip_level c on a.vip_level = c.id where a.pid = #{userId} limit 4")
 	List<UserShare> selectShareUser(String userId);
+
+	@Select("select a.*,b.nickname as invitationtor,c.* from t_user a left join t_user b on a.pid = b.id "
+			+ "left join t_vip_level c on a.vip_level = c.id where a.pid = #{userId}"
+			+ "and a.nickname LIKE concat('%', #{key}, '%') or a.mobile LIKE concat('%', #{key}, '%')")
+	List<UserVo> getAllShareLike(@Param(value = "userId") String userId, @Param(value = "key") String key);
 }
