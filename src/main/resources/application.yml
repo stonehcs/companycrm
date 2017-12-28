@@ -26,7 +26,7 @@ spring:
       enabled: true
       file-size-threshold: 0
       location: 
-      max-file-size: 1MB
+      max-file-size: 100MB
       max-request-size: 10Mb
       
 #mybatis
