@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSONObject;
 import com.lichi.increaselimit.common.Constants;
-import com.lichi.increaselimit.common.utils.IdUtils;
 import com.lichi.increaselimit.common.utils.RedisUtils;
 import com.lichi.increaselimit.common.utils.ResultVoUtil;
 import com.lichi.increaselimit.sys.entity.SysUser;
@@ -40,10 +39,10 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
 
 		SysUser sysUser = (SysUser) authentication.getPrincipal();
 		
-		String token = IdUtils.getUUID();
+		String token = sysUser.getId();
 		
 		//将用户信息放入redis
-		redisUtils.set(Constants.LOGIN_SYS_USER + token,JSONObject.toJSONString(sysUser),7200);
+		redisUtils.set(Constants.LOGIN_SYS_USER + token,token,7200);
 		
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("token", token);

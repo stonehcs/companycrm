@@ -155,8 +155,6 @@ public class SysUserServiceImpl implements SysUserService {
 		sysUser.setUpdateTime(new Date());
 		sysUserMapper.updateByPrimaryKeySelective(sysUser);
 		sysUserMapper.selectByPrimaryKey(sysUser.getId());
-		redisUtils.del(Constants.LOGIN_SYS_USER+token);
-		redisUtils.set(Constants.LOGIN_SYS_USER+token, JSONObject.toJSONString(sysUser), 7200);
 		Example example = new Example(SysUserRole.class);
 		example.createCriteria().andEqualTo("userId",sysUser.getId());
 		sysUserRoleMapper.deleteByExample(example);

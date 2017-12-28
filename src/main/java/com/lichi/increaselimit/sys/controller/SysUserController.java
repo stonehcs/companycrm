@@ -195,10 +195,8 @@ public class SysUserController {
 
 		log.error("获取当前用户信息,用户token:{}", token);
 
-		String strJson = redisUtils.get(Constants.LOGIN_SYS_USER + token);
-
-		SysUser user = JSONObject.parseObject(strJson, SysUser.class);
-
+		SysUser user = sysUserService.loadUserInfoByUserId(token);
+		
 		return ResultVoUtil.success(user);
 
 	}
@@ -209,13 +207,7 @@ public class SysUserController {
 
 		log.error("获取当前用户菜单树,用户token:{}", token);
 
-		String strJson = redisUtils.get(Constants.LOGIN_SYS_USER + token);
-
-		SysUser user = JSONObject.parseObject(strJson, SysUser.class);
-
-		String userId = user.getId();
-		
-		List<SysMenu> list = sysMenuService.selectByUserId(userId);
+		List<SysMenu> list = sysMenuService.selectByUserId(token);
 		
 		JSONArray treeMenuList = MenuTreeUtils.treeMenuList(list, -1);
 		return ResultVoUtil.success(treeMenuList);

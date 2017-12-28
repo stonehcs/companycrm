@@ -43,6 +43,8 @@ public class SysUser implements UserDetails,SocialUserDetails{
 
 	private Integer deptId;
 	
+	private String headerImg;
+	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		// TODO Auto-generated method stub

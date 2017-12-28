@@ -19,8 +19,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.pagehelper.PageInfo;
-import com.lichi.increaselimit.common.utils.IdUtils;
-import com.lichi.increaselimit.common.utils.RedisUtils;
 import com.lichi.increaselimit.common.utils.ResultVoUtil;
 import com.lichi.increaselimit.common.vo.ResultVo;
 import com.lichi.increaselimit.community.controller.dto.CircleDto;
@@ -46,9 +44,6 @@ public class CircleController {
     @Autowired
     private CircleService circleService;
     
-    @Autowired
-    private RedisUtils redisUtils;
-
     @PostMapping
     @ApiOperation(value = "新建圈子")
     public ResultVo<Circle> postArticle(@Valid @RequestBody CircleDto circledto, BindingResult result,
@@ -61,7 +56,7 @@ public class CircleController {
         }
         Circle circle = new Circle();
         BeanUtils.copyProperties(circledto, circle);
-        circle.setCreateUserId(IdUtils.getUserId(redisUtils, token));
+        circle.setCreateUserId(token);
 		circleService.add(circle);
         return ResultVoUtil.success();
     }

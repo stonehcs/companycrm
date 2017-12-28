@@ -18,7 +18,6 @@ import com.lichi.increaselimit.common.utils.RedisUtils;
 import com.lichi.increaselimit.security.config.auth.RbacService;
 import com.lichi.increaselimit.sys.entity.ResourceVo;
 import com.lichi.increaselimit.sys.entity.SysRole;
-import com.lichi.increaselimit.sys.entity.SysUser;
 import com.lichi.increaselimit.sys.service.SysRoleService;
 import com.lichi.increaselimit.sys.service.SysUserService;
 
@@ -55,11 +54,9 @@ public class RbacServiceImpl implements RbacService {
 		String userId = null;
 		
 		if (StringUtils.isNotBlank(token)) {
-			String userStr = redisUtils.get(Constants.LOGIN_SYS_USER + token);
-			if (StringUtils.isNotBlank(userStr)) {
-				SysUser sysUser = JSONObject.parseObject(userStr, SysUser.class);
-				redisUtils.expire(Constants.LOGIN_SYS_USER + token, 7200);
-				userId = sysUser.getId();
+			boolean exist = redisUtils.exists(Constants.LOGIN_SYS_USER+token);
+			if (exist) {
+				userId = token;
 			}else {
 				return hasPermission;
 			}
