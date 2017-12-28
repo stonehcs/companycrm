@@ -46,13 +46,17 @@ public class LichiWebSocket {
 	 */
 	@OnOpen
 	public void onOpen(@PathParam("id") String id, Session session) {
+		RedisUtils redisUtils = ApplicationContextRegister.getApplicationContext()
+				.getBean(RedisUtils.class);
+		boolean exists = redisUtils.exists(Constants.LOGIN_KEFU + id);
+		if(exists) {
+			return;
+		}
 		this.session = session;
 		webSocketSet.add(this); // 加入set中
 		addOnlineCount(); // 在线数加1
 		log.info("id:{}用户加入！当前在线人数为" + getOnlineCount(),id);
 
-		RedisUtils redisUtils = ApplicationContextRegister.getApplicationContext()
-				.getBean(RedisUtils.class);
 		redisUtils.set(Constants.LOGIN_KEFU + id,LocalDateTime.now().toString());
 		// try {
 		// sendMessage(CommonConstant.CURRENT_WANGING_NUMBER.toString());
