@@ -228,7 +228,11 @@ public class SysUserController {
 	@ApiOperation("获取好友")
 	public ResultVo<List<User>> getFriends(@RequestHeader("token") String token) {
 		Set<String> sget = redisUtils.sget(Constants.LOGIN_KEFU_FRIENDS + token);
-		List<User> list = userService.selectByIds(sget);
+		List<User> list = null;
+		if(sget.isEmpty()) {
+			return ResultVoUtil.success(list);
+		}
+		list = userService.selectByIds(sget);
 		return ResultVoUtil.success(list);
 	}
 }
