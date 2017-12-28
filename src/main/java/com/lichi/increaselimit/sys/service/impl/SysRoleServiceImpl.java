@@ -67,7 +67,7 @@ public class SysRoleServiceImpl implements SysRoleService {
 
 	@Override
 	public List<SysRole> selectList(String name) {
-		PageHelper.orderBy("create_time desc");
+		PageHelper.orderBy("a.create_time desc");
 		List<SysRole> list = roleDao.selectAllResource(name);
 		return list;
 	}
@@ -126,7 +126,7 @@ public class SysRoleServiceImpl implements SysRoleService {
 					throw new BusinessException(ResultEnum.ROLE_EXIST);
 				}
 			}
-			roleDao.updateByPrimaryKey(record);
+			roleDao.updateByPrimaryKeySelective(record);
 		}
 		return roleId;
 	}
