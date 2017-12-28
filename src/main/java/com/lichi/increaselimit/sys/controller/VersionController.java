@@ -106,6 +106,6 @@ public class VersionController {
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
-		return ResultVoUtil.success();
+		return ResultVoUtil.success("app.lichijituan.cn/home/homepage/release/" + fileName);
 	}
 }
