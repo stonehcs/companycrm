@@ -2,6 +2,7 @@ package com.lichi.increaselimit.sys.controller;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -211,5 +212,17 @@ public class SysUserController {
 		
 		JSONArray treeMenuList = MenuTreeUtils.treeMenuList(list, -1);
 		return ResultVoUtil.success(treeMenuList);
+	}
+	
+	@PostMapping("/friends/{userId}")
+	@ApiOperation("添加好友")
+	public ResultVo<JSONArray> addFriends(@RequestHeader("token") String token,@PathVariable String userId) {
+		redisUtils.sadd(Constants.LOGIN_KEFU_FRIENDS + token, userId);		return ResultVoUtil.success();
+	}
+	
+	@GetMapping("/friends")
+	@ApiOperation("获取好友")
+	public ResultVo<Set<String>> getFriends(@RequestHeader("token") String token) {
+		Set<String> sget = redisUtils.sget(Constants.LOGIN_KEFU_FRIENDS + token);		return ResultVoUtil.success(sget);
 	}
 }

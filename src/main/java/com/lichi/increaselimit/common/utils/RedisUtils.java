@@ -1,6 +1,7 @@
 package com.lichi.increaselimit.common.utils;
 
 import java.io.UnsupportedEncodingException;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -93,6 +94,62 @@ public class RedisUtils {
 			}
 		});
 	}
+	
+	
+	/**
+	 * rpush
+	 * @param key
+	 * @param value
+	 */
+	public void rPush(final String key,String value) {
+		redisTemplate.execute(new RedisCallback() {
+			@Override
+			public Long doInRedis(RedisConnection connection) throws DataAccessException {
+				connection.rPush(key.getBytes(), value.getBytes());
+				return 1L;
+			}
+		});
+	}
+	
+	/**
+	 * sAdd
+	 * @param key
+	 * @param value
+	 */
+	public void sadd(final String key,String value) {
+		redisTemplate.execute(new RedisCallback() {
+			@Override
+			public Long doInRedis(RedisConnection connection) throws DataAccessException {
+				connection.sAdd(key.getBytes(), value.getBytes());
+				return 1L;
+			}
+		});
+	}
+	
+	/**
+	 * sAdd
+	 * @param key
+	 * @param value
+	 */
+	public Set<String> sget(final String key) {
+		return (Set<String>) redisTemplate.execute(new RedisCallback() {
+			@Override
+			public Set<String> doInRedis(RedisConnection connection) throws DataAccessException {
+				Set<byte[]> members = connection.sMembers(key.getBytes());
+				Set<String> set = new  HashSet<String>();
+				for (byte[] bs : members) {
+					try {
+						set.add(new String(bs, REDIS_CODE));
+					} catch (UnsupportedEncodingException e) {
+						e.printStackTrace();
+					}
+				}
+				return set;
+			}
+		});
+	}
+	
+	
 
 	/**
 	 * @param key

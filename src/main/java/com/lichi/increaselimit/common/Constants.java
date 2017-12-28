@@ -16,6 +16,10 @@ public interface Constants {
 	 */
 	public static final String LOGIN_KEFU = "login_kefu:";
 	/**
+	 * 客服好友
+	 */
+	public static final String LOGIN_KEFU_FRIENDS = "login_kefu:friends:";
+	/**
 	 * 登录的用户
 	 */
 	public static final String LOGIN_USER = "login_user:";
@@ -37,4 +41,6 @@ public interface Constants {
 	 * 发送验证码的间隔时间
 	 */
 	public static final int CODE_RESEND = 60;
+	
+
 }
