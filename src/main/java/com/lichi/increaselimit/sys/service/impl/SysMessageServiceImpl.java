@@ -40,7 +40,7 @@ public class SysMessageServiceImpl implements SysMessageService{
 		message.setCreateTime(new Date());
 		messageDao.insertSelective(message);
 		
-		JpushClientUtil.pushToAll(message.getDescription(), message.getContent());
+		JpushClientUtil.pushToAll(message.getTitle(), message.getContent());
 	}
 
 	@Override

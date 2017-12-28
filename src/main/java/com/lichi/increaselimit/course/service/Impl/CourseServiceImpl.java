@@ -1,6 +1,5 @@
 package com.lichi.increaselimit.course.service.Impl;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -71,10 +70,10 @@ public class CourseServiceImpl implements CourseService {
 		courseMapper.insertSelective(course);
 		
 		SysMessage message = new SysMessage();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		message.setContent( "课程标题:" + course.getTitle() + ",开课时间:" + sdf.format(course.getStartTime()));
-		message.setDescription("有新的课程开课了");
+		message.setContent(course.getDescription());
+		message.setTitle("有新的课程开课了:" + course.getTitle());
 		message.setLevel(1);
+		message.setType("有新的课程开课了");
 		sysMessageService.insertOne(message);
 		
 	}
