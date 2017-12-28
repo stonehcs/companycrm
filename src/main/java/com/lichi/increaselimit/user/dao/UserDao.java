@@ -74,6 +74,6 @@ public interface UserDao extends BaseMapper<User>{
 
 	@Select("select a.*,b.nickname as invitationtor,c.* from t_user a left join t_user b on a.pid = b.id "
 			+ "left join t_vip_level c on a.vip_level = c.id where a.pid = #{userId}"
-			+ "and a.nickname LIKE concat('%', #{key}, '%') or a.mobile LIKE concat('%', #{key}, '%')")
+			+ "and (a.nickname LIKE concat('%', #{key}, '%') or a.mobile LIKE concat('%', #{key}, '%'))")
 	List<UserVo> getAllShareLike(@Param(value = "userId") String userId, @Param(value = "key") String key);
 }
