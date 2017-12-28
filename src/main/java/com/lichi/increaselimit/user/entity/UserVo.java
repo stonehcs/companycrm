@@ -1,5 +1,7 @@
 package com.lichi.increaselimit.user.entity;
 
+import java.util.List;
+
 import io.swagger.annotations.ApiModelProperty;
 
 public class UserVo extends User{
@@ -27,9 +29,9 @@ public class UserVo extends User{
 	@ApiModelProperty("邀请总人数")
 	private Integer count;
 	
-	@ApiModelProperty("等级id")
-	private Integer levelId;
-
+	@ApiModelProperty("下层用户")
+	private List<UserShare> shares;
+	
 	public String getInvitationtor() {
 		return invitationtor;
 	}
@@ -85,6 +87,16 @@ public class UserVo extends User{
 	public void setCount(Integer count) {
 		this.count = count;
 	}
+
+	public List<UserShare> getShares() {
+		return shares;
+	}
+
+	public void setShares(List<UserShare> shares) {
+		this.shares = shares;
+	}
+
+
 	
 
 	

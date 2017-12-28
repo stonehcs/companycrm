@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Update;
 
 import com.lichi.increaselimit.common.mapper.BaseMapper;
 import com.lichi.increaselimit.user.entity.User;
+import com.lichi.increaselimit.user.entity.UserShare;
 import com.lichi.increaselimit.user.entity.UserVo;
 
 /**
@@ -65,4 +66,8 @@ public interface UserDao extends BaseMapper<User>{
 	@Select("select count(a.id) from t_user a left join t_user b on a.pid = b.id "
 			+ "left join t_vip_level c on a.vip_level = c.id where a.pid = #{userId}")
 	Integer selectShareCount(String userId);
+	
+	@Select("select a.id,a.head_img,a.nickname from t_user a left join t_user b on a.pid = b.id "
+			+ "left join t_vip_level c on a.vip_level = c.id where a.pid = #{userId} limit 4")
+	List<UserShare> selectShareUser(String userId);
 }
