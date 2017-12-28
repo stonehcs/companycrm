@@ -1,6 +1,7 @@
 package com.lichi.increaselimit.user.service;
 
 import java.util.List;
+import java.util.Set;
 
 import com.github.pagehelper.PageInfo;
 import com.lichi.increaselimit.user.entity.User;
@@ -65,6 +66,13 @@ public interface UserService {
 	 * @return
 	 */
 	List<VipLevel> selectLevel();
+
+	/**
+	 * 通过id查询所有用户
+	 * @param sget
+	 * @return
+	 */
+	List<User> selectByIds(Set<String> sget);
 
 	
 }

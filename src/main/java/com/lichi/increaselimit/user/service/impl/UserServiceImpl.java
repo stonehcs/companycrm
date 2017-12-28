@@ -2,6 +2,7 @@ package com.lichi.increaselimit.user.service.impl;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,8 @@ import com.lichi.increaselimit.user.entity.UserShare;
 import com.lichi.increaselimit.user.entity.UserVo;
 import com.lichi.increaselimit.user.entity.VipLevel;
 import com.lichi.increaselimit.user.service.UserService;
+
+import tk.mybatis.mapper.entity.Example;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -145,5 +148,12 @@ public class UserServiceImpl implements UserService{
 		});
 		PageInfo<UserVo> pageInfo = new PageInfo<UserVo>(list);
 		return pageInfo;
+	}
+
+	@Override
+	public List<User> selectByIds(Set<String> sget) {
+		Example example = new Example(User.class);
+		example.createCriteria().andIn("id", sget);
+		return userMapper.selectByExample(example);
 	}
 }

@@ -45,6 +45,8 @@ import com.lichi.increaselimit.sys.entity.SysUserVo;
 import com.lichi.increaselimit.sys.service.SysMenuService;
 import com.lichi.increaselimit.sys.service.SysRoleService;
 import com.lichi.increaselimit.sys.service.SysUserService;
+import com.lichi.increaselimit.user.entity.User;
+import com.lichi.increaselimit.user.service.UserService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -68,6 +70,8 @@ public class SysUserController {
 
 	@Autowired
 	private SysUserService sysUserService;
+	@Autowired
+	private UserService userService;
 
 	@Autowired
 	private SysRoleService sysRoleService;
@@ -222,7 +226,9 @@ public class SysUserController {
 	
 	@GetMapping("/friends")
 	@ApiOperation("获取好友")
-	public ResultVo<Set<String>> getFriends(@RequestHeader("token") String token) {
-		Set<String> sget = redisUtils.sget(Constants.LOGIN_KEFU_FRIENDS + token);		return ResultVoUtil.success(sget);
+	public ResultVo<List<User>> getFriends(@RequestHeader("token") String token) {
+		Set<String> sget = redisUtils.sget(Constants.LOGIN_KEFU_FRIENDS + token);
+		List<User> list = userService.selectByIds(sget);
+		return ResultVoUtil.success(list);
 	}
 }
