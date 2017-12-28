@@ -56,6 +56,7 @@ public class RbacServiceImpl implements RbacService {
 		if (StringUtils.isNotBlank(token)) {
 			boolean exist = redisUtils.exists(Constants.LOGIN_SYS_USER+token);
 			if (exist) {
+				redisUtils.expire(Constants.LOGIN_SYS_USER+token,7200);
 				userId = token;
 			}else {
 				return hasPermission;
