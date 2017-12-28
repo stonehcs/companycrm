@@ -72,6 +72,7 @@ public enum ResultEnum {
     
     NO_USER_ID(25, "请输入用户id"), 
     NO_ROLE_ID(25, "请输入角色id"), 
+    SEND_SMS_ERROR(25, "短信系统异常"), 
     ;
 
     private Integer code;
