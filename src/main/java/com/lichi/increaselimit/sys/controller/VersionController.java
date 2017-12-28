@@ -102,7 +102,7 @@ public class VersionController {
 		log.info("上传的文件名为：" + fileName);
 		
 		try {
-			FileUtil.uploadFile(file.getBytes(), "/home/homepage/release", fileName);
+			FileUtil.uploadFile(file.getBytes(), "/home/homepage/release/", fileName);
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
