@@ -28,7 +28,6 @@ public class GlobalExceptionHandler {
 		if(e instanceof ValidateCodeException) {
 			return ResultVoUtil.error(401, e.getMessage());
 		}
-		e.printStackTrace();
 		log.error(e.getMessage());
 		return ResultVoUtil.error(1,e.getMessage());
 	}

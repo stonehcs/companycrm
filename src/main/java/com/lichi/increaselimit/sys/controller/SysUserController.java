@@ -84,7 +84,7 @@ public class SysUserController {
 			HttpServletRequest request, HttpServletResponse response) throws IOException {
 		if (result.hasErrors()) {
 			String errors = result.getFieldError().getDefaultMessage();
-			log.error("用户注册参数错误:{}", errors);
+			log.warn("用户注册参数错误:{}", errors);
 			return ResultVoUtil.error(1, errors);
 		}
 		if (!StringUtil.ValidateMobile(sysUserDto.getMobile())) {
@@ -141,7 +141,7 @@ public class SysUserController {
 	public ResultVo<SysUser> updateSysUser(@Valid @RequestBody SysUserUpdateDto sysUserDto, BindingResult result) {
 		if (result.hasErrors()) {
 			String errors = result.getFieldError().getDefaultMessage();
-			log.error("用户修改密码参数错误:{}", errors);
+			log.warn("用户修改密码参数错误:{}", errors);
 			return ResultVoUtil.error(1, errors);
 		}
 		if (!StringUtil.ValidateMobile(sysUserDto.getMobile())) {
@@ -168,10 +168,10 @@ public class SysUserController {
 			@RequestHeader String token) {
 		if (result.hasErrors()) {
 			String errors = result.getFieldError().getDefaultMessage();
-			log.error("修改用户信息参数错误:{}", errors);
+			log.warn("修改用户信息参数错误:{}", errors);
 			return ResultVoUtil.error(1, errors);
 		}
-		log.error("修改用户信息,用户id:{}", sysUserDto.getId());
+		log.info("修改用户信息,用户id:{}", sysUserDto.getId());
 		SysUser sysUser = new SysUser();
 		BeanUtils.copyProperties(sysUserDto, sysUser);
 
@@ -183,7 +183,7 @@ public class SysUserController {
 	@GetMapping("/role/{id}")
 	@ApiOperation("获取用户对应的角色")
 	public ResultVo<List<SysRole>> getUserRole(@PathVariable String id) {
-		log.error("获取用户对应的角色,用户id:{},部门id:{}", id);
+		log.info("获取用户对应的角色,用户id:{},部门id:{}", id);
 		List<SysRole> userRole = sysRoleService.getUserRole(id);
 		return ResultVoUtil.success(userRole);
 	}
@@ -198,7 +198,7 @@ public class SysUserController {
 	// dataType = "string", paramType = "header", defaultValue = "username") })
 	public ResultVo<SysUser> getCurrentUser(@RequestHeader("token") String token) {
 
-		log.error("获取当前用户信息,用户token:{}", token);
+		log.info("获取当前用户信息,用户token:{}", token);
 
 		SysUser user = sysUserService.loadUserInfoByUserId(token);
 		
@@ -210,7 +210,7 @@ public class SysUserController {
 	@ApiOperation("获取当前用户的菜单树")
 	public ResultVo<JSONArray> getUserMenuTree(@RequestHeader("token") String token) {
 
-		log.error("获取当前用户菜单树,用户token:{}", token);
+		log.info("获取当前用户菜单树,用户token:{}", token);
 
 		List<SysMenu> list = sysMenuService.selectByUserId(token);
 		
@@ -221,13 +221,13 @@ public class SysUserController {
 	@PostMapping("/friends/{userId}")
 	@ApiOperation("添加好友")
 	public ResultVo<JSONArray> addFriends(@RequestHeader("token") String token,@PathVariable String userId) {
-		redisUtils.sadd(Constants.LOGIN_KEFU_FRIENDS + token, userId);		return ResultVoUtil.success();
+		redisUtils.sadd(Constants.KEFU_FRIENDS + token, userId);		return ResultVoUtil.success();
 	}
 	
 	@GetMapping("/friends")
 	@ApiOperation("获取好友")
 	public ResultVo<List<User>> getFriends(@RequestHeader("token") String token) {
-		Set<String> sget = redisUtils.sget(Constants.LOGIN_KEFU_FRIENDS + token);
+		Set<String> sget = redisUtils.sget(Constants.KEFU_FRIENDS + token);
 		List<User> list = null;
 		if(sget.isEmpty()) {
 			return ResultVoUtil.success(list);

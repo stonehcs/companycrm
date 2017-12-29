@@ -61,7 +61,7 @@ public class DeptController {
 	public ResultVo<SysDept> add(@Valid @RequestBody SysDeptDto deptDto, BindingResult result) {
 		if (result.hasErrors()) {
 			String errors = result.getFieldError().getDefaultMessage();
-			log.error("添加部门信息参数错误:{}" + errors);
+			log.warn("添加部门信息参数错误:{}" + errors);
 			return ResultVoUtil.error(1, errors);
 		}
 		log.info("添加部门,部门名称:{}",deptDto.getDeptName());
@@ -76,7 +76,7 @@ public class DeptController {
 	public ResultVo<SysDept> update(@Valid @RequestBody SysDeptUpdateDto deptDto, BindingResult result) {
 		if (result.hasErrors()) {
 			String errors = result.getFieldError().getDefaultMessage();
-			log.error("修改部门信息参数错误:{}" + errors);
+			log.warn("修改部门信息参数错误:{}" + errors);
 			return ResultVoUtil.error(1, errors);
 		}
 		log.info("修改部门,部门id:{}",deptDto.getId());

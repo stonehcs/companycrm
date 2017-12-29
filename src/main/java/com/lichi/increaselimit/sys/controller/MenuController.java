@@ -55,7 +55,7 @@ public class MenuController {
 	public ResultVo<SysMenu> add(@Valid @RequestBody SysMenuDto menuDto, BindingResult result) {
 		if (result.hasErrors()) {
 			String errors = result.getFieldError().getDefaultMessage();
-			log.error("添加菜单信息参数错误:{}",errors);
+			log.warn("添加菜单信息参数错误:{}",errors);
 			return ResultVoUtil.error(1, errors);
 		}
 		log.info("添加菜单信息,菜单名称:{}",menuDto.getMenuName());
@@ -70,7 +70,7 @@ public class MenuController {
 	public ResultVo<SysMenu> update(@Valid @RequestBody SysMenuUpdateDto menuDto, BindingResult result) {
 		if (result.hasErrors()) {
 			String errors = result.getFieldError().getDefaultMessage();
-			log.error("修改菜单信息参数错误:{}",errors);
+			log.warn("修改菜单信息参数错误:{}",errors);
 			return ResultVoUtil.error(1, errors);
 		}
 		log.info("修改菜单信息,菜单名称:{}",menuDto.getMenuName());

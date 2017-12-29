@@ -82,7 +82,7 @@ public class RoleController {
 	public ResultVo<SysRole> addResource(@Valid @RequestBody SysRoleResourceVo vo, BindingResult result) {
 		if (result.hasErrors()) {
 			String errors = result.getFieldError().getDefaultMessage();
-			log.error("添加角色资源参数错误:{}",errors);
+			log.warn("添加角色资源参数错误:{}",errors);
 			return ResultVoUtil.error(1, errors);
 		}
 		roleService.addOrUpdate(vo);

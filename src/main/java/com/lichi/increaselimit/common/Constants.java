@@ -18,7 +18,7 @@ public interface Constants {
 	/**
 	 * 客服好友
 	 */
-	public static final String LOGIN_KEFU_FRIENDS = "login_kefu:friends:";
+	public static final String KEFU_FRIENDS = "kefu_friends:";
 	/**
 	 * 登录的用户
 	 */

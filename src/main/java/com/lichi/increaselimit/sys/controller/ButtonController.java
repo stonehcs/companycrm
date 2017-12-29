@@ -49,7 +49,7 @@ public class ButtonController {
 	public ResultVo<SysButton> add(@Valid @RequestBody SysButtonDto buttonDto, BindingResult result) {
 		if (result.hasErrors()) {
 			String errors = result.getFieldError().getDefaultMessage();
-			log.error("添加按钮信息参数错误:{}" + errors);
+			log.warn("添加按钮信息参数错误:{}" + errors);
 			return ResultVoUtil.error(1, errors);
 		}
 		log.info("添加按钮信息,菜单id:{},按钮名称:{}",buttonDto.getMenuId(),buttonDto.getButtonName());
@@ -64,7 +64,7 @@ public class ButtonController {
 	public ResultVo<SysButton> update(@Valid @RequestBody SysButtonUpdateDto buttonDto, BindingResult result) {
 		if (result.hasErrors()) {
 			String errors = result.getFieldError().getDefaultMessage();
-			log.error("修改按钮信息参数错误:{}" + errors);
+			log.warn("修改按钮信息参数错误:{}" + errors);
 			return ResultVoUtil.error(1, errors);
 		}
 		log.info("修改按钮信息,按钮id:{}",buttonDto.getId());
