@@ -20,12 +20,12 @@ public class DefaultSmsCodeSender implements SmsCodeSender {
 	@Override
 	@Async
 	public void send(String mobile, String code) {
-		log.info("向手机"+mobile+"发送短信验证码"+code);
-		try {
-			AliyunSmsUtils.sendSms(mobile, code);
-		} catch (ClientException e) {
-			throw new BusinessException(ResultEnum.SEND_SMS_ERROR);
-		}
+//		log.info("向手机"+mobile+"发送短信验证码"+code);
+//		try {
+//			AliyunSmsUtils.sendSms(mobile, code);
+//		} catch (ClientException e) {
+//			throw new BusinessException(ResultEnum.SEND_SMS_ERROR);
+//		}
 	}
 
 }
