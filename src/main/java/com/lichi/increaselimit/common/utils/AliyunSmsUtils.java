@@ -55,7 +55,7 @@ public class AliyunSmsUtils {
 	}
 	
 	public static void main(String[] args) throws ClientException {
-		SendSmsResponse sendSms = sendSms("17749974977", "123456");
+		SendSmsResponse sendSms = sendSms("17749974977", "023456");
 		System.out.println(sendSms);
 	}
 }
