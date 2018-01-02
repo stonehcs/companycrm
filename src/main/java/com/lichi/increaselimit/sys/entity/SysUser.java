@@ -45,6 +45,8 @@ public class SysUser implements UserDetails,SocialUserDetails{
 	
 	private String headerImg;
 	
+	private Integer locked;
+	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		// TODO Auto-generated method stub
@@ -60,7 +62,7 @@ public class SysUser implements UserDetails,SocialUserDetails{
 	@Override
 	public boolean isAccountNonLocked() {
 		// TODO Auto-generated method stub
-		return true;
+		return locked == 1;
 	}
 
 	@Override
@@ -71,7 +73,6 @@ public class SysUser implements UserDetails,SocialUserDetails{
 
 	@Override
 	public boolean isEnabled() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
