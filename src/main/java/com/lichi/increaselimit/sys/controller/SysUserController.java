@@ -165,6 +165,9 @@ public class SysUserController {
 	@PutMapping("/grant")
 	@ApiOperation("授权或者批量授权")
 	public ResultVo<SysUser> updateSysUser(@RequestBody List<String> ids) {
+		if (null == ids || ids.size() <= 0) {
+			throw new BusinessException(ResultEnum.NO_USER_ID);
+		}
 		log.info("给用户授权,授权ids:{}", ids);
 		sysUserService.grant(ids);
 		return ResultVoUtil.success();
