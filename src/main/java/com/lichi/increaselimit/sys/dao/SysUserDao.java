@@ -32,4 +32,6 @@ public interface SysUserDao extends BaseMapper<SysUser> {
 
 	@Select("select count(1) from t_sys_user")
 	Integer countAll();
+
+	void updateBatch(List<String> ids);
 }

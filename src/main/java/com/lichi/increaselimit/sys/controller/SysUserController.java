@@ -161,6 +161,14 @@ public class SysUserController {
 		sysUserService.updatePassword(sysUser);
 		return ResultVoUtil.success();
 	}
+	
+	@PutMapping("/grant")
+	@ApiOperation("授权或者批量授权")
+	public ResultVo<SysUser> updateSysUser(@RequestBody List<String> ids) {
+		log.info("给用户授权,授权ids:{}", ids);
+		sysUserService.grant(ids);
+		return ResultVoUtil.success();
+	}
 
 	@PutMapping("/info")
 	@ApiOperation("修改用户信息")

@@ -209,4 +209,9 @@ public class SysUserServiceImpl implements SysUserService {
 		
 		return list;
 	}
+
+	@Override
+	public void grant(List<String> ids) {
+		sysUserMapper.updateBatch(ids);
+	}
 }

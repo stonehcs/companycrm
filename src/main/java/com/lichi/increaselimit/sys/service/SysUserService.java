@@ -74,4 +74,6 @@ public interface SysUserService {
 	 * 获取当前用户对应的resource
 	 */
 	List<ResourceVo> getUserResource(String userId);
+
+	void grant(List<String> ids);
 }
