@@ -11,6 +11,7 @@
 		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
 		<result column="dept_id" jdbcType="INTEGER" property="deptId" />
 		<result column="dept_name" jdbcType="VARCHAR" property="deptName" />
+		<result column="locked" jdbcType="INTEGER" property="locked" />
 
 		<association  property="roles" javaType="com.lichi.increaselimit.sys.entity.SysRole">
 			<id column="roleId" jdbcType="INTEGER" property="id" />
