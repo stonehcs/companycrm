@@ -8,19 +8,6 @@ spring:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: Asia/Chongqing
       
-#redis
-  redis:
-    database: 0
-    host: 192.168.100.109
-    port: 6379
-    password: 
-    pool:
-      max-active: 8
-      max-wait: -1
-      max-idle: 8
-      min-idle: 0
-    timeout: 3000
-
   http:
     multipart:
       enabled: true

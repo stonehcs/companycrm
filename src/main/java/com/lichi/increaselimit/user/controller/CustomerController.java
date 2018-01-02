@@ -27,6 +27,7 @@ import com.lichi.increaselimit.common.utils.StringUtil;
 import com.lichi.increaselimit.common.vo.ResultVo;
 import com.lichi.increaselimit.security.validate.code.ValidateCode;
 import com.lichi.increaselimit.user.controller.dto.RegistrDto;
+import com.lichi.increaselimit.user.entity.User;
 import com.lichi.increaselimit.user.entity.UserVo;
 import com.lichi.increaselimit.user.entity.VipLevel;
 import com.lichi.increaselimit.user.service.UserService;
@@ -72,6 +73,11 @@ public class CustomerController {
 		log.info("客户注册,手机号:{}",mobile);
 		if(!StringUtil.ValidateMobile(mobile)) {
 			throw new BusinessException(ResultEnum.MOBILE_ERROR);
+		}
+		
+		User loadUserInfoByMobile = userService.loadUserInfoByMobile(mobile);
+		if(loadUserInfoByMobile != null) {
+			throw new BusinessException(ResultEnum.MOBILE_EXIST);
 		}
 		String codejson = redisUtils.get(Constants.MOBILE_REDIS_KEY + mobile);
 		if(StringUtils.isBlank(codejson)) {
