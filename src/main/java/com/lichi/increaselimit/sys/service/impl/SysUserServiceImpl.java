@@ -211,7 +211,10 @@ public class SysUserServiceImpl implements SysUserService {
 	}
 
 	@Override
-	public void grant(List<String> ids) {
-		sysUserMapper.updateBatch(ids);
+	public void grant(List<String> ids,Integer locked) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("ids", ids);
+		map.put("locked", locked);
+		sysUserMapper.updateBatch(map);
 	}
 }

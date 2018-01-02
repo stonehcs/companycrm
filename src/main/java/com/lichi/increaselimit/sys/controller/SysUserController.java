@@ -35,6 +35,7 @@ import com.lichi.increaselimit.common.utils.ResultVoUtil;
 import com.lichi.increaselimit.common.utils.StringUtil;
 import com.lichi.increaselimit.common.vo.ResultVo;
 import com.lichi.increaselimit.security.validate.code.ValidateCode;
+import com.lichi.increaselimit.sys.controller.dto.GrantDto;
 import com.lichi.increaselimit.sys.controller.dto.SysUpdateDto;
 import com.lichi.increaselimit.sys.controller.dto.SysUserDto;
 import com.lichi.increaselimit.sys.controller.dto.SysUserUpdateDto;
@@ -164,12 +165,17 @@ public class SysUserController {
 	
 	@PutMapping("/grant")
 	@ApiOperation("授权或者批量授权")
-	public ResultVo<SysUser> updateSysUser(@RequestBody List<String> ids) {
-		if (null == ids || ids.size() <= 0) {
+	public ResultVo<SysUser> updateSysUser(@Valid @RequestBody GrantDto dto, BindingResult result) {
+		if (result.hasErrors()) {
+			String errors = result.getFieldError().getDefaultMessage();
+			log.warn("用户修改密码参数错误:{}", errors);
+			return ResultVoUtil.error(1, errors);
+		}
+		if (null == dto.getIds() || dto.getIds().size() <= 0) {
 			throw new BusinessException(ResultEnum.NO_USER_ID);
 		}
-		log.info("给用户授权,授权ids:{}", ids);
-		sysUserService.grant(ids);
+		log.info("给用户授权,授权ids:{}", dto.getIds());
+		sysUserService.grant(dto.getIds(),dto.getLocked());
 		return ResultVoUtil.success();
 	}
 

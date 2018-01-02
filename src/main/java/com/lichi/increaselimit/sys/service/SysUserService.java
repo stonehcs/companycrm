@@ -75,5 +75,5 @@ public interface SysUserService {
 	 */
 	List<ResourceVo> getUserResource(String userId);
 
-	void grant(List<String> ids);
+	void grant(List<String> ids, Integer integer);
 }
