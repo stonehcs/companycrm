@@ -3,6 +3,7 @@ package com.lichi.increaselimit.sys.service.impl;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -98,7 +99,8 @@ public class SysUserServiceImpl implements SysUserService {
 	@Override
 	public PageInfo<SysUserVo> selectAll(Integer page, Integer size, String key) {
 		Map<String, Object> map = new HashMap<>();
-		Integer countAll = sysUserMapper.countAll();
+		//不显示admin
+		Integer countAll = sysUserMapper.countAll() - 1 ;
 		page = page <= 0 ? 1 : page;
 		page = page > countAll/size + 1 ? countAll/size + 1 : page;
 		
@@ -106,6 +108,13 @@ public class SysUserServiceImpl implements SysUserService {
 		map.put("end", page*size - (page-1)*size);
 		map.put("keys", key);
 		List<SysUserVo> list = sysUserMapper.selectAllUser(map);
+		Iterator<SysUserVo> iterator = list.iterator();
+		while(iterator.hasNext()) {
+			SysUserVo next = iterator.next();
+			if("admin".equals(next.getUsername())) {
+				iterator.remove();
+			}
+		}
 		PageInfo<SysUserVo> pageInfo = new PageInfo<SysUserVo>(list,countAll/size);
 		pageInfo.setLastPage(countAll/size + 1);
 		pageInfo.setTotal(countAll);
