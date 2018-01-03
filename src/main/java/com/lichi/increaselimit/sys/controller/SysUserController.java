@@ -29,7 +29,6 @@ import com.github.pagehelper.PageInfo;
 import com.lichi.increaselimit.common.Constants;
 import com.lichi.increaselimit.common.enums.ResultEnum;
 import com.lichi.increaselimit.common.exception.BusinessException;
-import com.lichi.increaselimit.common.utils.MenuTreeUtils;
 import com.lichi.increaselimit.common.utils.RedisUtils;
 import com.lichi.increaselimit.common.utils.ResultVoUtil;
 import com.lichi.increaselimit.common.utils.StringUtil;
@@ -225,14 +224,13 @@ public class SysUserController {
 
 	@GetMapping("/menutree")
 	@ApiOperation("获取当前用户的菜单树")
-	public ResultVo<JSONArray> getUserMenuTree(@RequestHeader("token") String token) {
+	public ResultVo<List<SysMenu>> getUserMenuTree(@RequestHeader("token") String token) {
 
 		log.info("获取当前用户菜单树,用户token:{}", token);
 
 		List<SysMenu> list = sysMenuService.selectByUserId(token);
 		
-		JSONArray treeMenuList = MenuTreeUtils.treeMenuList(list, -1);
-		return ResultVoUtil.success(treeMenuList);
+		return ResultVoUtil.success(list);
 	}
 	
 	@PostMapping("/friends/{userId}")
