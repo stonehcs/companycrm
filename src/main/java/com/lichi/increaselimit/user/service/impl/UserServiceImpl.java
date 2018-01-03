@@ -50,19 +50,25 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public PageInfo<UserVo> selectAll(Integer page, Integer size,String key,String userId) {
-		PageHelper.startPage(page,size);
-		PageHelper.orderBy("create_time desc");
 		List<UserVo> list = null;
 		if(StringUtils.isBlank(userId)) {
 			if(StringUtils.isBlank(key)) {
+				PageHelper.startPage(page,size);
+				PageHelper.orderBy("create_time desc");
 				list = userMapper.selectAllUser();
 			}else {
+				PageHelper.startPage(page,size);
+				PageHelper.orderBy("create_time desc");
 				list = userMapper.selectAllLike(key);
 			}
 		}else {
 			if(StringUtils.isBlank(key)) {
+				PageHelper.startPage(page,size);
+				PageHelper.orderBy("create_time desc");
 				list = userMapper.getAllShare(userId);
 			}else {
+				PageHelper.startPage(page,size);
+				PageHelper.orderBy("create_time desc");
 				list = userMapper.getAllShareLike(userId,key);
 			}
 		}
