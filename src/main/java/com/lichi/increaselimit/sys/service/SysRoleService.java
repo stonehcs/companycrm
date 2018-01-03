@@ -29,5 +29,7 @@ public interface SysRoleService {
 	 */
 	List<SysRole> getUserRole(String id);
 
+	List<SysRoleResource> selectUserResource(String userId);
+
 
 }

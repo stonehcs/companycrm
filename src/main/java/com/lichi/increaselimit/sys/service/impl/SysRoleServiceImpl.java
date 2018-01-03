@@ -153,4 +153,9 @@ public class SysRoleServiceImpl implements SysRoleService {
 		example.createCriteria().andEqualTo("roleId", roleId);
 		sysRoleResourceDao.deleteByExample(example);
 	}
+
+	@Override
+	public List<SysRoleResource> selectUserResource(String userId) {
+		return sysRoleResourceDao.selectUserResource(userId);
+	}
 }

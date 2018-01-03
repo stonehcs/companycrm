@@ -40,6 +40,7 @@ import com.lichi.increaselimit.sys.controller.dto.SysUserDto;
 import com.lichi.increaselimit.sys.controller.dto.SysUserUpdateDto;
 import com.lichi.increaselimit.sys.entity.SysMenu;
 import com.lichi.increaselimit.sys.entity.SysRole;
+import com.lichi.increaselimit.sys.entity.SysRoleResource;
 import com.lichi.increaselimit.sys.entity.SysUser;
 import com.lichi.increaselimit.sys.entity.SysUserVo;
 import com.lichi.increaselimit.sys.service.SysMenuService;
@@ -229,6 +230,17 @@ public class SysUserController {
 		log.info("获取当前用户菜单树,用户token:{}", token);
 
 		List<SysMenu> list = sysMenuService.selectByUserId(token);
+		
+		return ResultVoUtil.success(list);
+	}
+	
+	@GetMapping("/resource")
+	@ApiOperation("获取用户对应的菜单和按钮")
+	public ResultVo<List<SysRoleResource>> getUserResource(@RequestHeader("token") String token) {
+		
+		log.info("获取当前用户菜单树,用户id:{}", token);
+		
+		List<SysRoleResource> list = sysRoleService.selectUserResource(token);
 		
 		return ResultVoUtil.success(list);
 	}
