@@ -22,7 +22,7 @@ public interface SysUserDao extends BaseMapper<SysUser> {
 	/**
 	 * 获取用户信息
 	 * 
-	 * @param username
+	 * @param mobile
 	 * @return
 	 */
 	@Select("select a.*,b.dept_name from t_sys_user a left join t_sys_dept b on a.dept_id = b.id where mobile=#{mobile}")

@@ -28,8 +28,6 @@ public class SysUser implements UserDetails,SocialUserDetails{
 	@Id
 	private String id;
 	
-	private String username;
-	
 	private String nickname;
 	
 	private String mobile;
@@ -79,8 +77,13 @@ public class SysUser implements UserDetails,SocialUserDetails{
 	@JsonIgnore
 	@Override
 	public String getUserId() {
-		// TODO Auto-generated method stub
-		return null;
+		return id;
+	}
+
+	@Override
+	@JsonIgnore
+	public String getUsername() {
+		return mobile;
 	}
 	
 }

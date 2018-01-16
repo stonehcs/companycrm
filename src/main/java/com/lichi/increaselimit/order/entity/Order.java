@@ -1,4 +1,4 @@
-package com.lichi.increaselimit.sys.entity;
+package com.lichi.increaselimit.order.entity;
 
 import java.util.Date;
 
@@ -8,27 +8,22 @@ import javax.persistence.Table;
 
 import lombok.Data;
 
-/**
- * 版本信息
- * @author majie
- *
- */
 @Data
-@Table(name = "t_version")
-public class Version {
-
-	@Id
-	private Integer id;
+@Table(name = "t_order")
+public class Order {
 	
-	private String version;
+	@Id
+	private String id;
+	
+	private String userId;
+	
+	private Integer goodsId;
 	
 	private Integer type;
 	
-	private String information;
-	
-	private String url;
-	
 	private Integer status;
+	
+	private Double money;
 	
 	@OrderBy("desc")
 	private Date createTime;

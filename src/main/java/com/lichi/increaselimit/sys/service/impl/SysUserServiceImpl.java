@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -112,7 +111,7 @@ public class SysUserServiceImpl implements SysUserService {
 		Iterator<SysUserVo> iterator = list.iterator();
 		while(iterator.hasNext()) {
 			SysUserVo next = iterator.next();
-			if("admin".equals(next.getUsername())) {
+			if("admin".equals(next.getNickname())) {
 				iterator.remove();
 			}
 		}
@@ -138,25 +137,6 @@ public class SysUserServiceImpl implements SysUserService {
 		user.setUpdateTime(new Date());
 		user.setPassword(passwordEncoder.encode(sysUser.getPassword()));
 		sysUserMapper.updateByPrimaryKey(user);
-	}
-
-	@Override
-	public SysUser loadUserInfoByUsername(String username) {
-		List<SysUser> list = selectByUsername(username);
-		return CollectionUtils.isEmpty(list) ? null : list.get(0);
-	}
-
-	/**
-	 * 通过用户名查找用户信息
-	 * 
-	 * @param username
-	 * @return
-	 */
-	private List<SysUser> selectByUsername(String username) {
-		Example example = new Example(SysUser.class);
-		example.createCriteria().andEqualTo("username", username);
-		List<SysUser> list = sysUserMapper.selectByExample(example);
-		return list;
 	}
 
 	@Override

@@ -46,4 +46,6 @@ public interface VersionService {
 	 */
 	List<Version> selectList();
 
+	Version selectNew();
+
 }

@@ -108,7 +108,6 @@ public class SysUserController {
 		log.info("用户注册,手机号码:{}", sysUser.getMobile());
 
 		// 注册的时候用户名默认为手机号码
-		sysUser.setUsername(sysUser.getMobile());
 		sysUser.setNickname(sysUser.getMobile());
 		sysUserService.insertUser(sysUser);
 
@@ -212,7 +211,7 @@ public class SysUserController {
 	@ApiOperation("获取当前用户信息")
 	// @ApiImplicitParams({
 	// @ApiImplicitParam(name = "token", value = "认证token", required = true,
-	// dataType = "string", paramType = "header", defaultValue = "username") })
+	// dataType = "string", paramType = "header", defaultValue = "token") })
 	public ResultVo<SysUser> getCurrentUser(@RequestHeader("token") String token) {
 
 		log.info("获取当前用户信息,用户token:{}", token);

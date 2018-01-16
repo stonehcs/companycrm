@@ -57,4 +57,12 @@ public class VersionServiceImpl implements VersionService{
 		return list;
 	}
 
+	@Override
+	public Version selectNew() {
+		List<Version> list = versionDao.selectAll();
+		if(null != list && list.size() > 0) {
+			return list.get(0);
+		}
+		return null;
+	}
 }

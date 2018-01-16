@@ -15,7 +15,7 @@ public class AutentiationConfigProvider implements AuthorizeConfigProvider {
 		try {
 			config.
 				antMatchers("/","/login.html","/captcha-image","/v2/**","/swagger**", "/druid/**","/swagger-resources/**",
-			    		"/social/signUp","/authentication/require","/code/sms","/webjars/**","/circle/article/**","/sysuser/regiter").
+			    		"/social/signUp","/authentication/require","/code/sms","/webjars/**","/circle/article/**","/sysuser/regiter","/version/**").
 				permitAll()
 				.antMatchers(HttpMethod.PUT,"/sysuser").permitAll()
 				.antMatchers(HttpMethod.POST,"/customer").permitAll()

@@ -43,9 +43,6 @@ public class User implements Serializable{
 	@ApiModelProperty("佣金")
 	private Double money;
 	
-	@JsonIgnore
-	private String username;
-	
 	@ApiModelProperty("用户名")
 	private String nickname;
 

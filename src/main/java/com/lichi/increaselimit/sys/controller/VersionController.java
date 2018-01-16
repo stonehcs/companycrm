@@ -49,6 +49,15 @@ public class VersionController {
 		PageInfo<Version> list = versionService.selectAll(page, size);
 		return ResultVoUtil.success(list);
 	}
+	
+	@GetMapping("/new")
+	@ApiOperation("获得最新版本")
+	public ResultVo<Version> getnew() {
+		log.info("查询所有版本");
+		Version list = versionService.selectNew();
+		return ResultVoUtil.success(list);
+	}
+	
 	@GetMapping("/list")
 	@ApiOperation("查询所有版本")
 	public ResultVo<List<Version>> getAll() {
@@ -102,10 +111,10 @@ public class VersionController {
 		log.info("上传的文件名为：" + fileName);
 		
 		try {
-			FileUtil.uploadFile(file.getBytes(), "/home/homepage/release/", fileName);
+			FileUtil.uploadFile(file.getBytes(), "/lichi_crm/release/", fileName);
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
-		return ResultVoUtil.success("app.lichijituan.cn/home/homepage/release/" + fileName);
+		return ResultVoUtil.success("http://app.lichijituan.cn:8081/release/" + fileName);
 	}
 }

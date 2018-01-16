@@ -25,9 +25,6 @@ public class SysUserUpdateDto implements Serializable {
 //	@NotBlank(message = "请选择要修改的用户")
 	private String id;
 	
-	@ApiModelProperty("用户名")
-	private String username;
-
 	@ApiModelProperty("手机号码")
 	@NotBlank(message = "手机号不能为空")
 	private String mobile;

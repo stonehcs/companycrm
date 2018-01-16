@@ -17,7 +17,7 @@ public interface UserService {
 	
 	/**
 	 * 通过手机号获取用户信息
-	 * @param username
+	 * @param mobile
 	 * @return
 	 */
 	User loadUserInfoByMobile(String mobile);

@@ -102,7 +102,6 @@ public class UserServiceImpl implements UserService{
 		String userId = IdUtils.getUserId();
 		User user = new User();
 		user.setId(userId);
-		user.setUsername(mobile);
 		user.setNickname(mobile);
 		user.setMobile(mobile);
 		user.setCreateTime(new Date());
