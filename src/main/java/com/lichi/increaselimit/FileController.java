@@ -21,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class FileController {
 	
-	public static final String SHUIYIN = "?imageView2/1/w/600/h/400/q/75|watermark/2/text/6YeN5bqG6aqK6amw5paH5YyW/font/5b6u6L2v6ZuF6buR/fontsize/480/fill/I0ZGRkZGRg==/dissolve/100/gravity/SouthEast/dx/10/dy/10|imageslim";
+	public static final String SHUIYIN = "?imageMogr2/auto-orient/thumbnail/!70p/blur/1x0/quality/75|imageslim";
 
 	@ApiOperation(value = "文件上传")
 	@RequestMapping(value = "upload",method=RequestMethod.POST)
